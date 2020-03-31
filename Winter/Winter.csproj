@@ -1,0 +1,31 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.1.2" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.1.1" />
+    <PackageReference Include="Microsoft.TypeScript.MSBuild" Version="3.8.3">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.10" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\img\blog\latest-post\" />
+    <Folder Include="wwwroot\SmartAdmin\plugins\data-tables\images\css\" />
+    <Folder Include="wwwroot\SmartAdmin\plugins\data-tables\images\images\gallery\" />
+    <Folder Include="wwwroot\SmartAdmin\plugins\data-tables\images\images\photos\" />
+    <Folder Include="wwwroot\SmartAdmin\plugins\data-tables\images\js\easypiechart\" />
+    <Folder Include="wwwroot\SmartAdmin\plugins\data-tables\images\js\flot-chart\" />
+    <Folder Include="wwwroot\SmartAdmin\plugins\data-tables\images\js\iCheck\skins\minimal\" />
+    <Folder Include="wwwroot\SmartAdmin\plugins\data-tables\images\js\iCheck\skins\square\" />
+    <Folder Include="wwwroot\SmartAdmin\plugins\data-tables\images\js\sparkline\" />
+    <Folder Include="wwwroot\SmartAdmin\plugins\noty-master\js\" />
+  </ItemGroup>
+
+</Project>
