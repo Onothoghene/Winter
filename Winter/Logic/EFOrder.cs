@@ -11,7 +11,13 @@ namespace Winter.Logic
     public class EFOrder : IOrder
     {
         private readonly WinterContext _context;
-        private readonly ModelFactory _modelFactory;
+        ModelFactory _modelFactory = new ModelFactory();
+
+
+        public EFOrder(WinterContext context)
+        {
+            _context = context;
+        }
 
         public int AddOrder(OrderInputViewModel model)
         {

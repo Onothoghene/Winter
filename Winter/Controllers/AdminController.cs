@@ -13,17 +13,18 @@ namespace Winter.Controllers
 {
     public class AdminController : Controller
     {
-        private readonly WinterContext _context;
+       // private readonly WinterContext _context;
 
         public readonly IProduct _product;
-        public readonly ICategory _category;
+        public readonly ICategory _category;    
         public readonly IOrder _order;
 
-        public AdminController(IProduct product, ICategory category, IOrder order)
+        public AdminController(IProduct product, ICategory category, IOrder order/*, WinterContext winterContext*/)
         {
             _product = product;
             _category = category;
             _order = order;
+          //  _context = winterContext;
         }
 
         public IActionResult Index()
@@ -45,7 +46,7 @@ namespace Winter.Controllers
             if (ModelState.IsValid)
             {
                 _category.AddCategory(category);
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", "Admin");
             }
             return View(category);
         }
@@ -117,29 +118,29 @@ namespace Winter.Controllers
             return RedirectToAction("Index");
         }
 
-        public IActionResult Add_Product()
-        {
-            ProductInputViewModel productInput = new ProductInputViewModel
-            {
-                Categories = new SelectList(_context.Category.ToList(), "Id", "CategoryName"),
-                DateAdded = DateTime.Now
-            };
+        //public IActionResult Add_Product()
+        //{
+        //    ProductInputViewModel productInput = new ProductInputViewModel
+        //    {
+        //        Categories = new SelectList(_context.Category.ToList(), "Id", "CategoryName"),
+        //        DateAdded = DateTime.Now
+        //    };
 
-            return View(productInput);
-        }
+        //    return View(productInput);
+        //}
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult AddProduct(ProductInputViewModel model)
-        {
-            if (ModelState.IsValid)
-            {
-                _product.AddProduct(model);
-                return RedirectToAction("Index");
-            }
-            model.Categories = new SelectList(_context.Category.ToList(), "Id", "CategoryName");
-            return View(model);
-        }
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public IActionResult AddProduct(ProductInputViewModel model)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        _product.AddProduct(model);
+        //        return RedirectToAction("Index");
+        //    }
+        //    model.Categories = new SelectList(_context.Category.ToList(), "Id", "CategoryName");
+        //    return View(model);
+        //}
 
         public IActionResult Product()
         {
@@ -159,43 +160,43 @@ namespace Winter.Controllers
             return View(productdetails);
         }
 
-        public IActionResult Update_Product(int? Id)
-        {
-            var productOutput = _product.GetProductById(Id);
+        //public IActionResult Update_Product(int? Id)
+        //{
+        //    var productOutput = _product.GetProductById(Id);
 
-            ProductEditViewModel productEdit = new ProductEditViewModel
-            {
-                ProductId = productOutput.ProductId,
-                ProductName = productOutput.ProductName,
-                CategoryID = productOutput.CategoryID,
-                Description = productOutput.Description,
-                UnitPrice = productOutput.UnitPrice,
-                TotalPrice = productOutput.TotalPrice,
-                ProductPath = productOutput.ProductPath,
-                Ext = productOutput.Ext,
-                //FileName = productOutput.FileName,
-                //DateModified = productOutput.DateModified,
+        //    ProductEditViewModel productEdit = new ProductEditViewModel
+        //    {
+        //        ProductId = productOutput.ProductId,
+        //        ProductName = productOutput.ProductName,
+        //        CategoryID = productOutput.CategoryID,
+        //        Description = productOutput.Description,
+        //        UnitPrice = productOutput.UnitPrice,
+        //        TotalPrice = productOutput.TotalPrice,
+        //        ProductPath = productOutput.ProductPath,
+        //        Ext = productOutput.Ext,
+        //        //FileName = productOutput.FileName,
+        //        //DateModified = productOutput.DateModified,
 
-                Categories = new SelectList(_context.Category.ToList(), "Id", "CategoryName"),
-        };
+        //        Categories = new SelectList(_context.Category.ToList(), "Id", "CategoryName"),
+        //};
            
-            return View(productEdit);
-        }
+        //    return View(productEdit);
+        //}
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult UpdateProduct(ProductEditViewModel productEdit)
-        {
-            if (ModelState.IsValid)
-            {
-               // SaveImageToFolderAndPathToDb(member);
-                _product.UpdateProduct(productEdit);
-                return RedirectToAction("Index");
-            }
-            productEdit.Categories = new SelectList(_context.Category.ToList(), "Id", "CategoryName");
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public IActionResult UpdateProduct(ProductEditViewModel productEdit)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //       // SaveImageToFolderAndPathToDb(member);
+        //        _product.UpdateProduct(productEdit);
+        //        return RedirectToAction("Index");
+        //    }
+        //    productEdit.Categories = new SelectList(_context.Category.ToList(), "Id", "CategoryName");
 
-            return View(productEdit);
-        }
+        //    return View(productEdit);
+        //}
 
         public IActionResult Delete_Product(int? Id)
         {

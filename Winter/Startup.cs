@@ -7,6 +7,7 @@ using Winter.Data;
 using Microsoft.AspNetCore.Identity;
 using Winter.Logic;
 using Microsoft.AspNetCore.Mvc;
+using Winter.Services;
 
 namespace Winter
 {
@@ -32,6 +33,8 @@ namespace Winter
             services.AddIdentity<IdentityUser, IdentityRole>()
                            .AddEntityFrameworkStores<WinterContext>();
 
+            services.AddTransient<WinterContext>();
+            services.AddSingleton<ModelFactory, ModelFactory>();
             services.AddScoped<IProduct, EFProduct>();
             services.AddScoped<IOrder, EFOrder>();
             services.AddScoped<ICategory, EFCategory>();
@@ -55,8 +58,9 @@ namespace Winter
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
+                    template: "{controller=Admin}/{action=Index}/{id?}");
             });
         }
     }
+
 }

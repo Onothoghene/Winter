@@ -52,6 +52,7 @@ namespace Winter.Services
                 CategoryName = model.CategoryName,
                 DateAdded = DateTime.Now,
                 Description = model.Description,
+                DateModified = DateTime.Now,
             };
 
             return _model;
