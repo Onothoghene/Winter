@@ -13,7 +13,13 @@ namespace Winter.Logic
     public class EFProduct : IProduct
     {
         private readonly WinterContext _context;
-        private readonly ModelFactory _modelFactory;
+        ModelFactory _modelFactory = new ModelFactory();
+
+
+        public EFProduct(WinterContext context)
+        {
+            _context = context;
+        }
 
         public int AddProduct(ProductInputViewModel model)
         {

@@ -1,15 +1,22 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using System.IO;
 using Winter.Models;
 
 namespace Winter.Data
 {
     public class WinterContext : IdentityDbContext
     {
+        public WinterContext()
+        {
+        }
         public WinterContext (DbContextOptions<WinterContext> options)
             : base(options)
         {
         }
+
+
 
         public DbSet<Category> Category { get; set; }
         public DbSet<Product> Product { get; set; }
@@ -19,6 +26,22 @@ namespace Winter.Data
         {
             base.OnModelCreating(modelBuilder);
             // modelBuilder.Seed();
+        }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            if (!optionsBuilder.IsConfigured)
+            {
+
+                var builder = new ConfigurationBuilder()
+                               .SetBasePath(Directory.GetCurrentDirectory())
+                               .AddJsonFile("appsettings.json");
+
+                IConfiguration Configuration = builder.Build();
+
+                optionsBuilder.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
+
+            }
         }
     }
 }
