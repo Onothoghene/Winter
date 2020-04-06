@@ -28,7 +28,7 @@ namespace JeanStation.Controllers
             {
                 var user = new IdentityUser
                 {
-                    UserName = model.UserName,
+                    UserName = model.Email,
                     Email = model.Email
                 };
                 var result = await UserManager.CreateAsync(user, model.Password);
