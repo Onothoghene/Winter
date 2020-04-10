@@ -1,0 +1,27 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
+@{
+    string count = "";
+    if (ViewData["UserCount"] != null)
+    {
+        count = ViewData["UserCount"].ToString();
+    }
+
+}
+
+<div class="col-lg-3 col-md-3 col-sm-6 col-xm-12">
+    <!--Registered User-->
+    <div class="panel media pad-all">
+        <div class="media-left">
+            <span class="icon-wrap icon-wrap-sm icon-circle bg-success">
+                <i class="fa fa-user fa-2x"></i>
+            </span>
+        </div>
+        <div class="media-body">
+            <p class="text-2x mar-no text-thin text-right">@count</p>
+            <p class="h5 mar-no text-right">Registered User</p>
+        </div>
+    </div>
+</div>
