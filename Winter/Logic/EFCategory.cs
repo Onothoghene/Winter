@@ -70,5 +70,24 @@ namespace Winter.Logic
 
             return true;
         }
+
+        //public int CountCategory(CategoryOutputViewModel model)
+        //{
+        //    //var count = db.Activities.Cart(c => c.UserName == "dd").ToList().Count;
+
+        //    //var count = _context.Category.ToList().Count();
+
+        //    model.count = _context.Category.ToList().Count();
+        //    return model.count;
+        //}
+
+        public int CountCategory()
+        {
+            var count = _context.Category.ToList().Count();
+
+            return count;
+
+        }
+
     }
 }

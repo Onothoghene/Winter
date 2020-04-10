@@ -8,6 +8,7 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Winter.ViewModels.Output_Models;
 
 namespace Winter.Controllers
 {
@@ -29,7 +30,26 @@ namespace Winter.Controllers
 
         public IActionResult Index()
         {
+            //ViewData["CategoryCount"] = _category.CountCategory();
             return View();
+        }
+
+        public IActionResult CategoryCount()
+        {
+            ViewData["CategoryCount"] = _category.CountCategory();
+            return PartialView();
+        }
+
+        public IActionResult UserCount()
+        {
+            ViewData["UserCount"] = _category.CountCategory();
+            return PartialView();
+        }
+
+        public IActionResult OrderCount()
+        {
+            ViewData["UserCount"] = _category.CountCategory();
+            return PartialView();
         }
 
         public IActionResult Add_Category()
@@ -90,11 +110,9 @@ namespace Winter.Controllers
         {
             if (ModelState.IsValid)
             {
-                //SaveImageToFolderAndPathToDb(categoryEdit);
                 _category.UpdateCategory(categoryEdit);
                 return RedirectToAction("Index");
             }
-           // _category.ConfigureEditViewModelForDropDown(member);
 
             return View(categoryEdit);
         }

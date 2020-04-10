@@ -17,5 +17,7 @@ namespace Winter.ViewModels.Output_Models
         public DateTime DateAdded { get; set; }
         public DateTime DateModified { get; set; }
         public ICollection<Product> Product { get; set; }
+
+        public int count { get; set; }
     }
 }
