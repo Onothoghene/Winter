@@ -11,5 +11,6 @@ namespace Winter.Logic
         //CheckOutInputViewModel GetProductById(int? Id);
         IEnumerable<OrderOutputViewModel> GetOrders();
         bool EditOrder(OrderOutputViewModel model);
+        int CountOrders();
     }
 }

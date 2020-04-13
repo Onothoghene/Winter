@@ -71,5 +71,32 @@ namespace JeanStation.Controllers
             await SignInManager.SignOutAsync();
             return RedirectToAction("Index", "home");
         }
+
+        [HttpPost]
+        public async Task<IActionResult>DeleteAccount(string id)
+        {
+            var user = await UserManager.FindByIdAsync(id);
+
+            if(user == null)
+            {
+                ViewBag.ErrorMessage = "User cannot be found";
+                return View();
+            }
+            else{
+                var result = await UserManager.DeleteAsync(user);
+
+                if (result.Succeeded)
+                {
+                      return RedirectToAction("Index", "Home");
+                };
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError("", error.Description);
+                }
+                return RedirectToAction("Index", "Home");
+            }
+          
+         }
+
     }
 }

@@ -14,5 +14,6 @@ namespace Winter.Logic
         bool UpdateProduct(ProductEditViewModel model);
         //void ConfigureInputViewModelForDropDown(ProductInputViewModel model);
         //void ConfigureEditViewModelForDropDown(ProductInputViewModel model);
+        int CountProduct();
     }
 }

@@ -84,7 +84,6 @@ namespace Winter.Logic
         public int CountCategory()
         {
             var count = _context.Category.ToList().Count();
-
             return count;
 
         }

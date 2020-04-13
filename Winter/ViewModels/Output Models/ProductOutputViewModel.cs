@@ -32,5 +32,7 @@ namespace Winter.ViewModels.Output_Models
         public virtual Category Category { get; set; }
         public List<IFormFile> Files { get; set; }
 
+        public int count { get; set; }
+
     }
 }

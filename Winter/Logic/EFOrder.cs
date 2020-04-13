@@ -57,5 +57,11 @@ namespace Winter.Logic
 
             return true;
         }
+
+        public int CountOrders()
+        {
+            var count = _context.Order.ToList().Count();
+            return count;
+        }
     }
 }

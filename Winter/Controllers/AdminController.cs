@@ -9,13 +9,12 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Winter.ViewModels.Output_Models;
+using Winter.ViewModels;
 
 namespace Winter.Controllers
 {
     public class AdminController : Controller
     {
-       // private readonly WinterContext _context;
-
         public readonly IProduct _product;
         public readonly ICategory _category;    
         public readonly IOrder _order;
@@ -30,27 +29,23 @@ namespace Winter.Controllers
 
         public IActionResult Index()
         {
-            //ViewData["CategoryCount"] = _category.CountCategory();
-            return View();
+            GeneralViewModel viewModel = new GeneralViewModel
+            {
+                CategoryCount = _category.CountCategory(),
+                // UserCount = _c
+                ProductCount = _product.CountProduct(),
+                OrderCount = _order.CountOrders()
+            };
+            
+            return View(viewModel);
         }
 
-        public IActionResult CategoryCount()
-        {
-            ViewData["CategoryCount"] = _category.CountCategory();
-            return PartialView();
-        }
-
-        public IActionResult UserCount()
-        {
-            ViewData["UserCount"] = _category.CountCategory();
-            return PartialView();
-        }
-
-        public IActionResult OrderCount()
-        {
-            ViewData["UserCount"] = _category.CountCategory();
-            return PartialView();
-        }
+        //public IActionResult CategoryCount()
+        //{
+        //    CategoryOutputViewModel viewModel = new CategoryOutputViewModel();
+        //    viewModel.CategoryCount = _category.CountCategory();
+        //    return PartialView(viewModel);
+        //}
 
         public IActionResult Add_Category()
         {
@@ -117,16 +112,16 @@ namespace Winter.Controllers
             return View(categoryEdit);
         }
 
-        public IActionResult Delete_Category(int? Id)
-        {
-            if (Id == null)
-            {
-                return RedirectToAction("Index");
-            }
-            var deleteCategory = _category.GetCategoryById(Id);
+        //public IActionResult Delete_Category(int? Id)
+        //{
+        //    if (Id == null)
+        //    {
+        //        return RedirectToAction("Index");
+        //    }
+        //    var deleteCategory = _category.GetCategoryById(Id);
 
-            return View(deleteCategory);
-        }
+        //    return View(deleteCategory);
+        //}
 
         [HttpPost]
         public IActionResult DeleteCategory(int? Id)
@@ -215,17 +210,6 @@ namespace Winter.Controllers
 
         //    return View(productEdit);
         //}
-
-        public IActionResult Delete_Product(int? Id)
-        {
-            if (Id == null)
-            {
-                return RedirectToAction("Index");
-            }
-            var deleteCategory = _product.GetProductById(Id);
-
-            return View(deleteCategory);
-        }
 
         [HttpPost]
         public IActionResult DeleteProduct(int? Id)

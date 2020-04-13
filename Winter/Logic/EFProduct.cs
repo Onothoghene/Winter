@@ -85,5 +85,11 @@ namespace Winter.Logic
         //{
 
         //}
+
+       public  int CountProduct()
+        {
+            var count = _context.Product.ToList().Count();
+            return count;
+        }
     }
 }
