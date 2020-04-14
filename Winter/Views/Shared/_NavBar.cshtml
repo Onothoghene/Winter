@@ -2,7 +2,7 @@
     For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 *@
 
-@inject SignInManager<IdentityUser> signInManager;
+@inject SignInManager<ApplicationUser> signInManager;
 <!--::header part start::-->
 <header class="main_menu home_menu">
     <div class="container-fluid">
@@ -105,6 +105,7 @@
                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="ti-bag"></i>
                                 @User.Identity.Name
+                                @*@User.Identity.FullName*@
                             </a>
                         </div>
                     </div>

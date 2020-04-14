@@ -6,7 +6,7 @@ using Winter.Models;
 
 namespace Winter.Data
 {
-    public class WinterContext : IdentityDbContext
+    public class WinterContext : IdentityDbContext<ApplicationUser>
     {
         public WinterContext()
         {

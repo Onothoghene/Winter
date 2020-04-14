@@ -179,19 +179,18 @@ namespace Winter.Controllers
                 var data = Mapper.Map<ProductInputViewModel, Product>(model);
                 var response = await Task.Run(() => _product.AddProduct(data, fileInputs));
 
-                        return RedirectToAction("VesselApplication");
+                        return RedirectToAction("Admin", "Index");
 
 
             }
             catch (Exception ex)
             {
-
+                return View(model);
                 throw;
             }
+            //return View(model);
 
-            return View(model);
         }
-
 
         //[HttpPost]
         //[ValidateAntiForgeryToken]

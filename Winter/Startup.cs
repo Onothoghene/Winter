@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Identity;
 using Winter.Logic;
 using Microsoft.AspNetCore.Mvc;
 using Winter.Services;
+using Winter.Models;
 
 namespace Winter
 {
@@ -30,7 +31,7 @@ namespace Winter
             services.AddDbContext<WinterContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddIdentity<IdentityUser, IdentityRole>()
+            services.AddIdentity<ApplicationUser, IdentityRole>()
                            .AddEntityFrameworkStores<WinterContext>();
 
             services.AddTransient<WinterContext>();

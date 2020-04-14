@@ -2,15 +2,16 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
+using Winter.Models;
 
 namespace JeanStation.Controllers
 {
     public class AccountController : Controller
     {
-        public readonly UserManager<IdentityUser> UserManager;
-        public readonly SignInManager<IdentityUser> SignInManager;
+        public readonly UserManager<ApplicationUser> UserManager;
+        public readonly SignInManager<ApplicationUser> SignInManager;
 
-        public AccountController(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager)
+        public AccountController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
         {
             UserManager = userManager;
             SignInManager = signInManager;
@@ -26,10 +27,12 @@ namespace JeanStation.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new IdentityUser
+                var user = new ApplicationUser
                 {
                     UserName = model.Email,
-                    Email = model.Email
+                    Email = model.Email,
+                    //Address = model.Address, 
+                    FullName = model.Name,
                 };
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
