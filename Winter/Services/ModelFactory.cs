@@ -11,7 +11,6 @@ namespace Winter.Services
 {
     public class ModelFactory
     {
-        //private readonly WinterContext _context;
         public Product Parse(ProductInputViewModel model)
         {
             var _model = new Product
@@ -19,10 +18,9 @@ namespace Winter.Services
                 Id = model.ProductId,
                 ProductName = model.ProductName,
                 Description = model.Description,
-                Ext = model.Ext,
-                Url = model.ProductPath,
                 UnitPrice = model.UnitPrice,
                 CategoryID = model.CategoryID,
+                //ProductFileId = model.ProductFileId,
                 DateAdded = DateTime.Now,
             };
             return _model;
@@ -34,11 +32,11 @@ namespace Winter.Services
                 ProductId = model.Id,
                 ProductName = model.ProductName,
                 Description = model.Description,
-                Ext = model.Ext,
-                ProductPath = model.Url,
+             //   ProductFileId = model.ProductFileId,
                 UnitPrice = model.UnitPrice,
                 CategoryID = model.CategoryID,
-                DateAdded = DateTime.Now,
+                DateAdded = model.DateAdded,
+                DateModified = model.DateModified,
             };
             return _model;
         }
@@ -63,8 +61,9 @@ namespace Winter.Services
             {
                 CategoryId = model.Id,
                 CategoryName = model.CategoryName,
-                DateAdded = DateTime.Now,
+                DateAdded = model.DateAdded,
                 Description = model.Description,
+                DateModified = model.DateModified,
             };
 
             return _model;
@@ -78,6 +77,7 @@ namespace Winter.Services
                 Id = model.OrderId,
                 ProductId = model.ProductId,
                 CategoryId = model.CategoryId,
+                UserId = model.UserId,
                 UserName = model.UserName,
                 ProductName = model.ProductName,
                 UnitPrice = model.UnitPrice,
@@ -96,26 +96,79 @@ namespace Winter.Services
                 OrderId = model.Id,
                 ProductId = model.ProductId,
                 CategoryId = model.CategoryId,
+                UserId = model.UserId,
                 UserName = model.UserName,
                 ProductName = model.ProductName,
                 UnitPrice = model.UnitPrice,
                 Quantity = model.Quantity,
                 TotalPrice = model.TotalPrice,
-                DateAdded = DateTime.Now,
+                DateAdded = model.DateAdded,
                 DeliveryDate = model.DeliveryDate
             };
 
             return _model;
         }
 
-        //public void ImageUpload(ProductInputViewModel model)
+        //public ProductFile Parse(ProductFileInputViewModel model)
         //{
-        //    string fileName = Path.GetFileNameWithoutExtension(model.ImageFile.FileName);
-        //    string extention = Path.GetExtension(model.ImageFile.FileName);
-        //    fileName = fileName + DateTime.Now.ToString("yymmssfff") + extention;
-        //    model.ImagePath = "~/ImageUploads/" + fileName;
-        //    fileName = Path.Combine(HttpContext.Current.Server.MapPath("~/ImageUploads/"), fileName);
-        //    model.ImageFile.SaveAs(fileName);
+        //    var _model = new ProductFile
+        //    {
+        //        Id = model.ProductFileId,
+        //        FileName = model.FileName,
+        //        FileUniqueName = model.FileUniqueName,
+        //        Ext = model.Ext,
+        //        ProductUrl = model.ProductUrl,
+        //        ProductUrlUniqueName = model.ProductUrlUniqueName,
+        //        DateAdded = DateTime.Now,
+        //    };
+        //    return _model;
+        //}
+
+        public ProductFile Parse(ProductFileInputViewModel model, int productId)
+        {
+            var _model = new ProductFile
+            {
+                 Id = model.ProductFileId,
+                DateAdded = DateTime.UtcNow,
+                Ext = model.Ext,
+                ProductUrl = model.ProductUrl,
+                ProductUrlUniqueName = model.ProductUrlUniqueName,
+                FileName = model.FileName,
+                FileUniqueName = model.FileUniqueName,
+                ProductId = productId
+            };
+
+            return _model;
+        }
+        public ProductFileOutputViewModel Create(ProductFile model)
+        {
+            var _model = new ProductFileOutputViewModel
+            {
+                ProductFileId = model.Id,
+                FileName = model.FileName,
+                FileUniqueName = model.FileUniqueName,
+                Ext = model.Ext,
+                ProductUrl = model.ProductUrl,
+                ProductUrlUniqueName = model.ProductUrlUniqueName,
+                DateAdded = DateTime.Now,
+            };
+
+            return _model;
+        }
+
+        //public ProductFileOutputViewModel Create(ProductFile model)
+        //{
+        //    var _model = new ProductFileOutputViewModel
+        //    {
+        //        ProductFileId = model.Id,
+        //        FileName = model.FileName,
+        //        FileUniqueName = model.FileUniqueName,
+        //        Ext = model.Ext,
+        //        ProductUrl = model.ProductUrl,
+        //        ProductUrlUniqueName = model.ProductUrlUniqueName,
+        //        DateAdded = DateTime.Now,
+        //    };
+        //    return _model;
         //}
 
     }

@@ -7,6 +7,10 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Winter.Models;
+using System.IO;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Winter.Logic
 {
@@ -14,20 +18,49 @@ namespace Winter.Logic
     {
         private readonly WinterContext _context;
         ModelFactory _modelFactory = new ModelFactory();
-
+        ProductFileInputViewModel filemodel = new ProductFileInputViewModel();
 
         public EFProduct(WinterContext context)
         {
             _context = context;
         }
 
-        public int AddProduct(ProductInputViewModel model)
-        {
-            var product = _modelFactory.Parse(model);
-            _context.Product.Add(product);
-            _context.SaveChanges();
+        //public int AddProduct(ProductInputViewModel model)
+        //{
+        //    FileUpload(filemodel);
+        //    var product = _modelFactory.Parse(model);
+        //    _context.Product.Add(product);
+        //    _context.SaveChanges();
 
-            return product.Id;
+        //    return product.Id;
+        //}
+
+        public int AddProduct(Product model, List<ProductFileInputViewModel> productFiles)
+        {
+            try
+            {
+                //Categories = new SelectList(_context.Category.ToList(), "Id", "CategoryName"),
+                model.DateAdded = DateTime.UtcNow;
+                _context.Add(model);
+
+                var res = _context.SaveChanges();
+
+                if (res > 0)
+                {
+                    if (productFiles.Count > 0)
+                    {
+                        var regFiles = productFiles.Select(x => _modelFactory.Parse(x, model.Id));
+
+                        _context.AddRange(regFiles);
+                    }
+                }
+                _context.SaveChanges();
+                return res;
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
         }
 
         public IEnumerable<ProductOutputViewModel> GetProducts()
@@ -76,20 +109,93 @@ namespace Winter.Logic
             return true;
         }
 
-        //public void ConfigureInputViewModelForDropDown(ProductInputViewModel model)
-        //{
-
-        //}
-
-        //public void ConfigureEditViewModelForDropDown(ProductInputViewModel model)
-        //{
-
-        //}
-
        public  int CountProduct()
         {
             var count = _context.Product.ToList().Count();
             return count;
         }
+
+        public static string GetFileExtensionFromFileName(string fileName)
+        {
+            string fileExtension = "";
+            try
+            {
+                if (!string.IsNullOrEmpty(fileName) && fileName.Contains('.'))
+                {
+                    var splittedFileArray = fileName.Split('.');
+                    fileExtension = splittedFileArray[splittedFileArray.Length - 1];
+                }
+            }
+            catch (Exception)
+            {
+            }
+            return fileExtension;
+        }
+
+        public void ConfigureInputViewModelForDropDown(ProductInputViewModel model)
+        {
+            model.Categories = new SelectList(_context.Category.ToList(), "Id", "CategoryName");
+        }
+
+        public void ConfigureEditViewModelForDropDown(ProductEditViewModel model)
+        {
+            model.Categories = new SelectList(_context.Category.ToList(), "Id", "CategoryName");
+        }
+
+        //public async Task<IActionResult> Upload(ProductInputViewModel model)
+        //{
+        //    try
+        //    {
+        //        var fileInput = new Product();
+
+        //        if (ModelState.IsValid)
+        //        {
+        //            List<Product> products = new List<Product>();
+
+        //            var path = CreateFolder();
+        //            if (model.Files != null)
+        //            {
+        //                if (model.Files.Count() > 0)
+        //                {
+        //                    foreach (var file in model.Files)
+        //                    {
+        //                        fileInput = new Product();
+        //                        if (file != null && file.Length > 0)
+        //                        {
+        //                            var fileExt = GetFileExtensionFromFileName(file.FileName);
+        //                            var filename = Guid.NewGuid().ToString().Replace("-", "") + Path.GetExtension(file.FileName);
+        //                            var uploadPathWithfileName = Path.Combine(path, filename);
+
+        //                            using (var fileStream = new FileStream(uploadPathWithfileName, FileMode.Create))
+        //                            {
+        //                                await file.CopyToAsync(fileStream);
+        //                                fileInput.ProductName = filename;
+        //                                fileInput.Url = path;
+        //                                fileInput.Ext = fileExt;
+        //                            }
+        //                            products.Add(fileInput);
+        //                        }
+        //                    }
+        //                    _context.Product.AddRange(products);
+        //                    _context.SaveChanges();
+
+        //                    TempData["Message"] = "Record Inserted";
+        //                    TempData["Color"] = "green";
+
+        //                    return RedirectToAction("");
+        //                }
+        //            }
+        //        }
+        //    }
+        //    catch (Exception)
+        //    {
+        //        TempData["Message"] = "Record not Inserted";
+        //        TempData["Color"] = "red";
+        //        throw;
+        //    }
+
+        //    return View(model);
+        //}
+
     }
 }

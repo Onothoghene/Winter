@@ -10,7 +10,7 @@ namespace Winter.Models
         public string Description { get; set; }
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
-        public DateTime DateAdded { get; set; }
+        public DateTime? DateAdded { get; set; }
         public DateTime? DateModified { get; set; }
      //   public ICollection<Product> Product { get; set; }
     }

@@ -1,15 +1,14 @@
-﻿using Winter.Data;
-using Winter.Logic;
+﻿using Winter.Logic;
 using Winter.ViewModels.Edit_Models;
 using Winter.ViewModels.Input_Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
-using Winter.ViewModels.Output_Models;
 using Winter.ViewModels;
+using System.Collections.Generic;
+using Winter.Models;
+using AutoMapper;
 
 namespace Winter.Controllers
 {
@@ -18,12 +17,14 @@ namespace Winter.Controllers
         public readonly IProduct _product;
         public readonly ICategory _category;    
         public readonly IOrder _order;
+        public readonly IUsers _users;
 
-        public AdminController(IProduct product, ICategory category, IOrder order/*, WinterContext winterContext*/)
+        public AdminController(IProduct product, ICategory category, IOrder order, IUsers users/*, WinterContext winterContext*/)
         {
             _product = product;
             _category = category;
             _order = order;
+            _users = users;
           //  _context = winterContext;
         }
 
@@ -32,7 +33,7 @@ namespace Winter.Controllers
             GeneralViewModel viewModel = new GeneralViewModel
             {
                 CategoryCount = _category.CountCategory(),
-                // UserCount = _c
+                UserCount = _users.CountUser(),
                 ProductCount = _product.CountProduct(),
                 OrderCount = _order.CountOrders()
             };
@@ -131,16 +132,66 @@ namespace Winter.Controllers
             return RedirectToAction("Index");
         }
 
-        //public IActionResult Add_Product()
-        //{
-        //    ProductInputViewModel productInput = new ProductInputViewModel
-        //    {
-        //        Categories = new SelectList(_context.Category.ToList(), "Id", "CategoryName"),
-        //        DateAdded = DateTime.Now
-        //    };
+        public IActionResult Add_Product()
+        {
+            ProductInputViewModel productInput = new ProductInputViewModel();
+            _product.ConfigureInputViewModelForDropDown(productInput);
+            // productInput.DateAdded = DateTime.Now;
 
-        //    return View(productInput);
-        //}
+            return View(productInput);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddProduct(ProductInputViewModel model)
+        {
+            try
+            {
+                List<ProductFileInputViewModel> fileInputs = new List<ProductFileInputViewModel>();
+
+                string uploadPath = AppDomain.CurrentDomain.BaseDirectory + "uploads";
+                foreach (var file in model.Files)
+                {
+                    ProductFileInputViewModel fileInput = new ProductFileInputViewModel();
+
+                    if (file != null && file.Length > 0)
+                    {
+
+                        var fileExt = GetFileExtensionFromFileName(file.FileName);
+
+                        var fileName = Guid.NewGuid().ToString().Replace("-", "") + Path.GetExtension(file.FileName);
+                        var uploadPathWithfileName = Path.Combine(uploadPath, fileName);
+
+                        using (var fileStream = new FileStream(uploadPathWithfileName, FileMode.Create))
+                        {
+                            await file.CopyToAsync(fileStream);
+                            fileInput.FileUniqueName = fileName;
+                            fileInput.FileName = file.FileName;
+                            fileInput.Ext = fileExt;
+                        }
+
+                        fileInputs.Add(fileInput);
+                    }
+                }
+
+                model.ProductFile = new List<ProductFileInputViewModel>();
+                //model.RegistrationFiles.AddRange(fileInputs);
+                var data = Mapper.Map<ProductInputViewModel, Product>(model);
+                var response = await Task.Run(() => _product.AddProduct(data, fileInputs));
+
+                        return RedirectToAction("VesselApplication");
+
+
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+
+            return View(model);
+        }
+
 
         //[HttpPost]
         //[ValidateAntiForgeryToken]
@@ -287,6 +338,13 @@ namespace Winter.Controllers
 
         //    return View(model);
         //}
+
+        public IActionResult UserList()
+        {
+            var users = _users.GetUsers();
+
+            return View(users);
+        }
 
         public static string GetFileExtensionFromFileName(string fileName)
         {

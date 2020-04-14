@@ -1,7 +1,11 @@
-﻿namespace Winter.Logic
+﻿using Microsoft.AspNetCore.Identity;
+using System.Collections.Generic;
+
+namespace Winter.Logic
 {
     public interface IUsers
     {
-      //  int CountUser();
+        int CountUser();
+        IEnumerable<IdentityUser> GetUsers();
     }
 }
