@@ -9,6 +9,8 @@ using Winter.Logic;
 using Microsoft.AspNetCore.Mvc;
 using Winter.Services;
 using Winter.Models;
+using AutoMapper;
+using Winter.ViewModels.Input_Models;
 
 namespace Winter
 {
@@ -55,6 +57,15 @@ namespace Winter
             app.UseStaticFiles();
 
             app.UseAuthentication();
+
+            Mapper.Initialize(cfg =>
+            {
+               
+                cfg.CreateMap<ProductInputViewModel, Product>();
+
+                cfg.CreateMap<ProductFileInputViewModel, ProductFile>();
+
+            });
 
             app.UseMvc(routes =>
             {

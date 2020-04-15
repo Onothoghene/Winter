@@ -21,10 +21,10 @@ namespace Winter.ViewModels.Input_Models
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime DateAdded { get; set; }
         public DateTime DateModified { get; set; }
-        public virtual Category Category { get; set; }
-        public List<IFormFile> Files { get; set; }
         public List<ProductFileInputViewModel> ProductFile { get; set; }
+        public List<IFormFile> Files { get; set; }
        
+        public virtual Category Category { get; set; }
         public SelectList Categories { get; set; }
 
 

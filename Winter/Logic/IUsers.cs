@@ -1,11 +1,11 @@
-﻿using Microsoft.AspNetCore.Identity;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using Winter.Models;
 
 namespace Winter.Logic
 {
     public interface IUsers
     {
         int CountUser();
-        IEnumerable<IdentityUser> GetUsers();
+        IEnumerable<ApplicationUser> GetUsers();
     }
 }

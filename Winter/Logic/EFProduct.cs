@@ -39,7 +39,6 @@ namespace Winter.Logic
         {
             try
             {
-                //Categories = new SelectList(_context.Category.ToList(), "Id", "CategoryName"),
                 model.DateAdded = DateTime.UtcNow;
                 _context.Add(model);
 

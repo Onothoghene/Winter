@@ -36,7 +36,10 @@ namespace Winter.Controllers
                 UserCount = _users.CountUser(),
                 ProductCount = _product.CountProduct(),
                 OrderCount = _order.CountOrders(),
-                CategoryOutputViewModel = _category.GetCategory()
+                CategoryOutputViewModel = _category.GetCategory(),
+                ProductOutputViewModel = _product.GetProducts(),
+                OrderOutputViewModel = _order.GetOrders(),
+                ApplicationUser = _users.GetUsers(),
             };
             
             return View(viewModel);
@@ -51,8 +54,10 @@ namespace Winter.Controllers
 
         public IActionResult Add_Category()
         {
-            CategoryInputViewModel categoryInput = new CategoryInputViewModel();
-            categoryInput.DateAdded = DateTime.Now;
+            CategoryInputViewModel categoryInput = new CategoryInputViewModel
+            {
+                DateAdded = DateTime.Now
+            };
             return View();
         }
 
@@ -79,7 +84,7 @@ namespace Winter.Controllers
         //    return View(viewModel);
         //}
 
-        public IActionResult Category_Details(int? Id)
+        public IActionResult CategoryDetails(int? Id)
         {
             if (Id == null)
             {
@@ -100,7 +105,6 @@ namespace Winter.Controllers
                 CategoryName = category.CategoryName,
                 Description = category.Description,
             };
-            //_category.ConfigureEditViewModelForDropDown(MemberEdit);
 
             return View(_model);
         }
@@ -137,11 +141,10 @@ namespace Winter.Controllers
             return RedirectToAction("Index");
         }
 
-        public IActionResult Add_Product()
+        public IActionResult AddProduct()
         {
             ProductInputViewModel productInput = new ProductInputViewModel();
             _product.ConfigureInputViewModelForDropDown(productInput);
-            // productInput.DateAdded = DateTime.Now;
 
             return View(productInput);
         }
@@ -154,14 +157,16 @@ namespace Winter.Controllers
             {
                 List<ProductFileInputViewModel> fileInputs = new List<ProductFileInputViewModel>();
 
-                string uploadPath = AppDomain.CurrentDomain.BaseDirectory + "uploads";
+                string uploadPath = Environment.CurrentDirectory + "\\uploads";
+                bool dirExists = Directory.Exists(uploadPath);
+                  if (!dirExists)
+                        Directory.CreateDirectory(uploadPath);
                 foreach (var file in model.Files)
                 {
                     ProductFileInputViewModel fileInput = new ProductFileInputViewModel();
 
                     if (file != null && file.Length > 0)
                     {
-
                         var fileExt = GetFileExtensionFromFileName(file.FileName);
 
                         var fileName = Guid.NewGuid().ToString().Replace("-", "") + Path.GetExtension(file.FileName);
@@ -180,16 +185,17 @@ namespace Winter.Controllers
                 }
 
                 model.ProductFile = new List<ProductFileInputViewModel>();
-                //model.RegistrationFiles.AddRange(fileInputs);
+                //model.ProductFile.AddRange(fileInputs);
                 var data = Mapper.Map<ProductInputViewModel, Product>(model);
                 var response = await Task.Run(() => _product.AddProduct(data, fileInputs));
 
-                        return RedirectToAction("Admin", "Index");
+                        return RedirectToAction("Index", "Admin");
 
 
             }
             catch (Exception ex)
-            {
+             {
+                _product.ConfigureInputViewModelForDropDown(model);
                 return View(model);
                 throw;
             }
@@ -228,7 +234,7 @@ namespace Winter.Controllers
             return View(productdetails);
         }
 
-        //public IActionResult Update_Product(int? Id)
+        //public IActionResult UpdateProduct(int? Id)
         //{
         //    var productOutput = _product.GetProductById(Id);
 
@@ -247,7 +253,7 @@ namespace Winter.Controllers
 
         //        Categories = new SelectList(_context.Category.ToList(), "Id", "CategoryName"),
         //};
-           
+
         //    return View(productEdit);
         //}
 
@@ -367,20 +373,20 @@ namespace Winter.Controllers
             return fileExtension;
         }
 
-        public static string CreateFolder()
-        {
-            string path = Environment.CurrentDirectory;
-            string foldername = "\\Product Images/";
-            string folderpath = path + foldername;
-            try
-            {
-                bool dirExists = Directory.Exists(folderpath);
-                if (!dirExists)
-                    Directory.CreateDirectory(folderpath);
-            }
-            catch (Exception) { }
-            return folderpath;
-        }
+        //public static string CreateFolder()
+        //{
+        //    string path = Environment.CurrentDirectory;
+        //    string foldername = "\\Product Images/";
+        //    string folderpath = path + foldername;
+        //    try
+        //    {
+        //        bool dirExists = Directory.Exists(folderpath);
+        //        if (!dirExists)
+        //            Directory.CreateDirectory(folderpath);
+        //    }
+        //    catch (Exception) { }
+        //    return folderpath;
+        //}
 
     }
 } 

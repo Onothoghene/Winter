@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using Winter.Models;
 using Winter.ViewModels.Output_Models;
 
 namespace Winter.ViewModels
@@ -16,7 +14,6 @@ namespace Winter.ViewModels
         public IEnumerable<CategoryOutputViewModel> CategoryOutputViewModel { get; set; }
         public IEnumerable<ProductOutputViewModel> ProductOutputViewModel { get; set; }
         public IEnumerable<OrderOutputViewModel> OrderOutputViewModel { get; set; }
-        //public IEnumerable<TitleId> TitleId { get; set; }
-        //public IEnumerable<TitleId> TitleId { get; set; }
+        public IEnumerable<ApplicationUser > ApplicationUser { get; set; }
     }
 }

@@ -22,7 +22,7 @@ namespace Winter.Logic
             return count;
         }
 
-        public IEnumerable<IdentityUser> GetUsers()
+        public IEnumerable<ApplicationUser> GetUsers()
         {
             var resp = UserManager.Users;
            return resp;
