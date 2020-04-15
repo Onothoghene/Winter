@@ -52,6 +52,7 @@ namespace Winter.Logic
                 order.TotalPrice = model.TotalPrice;
                 order.DateAdded = model.DateAdded;
                 order.DeliveryDate = model.DeliveryDate;
+                order.Address = model.Address;
                 _context.SaveChanges();
             }
 

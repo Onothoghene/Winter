@@ -35,7 +35,8 @@ namespace Winter.Controllers
                 CategoryCount = _category.CountCategory(),
                 UserCount = _users.CountUser(),
                 ProductCount = _product.CountProduct(),
-                OrderCount = _order.CountOrders()
+                OrderCount = _order.CountOrders(),
+                CategoryOutputViewModel = _category.GetCategory()
             };
             
             return View(viewModel);
@@ -67,12 +68,16 @@ namespace Winter.Controllers
             return View(category);
         }
 
-        public IActionResult Category()
-        {
-            var categories = _category.GetCategory();
+        //public IActionResult Category()
+        //{
+        //    GeneralViewModel viewModel = new GeneralViewModel
+        //    {
+        //        CategoryOutputViewModel = _category.GetCategory()
+        //    };
+        //    var categories = _category.GetCategory();
 
-            return View(categories);
-        }
+        //    return View(viewModel);
+        //}
 
         public IActionResult Category_Details(int? Id)
         {

@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Winter.Data;
 
 namespace Winter.Migrations
 {
     [DbContext(typeof(WinterContext))]
-    partial class WinterContextModelSnapshot : ModelSnapshot
+    [Migration("20200414212917_AddingOrderAddress")]
+    partial class AddingOrderAddress
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

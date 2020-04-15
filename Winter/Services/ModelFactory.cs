@@ -83,6 +83,7 @@ namespace Winter.Services
                 UnitPrice = model.UnitPrice,
                 Quantity = model.Quantity,
                 TotalPrice = model.TotalPrice,
+                Address = model.Address,
                 DateAdded = DateTime.Now,
                 DeliveryDate = model.DeliveryDate
             };
@@ -102,6 +103,7 @@ namespace Winter.Services
                 UnitPrice = model.UnitPrice,
                 Quantity = model.Quantity,
                 TotalPrice = model.TotalPrice,
+                Address = model.Address,
                 DateAdded = model.DateAdded,
                 DeliveryDate = model.DeliveryDate
             };

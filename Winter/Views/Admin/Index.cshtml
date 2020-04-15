@@ -79,5 +79,49 @@
             </div>
         </div>
     </div>
+
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="panel">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Avaliable Category</h3>
+                </div>
+                <div class="panel-body">
+                    <!--Hover Rows-->
+                    <!--===================================================-->
+                    <table class="table table-hover table-vcenter">
+                        <thead>
+                            <tr>
+                                <th class="hidden-xs">Email Address</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model.CategoryOutputViewModel != null)
+                            {
+                                @foreach (var item in Model.CategoryOutputViewModel)
+                                {
+                                    <tr>
+                                        <td>@Html.DisplayFor(modelItem => item.CategoryName)</td>
+                                        <td class="hidden-xs">@Html.DisplayFor(modelItem => item.Description)</td>
+                                        <td>
+                                            <form  method="post" asp-action="DeleteCategory" asp-controller="Admin" asp-route-id="@item.CategoryId">
+                                                <a asp-action="Edit_Category" asp-controller="Admin" asp-route-id="@item.CategoryId" >Edit</a>
+                                                <button type="submit" >Delete</button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                    <!--===================================================-->
+                    <!--End Hover Rows-->
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>
 
