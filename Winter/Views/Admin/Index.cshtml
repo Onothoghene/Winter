@@ -2,6 +2,7 @@
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout_Admin.cshtml";
+
 }
 
 @model Winter.ViewModels.GeneralViewModel;
@@ -93,7 +94,7 @@
                     <table class="table table-hover table-vcenter">
                         <thead>
                             <tr>
-                                <th class="hidden-xs">Email Address</th>
+                                <th class="hidden-xs">Category Name</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
@@ -180,7 +181,7 @@
         <div class="col-md-6">
             <div class="panel">
                 <div class="panel-heading">
-                    <h3 class="panel-title">User Accounts</h3>
+                    <h3 class="panel-title">Products</h3>
                 </div>
                 <div class="panel-body">
                     <!--Hover Rows-->
@@ -196,23 +197,23 @@
                         <tbody>
                             @if (Model.ProductOutputViewModel != null)
                             {
-                                @foreach (var item in Model.ProductOutputViewModel)
+                                @foreach (var product in Model.ProductOutputViewModel)
                                 {
-                                    <tr>
-                                        <td>
-                                            <div class="media-object center icon-lg fa fa-user"> </div>
-                                        </td>
-                                        <td class="hidden-xs">@Html.DisplayFor(modelItem => item.ProductName)</td>
-                                        <td>
-                                            <form method="post" asp-action="DeleteProduct" asp-controller="Admin" asp-route-id="@item.ProductId">
-                                                <a asp-action="Product_Details" asp-controller="Admin" asp-route-id="@item.ProductId"
-                                                   class="btn btn-warning btn-icon btn-circle icon-lg fa fa-info"></a>
-                                                <a asp-action="UpdateProduct" asp-controller="Admin" asp-route-id="@item.ProductId"
-                                                   class="btn btn-mint btn-icon btn-circle icon-lg fa fa-edit"></a>
-                                                <button type="submit" class="btn btn-danger btn-icon btn-circle icon-lg fa fa-trash"></button>
-                                            </form>
-                                        </td>
-                                    </tr>
+                            <tr>
+                                <td>
+                                    <img src='@Url.Action("DownloadDocument", "Admin", new { Filename = product.ProductFile.FirstOrDefault().FileUniqueName}) ' height="60" width="60" />
+                               </td>
+                                <td class="hidden-xs">@Html.DisplayFor(modelItem => product.ProductName)</td>
+                                <td>
+                                    <form method="post" asp-action="DeleteProduct" asp-controller="Admin" asp-route-id="@product.ProductId">
+                                        <a asp-action="Product_Details" asp-controller="Admin" asp-route-id="@product.ProductId"
+                                           class="btn btn-warning btn-icon btn-circle icon-lg fa fa-info"></a>
+                                        <a asp-action="UpdateProduct" asp-controller="Admin" asp-route-id="@product.ProductId"
+                                           class="btn btn-mint btn-icon btn-circle icon-lg fa fa-edit"></a>
+                                        <button type="submit" class="btn btn-danger btn-icon btn-circle icon-lg fa fa-trash"></button>
+                                    </form>
+                                </td>
+                            </tr>
                                 }
                             }
 

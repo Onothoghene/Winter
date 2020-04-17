@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using Winter.ViewModels.Input_Models;
 
 namespace Winter.ViewModels.Output_Models
 {
@@ -20,9 +21,10 @@ namespace Winter.ViewModels.Output_Models
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime? DateAdded { get; set; }
         public DateTime? DateModified { get; set; }
-        public virtual Category Category { get; set; }
-        public List<ProductFile> ProductFile { get; set; }
         public int count { get; set; }
+        public string  Category { get; set; }
+
+        public List<ProductFileOutputViewModel> ProductFile { get; set; }
 
     }
 }

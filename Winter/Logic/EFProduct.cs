@@ -64,8 +64,9 @@ namespace Winter.Logic
 
         public IEnumerable<ProductOutputViewModel> GetProducts()
         {
-
-            var product = _context.Product.Include(x => x.Category)/*.Where(x => x.CategoryID == churchId)*/.ToList();
+            var product = _context.Product.Include(x => x.Category)
+                                                                    .Include(x => x.ProductFile)
+                                                                    .ToList();
             var resp = product.Select(x => _modelFactory.Create(x));
 
             return resp;
@@ -73,7 +74,11 @@ namespace Winter.Logic
 
         public ProductOutputViewModel GetProductById(int? Id)
         {
-            var product = _context.Product.Find(Id);
+            //var product = _context.Product.Find(Id);
+            var product = _context.Product.Include(x => x.Category)
+                                                                   .Include(x => x.ProductFile)
+                                                                   .Where(a => a.Id == Id).FirstOrDefault();
+
             var resp = _modelFactory.Create(product);
 
             return resp;

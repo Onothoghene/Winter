@@ -29,7 +29,7 @@
                 <ul class="nav navbar-nav">
 
                     <li>
-                        <a asp-action="Index" asp-controller="Admin" >Home</a>
+                        <a asp-action="Index" asp-controller="Admin">Home</a>
                     </li>
                     <!-- standard drop down -->
                     <li class="dropdown">
@@ -41,8 +41,13 @@
                         <!-- end dropdown-menu -->
                     </li>
                     <!-- end standard drop down -->
-                    <li>
-                        <a href="ui-widgets.html"> Widgets </a>
+                    <li class="dropdown">
+                        <a href="#" data-toggle="dropdown" class="dropdown-toggle"> Products <b class="caret"></b></a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a asp-action="AddProduct" asp-controller="Admin"> Add Product </a></li>
+                            <li><a asp-action="ProductList" asp-controller="Admin"> Product List </a></li>
+                        </ul>
+                        <!-- end dropdown-menu -->
                     </li>
                     <!-- standard drop down -->
                     <li class="dropdown">

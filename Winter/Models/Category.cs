@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Winter.Models
@@ -12,6 +13,6 @@ namespace Winter.Models
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime? DateAdded { get; set; }
         public DateTime? DateModified { get; set; }
-     //   public ICollection<Product> Product { get; set; }
+       public ICollection<Product> Product { get; set; }
     }
 }

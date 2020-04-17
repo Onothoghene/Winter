@@ -1,0 +1,70 @@
+﻿
+@{
+    ViewData["Title"] = "Product_Details";
+    Layout = "~/Views/Shared/_Layout_Admin.cshtml";
+
+}
+@model Winter.ViewModels.GeneralViewModel
+<div class="boxed">
+    <div id="content-container">
+        <div id="page-content">
+            <div class="row">
+                <div class="col-lg-6">
+                    <!-- Tips Widget -->
+                    <!--===================================================-->
+                    <div class="panel">
+                        <div class="panel-heading">
+                            <div class="panel-title">
+                                <i class="fa fa-life-ring"></i> Category Details
+                            </div>
+                        </div>
+                        <div class="panel-body">
+                            <ul class="list-unstyled">
+                                <li><strong class="text-dark">Product Name:</strong> </li>
+                                <li>@Html.DisplayFor(model => model.ProductViewModel.ProductName)</li>
+                            </ul>
+                            <ul class="list-unstyled pt-10">
+                                <li><strong class="text-dark"> Description:</strong> </li>
+                                <li>@Html.DisplayFor(model => model.ProductViewModel.Description)</li>
+                            </ul>
+                            <ul class="list-unstyled">
+                                <li><strong class="text-dark">Category Name:</strong> </li>
+                                <li>@Html.DisplayFor(model => model.ProductViewModel.Category)</li>
+                            </ul>
+                            <ul class="list-unstyled pt-10">
+                                <li><strong class="text-dark"> Unit Price:</strong> </li>
+                                <li>@Html.DisplayFor(model => model.ProductViewModel.UnitPrice)</li>
+                            </ul>
+                            <ul class="list-unstyled">
+                                <li><strong class="text-dark">Date Added:</strong> </li>
+                                <li>@Html.DisplayFor(model => model.ProductViewModel.DateAdded)</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!--===================================================-->
+                </div>
+
+                <div class="col-lg-3">
+                    <!-- Tips Widget -->
+                    <!--===================================================-->
+                    <img src='@Url.Action("DownloadDocument", "Admin", new { Filename = Model.ProductViewModel.ProductFile.FirstOrDefault().FileUniqueName}) ' height="405" width="450" />
+                    @*<div class="panel">
+                        <div class="panel-heading">
+                            <div class="panel-title">
+                                <i class="fa fa-life-ring"></i> Category Details
+                            </div>
+                        </div>
+                        <div class="panel-body">
+
+                        </div>
+                    </div>*@
+                    <!--===================================================-->
+                </div>
+
+                <div class="col-sm-12">
+                    <a class="btn btn-mint btn-rounded" asp-action="Index" asp-controller="Admin">Back</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

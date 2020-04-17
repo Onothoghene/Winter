@@ -27,17 +27,26 @@ namespace Winter.Services
         }
         public ProductOutputViewModel Create(Product model)
         {
-            var _model = new ProductOutputViewModel
+            ProductOutputViewModel _model = new ProductOutputViewModel
             {
                 ProductId = model.Id,
                 ProductName = model.ProductName,
+                Category = model.Category.CategoryName,
                 Description = model.Description,
-             //   ProductFileId = model.ProductFileId,
                 UnitPrice = model.UnitPrice,
                 CategoryID = model.CategoryID,
                 DateAdded = model.DateAdded,
                 DateModified = model.DateModified,
             };
+
+            if (model.ProductFile != null)
+            {
+                if (model.ProductFile.Count > 0)
+                {
+                    _model.ProductFile = model.ProductFile.Select(x => Create(x)).ToList();
+                }
+            }
+
             return _model;
         }
 

@@ -41,7 +41,8 @@ namespace Winter.Controllers
                 OrderOutputViewModel = _order.GetOrders(),
                 ApplicationUser = _users.GetUsers(),
             };
-            
+
+
             return View(viewModel);
         }
 
@@ -177,6 +178,7 @@ namespace Winter.Controllers
                             await file.CopyToAsync(fileStream);
                             fileInput.FileUniqueName = fileName;
                             fileInput.FileName = file.FileName;
+                            fileInput.ProductUrl = uploadPath + file.FileName;
                             fileInput.Ext = fileExt;
                         }
 
@@ -201,6 +203,23 @@ namespace Winter.Controllers
             }
             //return View(model);
 
+        }
+
+        public ActionResult DownloadDocument(string Filename)
+        {
+            //string filepath = _env.WebRootPath + "\\PDF files/" + filename;
+
+            //string filepath = AppDomain.CurrentDomain.BaseDirectory + "PDF files";
+
+            //string filepath = Environment.CurrentDirectory + "\\PDF files/" + filename;
+            string uploadPath = Environment.CurrentDirectory + "\\uploads/" + Filename;
+
+            var fileStream = new FileStream(uploadPath,
+                                    FileMode.Open,
+                                    FileAccess.Read
+                                  );
+            var fsResult = new FileStreamResult(fileStream, "image/jpeg" /*"image/png"*/);
+            return fsResult;
         }
 
         //[HttpPost]
@@ -229,9 +248,17 @@ namespace Winter.Controllers
             {
                 return RedirectToAction("Index");
             }
+
             var productdetails = _product.GetProductById(Id);
 
-            return View(productdetails);
+            var generalView = new GeneralViewModel
+            {
+                ProductViewModel = productdetails,
+            };
+
+            
+
+            return View(generalView);
         }
 
         //public IActionResult UpdateProduct(int? Id)
@@ -387,6 +414,5 @@ namespace Winter.Controllers
         //    catch (Exception) { }
         //    return folderpath;
         //}
-
     }
 } 
