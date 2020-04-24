@@ -1,0 +1,64 @@
+﻿
+@{
+    ViewData["Title"] = "ProductDetails";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@model Winter.ViewModels.GeneralViewModel
+
+<!--================Single Product Area =================-->
+<div class="product_image_area section_padding">
+    <div class="container">
+        <div class="row s_product_inner">
+            <div class="col-lg-5">
+                <div class="product_slider_img">
+                    <div id="vertical">
+                        <img src='@Url.Action("DownloadDocument", "Admin", 
+                                 new { Filename = Model.ProductViewModel.ProductFile.FirstOrDefault().FileUniqueName}) ' height="405" width="450" />
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-5 offset-lg-1">
+                <div class="s_product_text">
+                    <h3>@Html.DisplayFor(model => model.ProductViewModel.ProductName)</h3>
+                    <h2>$@Html.DisplayFor(model => model.ProductViewModel.UnitPrice)</h2>
+                    <ul class="list">
+                        <li>
+                            <a class="active" href="#">
+                                <span>Category</span> : @Html.DisplayFor(model => model.ProductViewModel.Category)
+                            </a>
+                        </li>
+                        <li>
+                            <a class="active" href="#">
+                                <span>Sub-Category</span> : @*@Html.DisplayFor(model => model.ProductViewModel.SubCategory)*@
+                            </a>
+                        </li>
+                        @*<li>
+            <a href="#"> <span>Availibility</span> : In Stock</a>
+        </li>*@
+                    </ul>
+                    <p>
+                        @Html.DisplayFor(model => model.ProductViewModel.Description)
+                    </p>
+                    <div class="card_area">
+                        <div class="product_count d-inline-block">
+                            <span class="inumber-decrement"> <i class="ti-minus"></i></span>
+                            <input class="input-number" type="text" value="1" min="0" max="10">
+                            <span class="number-increment"> <i class="ti-plus"></i></span>
+                        </div>
+                        <div class="add_to_cart">
+                            <a href="#" class="btn_3">add to cart</a>
+                            <a href="#" class="like_us"> <i class="ti-heart"></i> </a>
+                        </div>
+                        @*<div class="social_icon">
+                            <a href="#" class="fb"><i class="ti-facebook"></i></a>
+                            <a href="#" class="tw"><i class="ti-twitter-alt"></i></a>
+                            <a href="#" class="li"><i class="ti-linkedin"></i></a>
+                        </div>*@
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--================End Single Product Area =================-->

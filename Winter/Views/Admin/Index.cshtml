@@ -7,6 +7,7 @@
 
 @model Winter.ViewModels.GeneralViewModel;
 
+
 <!--Page Title-->
 <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
 <div class="pageheader">
@@ -199,21 +200,21 @@
                             {
                                 @foreach (var product in Model.ProductOutputViewModel)
                                 {
-                            <tr>
-                                <td>
-                                    <img src='@Url.Action("DownloadDocument", "Admin", new { Filename = product.ProductFile.FirstOrDefault().FileUniqueName}) ' height="60" width="60" />
-                               </td>
-                                <td class="hidden-xs">@Html.DisplayFor(modelItem => product.ProductName)</td>
-                                <td>
-                                    <form method="post" asp-action="DeleteProduct" asp-controller="Admin" asp-route-id="@product.ProductId">
-                                        <a asp-action="Product_Details" asp-controller="Admin" asp-route-id="@product.ProductId"
-                                           class="btn btn-warning btn-icon btn-circle icon-lg fa fa-info"></a>
-                                        <a asp-action="UpdateProduct" asp-controller="Admin" asp-route-id="@product.ProductId"
-                                           class="btn btn-mint btn-icon btn-circle icon-lg fa fa-edit"></a>
-                                        <button type="submit" class="btn btn-danger btn-icon btn-circle icon-lg fa fa-trash"></button>
-                                    </form>
-                                </td>
-                            </tr>
+                                    <tr>
+                                        <td>
+                                            <img src='@Url.Action("DownloadDocument", "Admin", new { Filename = product.ProductFile.FirstOrDefault().FileUniqueName}) ' height="60" width="60" />
+                                        </td>
+                                        <td class="hidden-xs">@Html.DisplayFor(modelItem => product.ProductName)</td>
+                                        <td>
+                                            <form method="post" asp-action="DeleteProduct" asp-controller="Admin" asp-route-id="@product.ProductId">
+                                                <a asp-action="Product_Details" asp-controller="Admin" asp-route-id="@product.ProductId"
+                                                   class="btn btn-warning btn-icon btn-circle icon-lg fa fa-info"></a>
+                                                <a asp-action="UpdateProduct" asp-controller="Admin" asp-route-id="@product.ProductId"
+                                                   class="btn btn-mint btn-icon btn-circle icon-lg fa fa-edit"></a>
+                                                <button type="submit" class="btn btn-danger btn-icon btn-circle icon-lg fa fa-trash"></button>
+                                            </form>
+                                        </td>
+                                    </tr>
                                 }
                             }
 

@@ -9,6 +9,7 @@ using Winter.ViewModels;
 using System.Collections.Generic;
 using Winter.Models;
 using AutoMapper;
+using Winter.ViewModels.Output_Models;
 
 namespace Winter.Controllers
 {
@@ -69,8 +70,10 @@ namespace Winter.Controllers
             if (ModelState.IsValid)
             {
                 _category.AddCategory(category);
+                TempData["Message"] = "Added Successfully";
                 return RedirectToAction("Index", "Admin");
             }
+            TempData["Message"] = "Not Added";
             return View(category);
         }
 
@@ -117,9 +120,10 @@ namespace Winter.Controllers
             if (ModelState.IsValid)
             {
                 _category.UpdateCategory(categoryEdit);
+                TempData["Message"] = "Updated Successfully";
                 return RedirectToAction("Index");
             }
-
+            TempData["Message"] = "Not Updated";
             return View(categoryEdit);
         }
 
@@ -139,6 +143,7 @@ namespace Winter.Controllers
         {
             _category.DeleteCategory(Id);
 
+            TempData["Message"] = "Deleted Successfully";
             return RedirectToAction("Index");
         }
 
@@ -191,12 +196,14 @@ namespace Winter.Controllers
                 var data = Mapper.Map<ProductInputViewModel, Product>(model);
                 var response = await Task.Run(() => _product.AddProduct(data, fileInputs));
 
+                TempData["Message"] = "Added Successful";
                         return RedirectToAction("Index", "Admin");
 
 
             }
             catch (Exception ex)
              {
+                TempData["Message"] = "Not Added";
                 _product.ConfigureInputViewModelForDropDown(model);
                 return View(model);
                 throw;
@@ -261,28 +268,79 @@ namespace Winter.Controllers
             return View(generalView);
         }
 
-        //public IActionResult UpdateProduct(int? Id)
-        //{
-        //    var productOutput = _product.GetProductById(Id);
+        public IActionResult UpdateProduct(int? Id)
+        {
+            var productOutput = _product.GetProductById(Id);
 
-        //    ProductEditViewModel productEdit = new ProductEditViewModel
-        //    {
-        //        ProductId = productOutput.ProductId,
-        //        ProductName = productOutput.ProductName,
-        //        CategoryID = productOutput.CategoryID,
-        //        Description = productOutput.Description,
-        //        UnitPrice = productOutput.UnitPrice,
-        //        TotalPrice = productOutput.TotalPrice,
-        //        ProductPath = productOutput.ProductPath,
-        //        Ext = productOutput.Ext,
-        //        //FileName = productOutput.FileName,
-        //        //DateModified = productOutput.DateModified,
+            ProductEditViewModel productEdit = new ProductEditViewModel
+            {
+                ProductId = productOutput.ProductId,
+                ProductName = productOutput.ProductName,
+                CategoryID = productOutput.CategoryID,
+                Description = productOutput.Description,
+                UnitPrice = productOutput.UnitPrice,
+                ProductFile = productOutput.ProductFile,
+                DateModified = DateTime.Now,
+            };
+            _product.ConfigureEditViewModelForDropDown(productEdit);
 
-        //        Categories = new SelectList(_context.Category.ToList(), "Id", "CategoryName"),
-        //};
+            return View(productEdit);
+        }
 
-        //    return View(productEdit);
-        //}
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> UpdateProduct(ProductEditViewModel model)
+        {
+            try
+            {
+                List<ProductFileInputViewModel> fileInputs = new List<ProductFileInputViewModel>();
+
+                string uploadPath = Environment.CurrentDirectory + "\\uploads";
+                bool dirExists = Directory.Exists(uploadPath);
+                if (!dirExists)
+                    Directory.CreateDirectory(uploadPath);
+                foreach (var file in model.Files)
+                {
+                    ProductFileInputViewModel fileInput = new ProductFileInputViewModel();
+
+                    if (file != null && file.Length > 0)
+                    {
+                        var fileExt = GetFileExtensionFromFileName(file.FileName);
+
+                        var fileName = Guid.NewGuid().ToString().Replace("-", "") + Path.GetExtension(file.FileName);
+                        var uploadPathWithfileName = Path.Combine(uploadPath, fileName);
+
+                        using (var fileStream = new FileStream(uploadPathWithfileName, FileMode.Create))
+                        {
+                            await file.CopyToAsync(fileStream);
+                            fileInput.FileUniqueName = fileName;
+                            fileInput.FileName = file.FileName;
+                            fileInput.ProductUrl = uploadPath + file.FileName;
+                            fileInput.Ext = fileExt;
+                        }
+
+                        fileInputs.Add(fileInput);
+                    }
+                }
+
+                model.ProductFile = new List<ProductFileInputViewModel>();
+                var data = Mapper.Map<ProductEditViewModel, Product>(model);
+                var response = await Task.Run(() => _product.AddProduct(data, fileInputs));
+
+                TempData["Message"] = "Updated Successfully";
+                return RedirectToAction("Index", "Admin");
+
+
+            }
+            catch (Exception ex)
+            {
+                _product.ConfigureEditViewModelForDropDown(model);
+                TempData["Message"] = "Not Updated";
+                return View(model);
+                throw;
+            }
+
+        }
 
         //[HttpPost]
         //[ValidateAntiForgeryToken]
@@ -303,7 +361,7 @@ namespace Winter.Controllers
         public IActionResult DeleteProduct(int? Id)
         {
             _product.DeleteProduct(Id);
-
+            TempData["Message"] = "Deleted Successfully";
             return RedirectToAction("Index");
         }
 
@@ -313,11 +371,6 @@ namespace Winter.Controllers
 
             return View(orders);
         }
-
-        //public IActionResult Upload()
-        //{
-        //    return View();
-        //}
 
         //[HttpPost]
         //[ValidateAntiForgeryToken]
@@ -400,19 +453,5 @@ namespace Winter.Controllers
             return fileExtension;
         }
 
-        //public static string CreateFolder()
-        //{
-        //    string path = Environment.CurrentDirectory;
-        //    string foldername = "\\Product Images/";
-        //    string folderpath = path + foldername;
-        //    try
-        //    {
-        //        bool dirExists = Directory.Exists(folderpath);
-        //        if (!dirExists)
-        //            Directory.CreateDirectory(folderpath);
-        //    }
-        //    catch (Exception) { }
-        //    return folderpath;
-        //}
     }
 } 

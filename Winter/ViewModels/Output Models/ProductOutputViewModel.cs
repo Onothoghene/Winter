@@ -24,7 +24,7 @@ namespace Winter.ViewModels.Output_Models
         public int count { get; set; }
         public string  Category { get; set; }
 
-        public List<ProductFileOutputViewModel> ProductFile { get; set; }
+        public List<ProductFileInputViewModel> ProductFile { get; set; }
 
     }
 }

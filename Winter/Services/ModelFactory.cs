@@ -151,9 +151,9 @@ namespace Winter.Services
 
             return _model;
         }
-        public ProductFileOutputViewModel Create(ProductFile model)
+        public ProductFileInputViewModel Create(ProductFile model)
         {
-            var _model = new ProductFileOutputViewModel
+            var _model = new ProductFileInputViewModel
             {
                 ProductFileId = model.Id,
                 FileName = model.FileName,
