@@ -31,7 +31,6 @@ namespace JeanStation.Controllers
                 {
                     UserName = model.Email,
                     Email = model.Email,
-                    //Address = model.Address, 
                     FullName = model.Name,
                 };
                 var result = await UserManager.CreateAsync(user, model.Password);
@@ -73,6 +72,74 @@ namespace JeanStation.Controllers
         {
             await SignInManager.SignOutAsync();
             return RedirectToAction("Index", "home");
+        }
+
+        public async Task<IActionResult> UserProfile(string id)
+        {
+            var user = await UserManager.FindByIdAsync(id);
+            if (user == null)
+            {
+                ViewBag.ErrorMessage = "User not Found";
+                return RedirectToAction("Index", "Home");
+            }
+
+            var model = new EditUserViewModel
+            {
+                Id = user.Id,
+                Email = user.Email,
+                Name = user.FullName,
+            };
+            return View(model);
+        }
+
+        public async Task<IActionResult> EditProfile(string id)
+        {
+            var user = await UserManager.FindByIdAsync(id);
+            if(user == null)
+            {
+                ViewBag.ErrorMessage = "User not Found";
+                return RedirectToAction("Index", "Home");
+            }
+            //var userClaims = await UserManager.GetClaimsAsync(user);
+            //var userRoles = await UserManager.GetRolesAsync(user);
+
+            var model = new EditUserViewModel
+            {
+                Id = user.Id,
+                Email = user.Email,
+                Name = user.FullName,
+                //Claims = userClaims.Select(c => c.Value).ToList(),
+                //Roles = userRoles
+            };
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditProfile(EditUserViewModel model)
+        {
+            var user = await UserManager.FindByIdAsync(model.Id);
+            if (user == null)
+            {
+                ViewBag.ErrorMessage = "User not Found";
+                return RedirectToAction("Index", "Home");
+            }
+            else
+            {
+                user.Email = model.Email;
+                user.FullName = model.Name;
+                user.UserName = model.Email;
+
+                var result = await UserManager.UpdateAsync(user);
+                if (result.Succeeded)
+                {
+                    return RedirectToAction("UserProfile", "Account");
+                };
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError("", error.Description);
+                }
+            }
+            return View(model);
         }
 
         [HttpPost]
