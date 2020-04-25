@@ -4,6 +4,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+@model Winter.ViewModels.EditUserViewModel
 <!--================Category Product Area =================-->
 <section class="cat_product_area section_padding border_top">
     <div class="container">
@@ -12,125 +13,98 @@
                 <div class="left_sidebar_area">
                     <aside class="left_widgets p_filter_widgets sidebar_box_shadow">
                         <div class="l_w_title">
-                            <h3>My Account</h3>
+                            <h3>
+                                    <i class="fas fa-user "></i>
+                                    My Winter Account
+                            </h3>
                         </div>
                         <div class="widgets_inner">
                             <ul class="list">
                                 <li>
-                                    <a href="#">Fruits and Vegetables</a>
-                                </li>
-                                <li class="sub-menu">
-                                    <a href="#Electronics" class=" d-flex justify-content-between">
-                                        Electronics
-                                        <div class="right ti-plus"></div>
+                                    <a href="#">
+                                        <i class="fas fa-home "></i>  Orders
                                     </a>
-                                    <ul>
-                                        <li>
-                                            <a href="#Electronics">Home Appliances</a>
-                                        </li>
-                                        <li>
-                                            <a href="#Electronics">Smartphones</a>
-                                        </li>
-                                        <li>
-                                            <a href="#Electronics">Kitchen Appliances</a>
-                                        </li>
-                                        <li>
-                                            <a href="#Electronics">Computer Accessories</a>
-                                        </li>
-                                        <li>
-                                            <a href="#Electronics">Meat Alternatives</a>
-                                        </li>
-                                        <li>
-                                            <a href="#Electronics">Appliances</a>
-                                        </li>
-                                    </ul>
                                 </li>
                                 <li>
-                                    <a href="#">Cooking</a>
+                                    <a asp-action="EditProfile" asp-controller="Account" asp-route-id="">
+                                        <i class="fas fa-user-edit "></i> Edit Details
+                                    </a>
                                 </li>
                                 <li>
-                                    <a href="#">Beverages</a>
+                                    <a href="#">Cart</a>
                                 </li>
                                 <li>
-                                    <a href="#">Home and Cleaning</a>
+                                    <a href="#">Saved</a>
+                                </li>
+                                <li>
+                                    <form method="post" asp-action="Logout" asp-controller="Account">
+                                        <button type="submit" class=" genric-btn warning circle arrow ">
+                                            Log Out
+                                        </button>
+                                    </form>
+                                </li>
+                            </ul>
+                            <ul class="list">
+                                
+                                <li>
+                                    <form method="post">
+                                        <button type="submit" class=" genric-btn danger circle arrow ">
+                                           Delete Account
+                                        </button>
+                                    </form>
                                 </li>
                             </ul>
                         </div>
                     </aside>
+                </div>
+            </div>
 
+            <div class="col-lg-9">
+                <div class="left_sidebar_area">
                     <aside class="left_widgets p_filter_widgets sidebar_box_shadow">
                         <div class="l_w_title">
-                            <h3>Product filters</h3>
+                            <h3>
+                                    Account Overview
+                            </h3>
                         </div>
                         <div class="widgets_inner">
-                            <ul class="list">
-                                <p>Brands</p>
-                                <li>
-                                    <input type="radio" aria-label="Radio button for following text input">
-                                    <a href="#">Apple</a>
-                                </li>
-                                <li>
-                                    <input type="radio" aria-label="Radio button for following text input">
-                                    <a href="#">Asus</a>
-                                </li>
-                                <li class="active">
-                                    <input type="radio" aria-label="Radio button for following text input">
-                                    <a href="#">Gionee</a>
-                                </li>
-                                <li>
-                                    <input type="radio" aria-label="Radio button for following text input">
-                                    <a href="#">Micromax</a>
-                                </li>
-                                <li>
-                                    <input type="radio" aria-label="Radio button for following text input">
-                                    <a href="#">Samsung</a>
-                                </li>
-                            </ul>
-                            <ul class="list">
-                                <p>color</p>
-                                <li>
-                                    <input type="radio" aria-label="Radio button for following text input">
-                                    <a href="#">Black</a>
-                                </li>
-                                <li>
-                                    <input type="radio" aria-label="Radio button for following text input">
-                                    <a href="#">Black Leather</a>
-                                </li>
-                                <li>
-                                    <input type="radio" aria-label="Radio button for following text input">
-                                    <a href="#">Black with red</a>
-                                </li>
-                                <li>
-                                    <input type="radio" aria-label="Radio button for following text input">
-                                    <a href="#">Gold</a>
-                                </li>
-                                <li>
-                                    <input type="radio" aria-label="Radio button for following text input">
-                                    <a href="#">Spacegrey</a>
-                                </li>
-                            </ul>
-                        </div>
-                    </aside>
 
-                    <aside class="left_widgets p_filter_widgets price_rangs_aside sidebar_box_shadow">
-                        <div class="l_w_title">
-                            <h3>Price Filter</h3>
-                        </div>
-                        <div class="widgets_inner">
-                            <div class="range_item">
-                                <!-- <div id="slider-range"></div> -->
-                                <input type="text" class="js-range-slider" value="" />
-                                <div class="d-flex align-items-center">
-                                    <div class="price_text">
-                                        <p>Price :</p>
-                                    </div>
-                                    <div class="price_value d-flex justify-content-center">
-                                        <input type="text" class="js-input-from" id="amount" readonly />
-                                        <span>to</span>
-                                        <input type="text" class="js-input-to" id="amount" readonly />
-                                    </div>
+                            <div class="row">
+                                <div class="col-6">
+                                    <article class="card">
+                                        <div class="card-header ">
+                                            <h5>
+                                                Account Details
+                                                <a class="fa fa-pen float-right" style="color:orangered" asp-action="EditProfile" asp-controller="Account">
+
+                                                </a>
+                                            </h5>
+                                        </div>
+                                        <div class="card-body">
+                                            <p class="card-text">@Model.Email</p>
+                                            <p class="card-text">@Model.Name</p>
+                                            <a class="card-link genric-btn warning-border circle arrow" asp-action="ChangePassword"
+                                               asp-controller="Account">Change Password</a>
+                                        </div>
+                                    </article>
+                                </div>
+
+                                <div class="col-6">
+                                    <article class="card">
+                                        <div class="card-header ">
+                                            <h5>
+                                                Address Details
+                                                <a class="fa fa-pen float-right" style="color:orangered" ></a>
+                                            </h5>
+                                        </div>
+                                        <div class="card-body">
+                                            <p class="card-text">My Address</p>
+                                            <p class="card-text">My Address</p>
+                                        </div>
+                                    </article>
                                 </div>
                             </div>
+                           
                         </div>
                     </aside>
                 </div>
