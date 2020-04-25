@@ -17,6 +17,25 @@ namespace JeanStation.Controllers
             SignInManager = signInManager;
         }
 
+        public async Task<IActionResult> Index(string Name)
+        {
+            var user = await UserManager.FindByNameAsync(Name);
+
+            if (user == null)
+            {
+                ViewBag.ErrorMessage = "User not Found";
+                return RedirectToAction("Index", "Home");
+            }
+
+            var model = new EditUserViewModel
+            {
+                Id = user.Id,
+                Email = user.Email,
+                Name = user.FullName,
+            };
+            return View(model);
+        }
+
         public IActionResult Register()
         {
             return View();
@@ -74,31 +93,13 @@ namespace JeanStation.Controllers
             return RedirectToAction("Index", "home");
         }
 
-        public async Task<IActionResult> UserProfile(string id)
-        {
-            var user = await UserManager.FindByIdAsync(id);
-            if (user == null)
-            {
-                ViewBag.ErrorMessage = "User not Found";
-                return RedirectToAction("Index", "Home");
-            }
-
-            var model = new EditUserViewModel
-            {
-                Id = user.Id,
-                Email = user.Email,
-                Name = user.FullName,
-            };
-            return View(model);
-        }
-
         public async Task<IActionResult> EditProfile(string id)
         {
             var user = await UserManager.FindByIdAsync(id);
             if(user == null)
             {
                 ViewBag.ErrorMessage = "User not Found";
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Index", "Account");
             }
             //var userClaims = await UserManager.GetClaimsAsync(user);
             //var userRoles = await UserManager.GetRolesAsync(user);
@@ -132,7 +133,7 @@ namespace JeanStation.Controllers
                 var result = await UserManager.UpdateAsync(user);
                 if (result.Succeeded)
                 {
-                    return RedirectToAction("UserProfile", "Account");
+                    return RedirectToAction("Index", "Account");
                 };
                 foreach (var error in result.Errors)
                 {
