@@ -5,10 +5,6 @@ namespace Winter.ViewModels
 {
     public class RegisterViewModel
     {
-        //[Required]
-        //[Display(Name = "Name ")]
-        //public string UserName { get; set; }
-
         [Required]
         [EmailAddress]
         public string Email { get; set; }
@@ -24,7 +20,9 @@ namespace Winter.ViewModels
         [Compare("Password", ErrorMessage ="Passwords do not match")]
         public string ConfirmPassword { get; set; }
 
-        public string Name { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string FullName { get; set; }
 
     }
 
@@ -38,11 +36,13 @@ namespace Winter.ViewModels
 
         public string Id { get; set; }
 
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string FullName { get; set; }
+
         [Required]
         [EmailAddress]
         public string Email { get; set; }
-
-        public string Name { get; set; }
 
         //public List<string> Claims { get; set; }
         //public IList<string> Roles { get; set; }

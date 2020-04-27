@@ -1,0 +1,48 @@
+﻿
+@{
+    ViewData["Title"] = "EditProfile";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@model Winter.ViewModels.EditUserViewModel
+
+<!-- Start Align Area -->
+<div class="whole-wrap">
+    <div class="container box_1170">
+        <div class="section-top-border">
+            <div class="row">
+                <div class="col-lg-8 col-md-8">
+                    <h3 class="mb-30">Form Element</h3>
+                    <form asp-action="EditProfile" asp-controller="Account" method="post">
+                        <div class="mt-10">
+            <input type="text" placeholder="First Name"
+                   onfocus="this.placeholder = ''" onblur="this.placeholder = 'First Name'"
+                   class="single-input" asp-for="FirstName">
+        </div>
+        <div class="mt-10">
+            <input type="text" placeholder="Last Name" onfocus="this.placeholder = ''"
+                   onblur="this.placeholder = 'Last Name'" required class="single-input" asp-for="LastName">
+        </div>
+                        @*<div class="mt-10">
+                            <input type="text" placeholder="Name"
+                                   onfocus="this.placeholder = ''" onblur="this.placeholder = 'First Name'"
+                                   class="single-input" asp-for="Name">
+                        </div>*@
+                        <div class="mt-10">
+                            <input type="email" name="EMAIL" placeholder="Email address" onfocus="this.placeholder = ''"
+                                   onblur="this.placeholder = 'Email address'" required class="single-input" asp-for="Email">
+                        </div>
+                        <div class="mt-10">
+                            <input type="hidden" placeholder="Name"
+                                   onfocus="this.placeholder = ''" onblur="this.placeholder = 'First Name'"
+                                   class="single-input" asp-for="Id">
+                        </div>
+                        <div class="mt-10">
+                            <button type="submit" class="genric-btn primary circle arrow">>Update Profile</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Align Area -->

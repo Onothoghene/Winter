@@ -17,9 +17,9 @@ namespace JeanStation.Controllers
             SignInManager = signInManager;
         }
 
-        public async Task<IActionResult> Index(string Name)
+        public async Task<IActionResult> Index(string Id)
         {
-            var user = await UserManager.FindByNameAsync(Name);
+            var user = await UserManager.FindByIdAsync(Id);
 
             if (user == null)
             {
@@ -31,7 +31,9 @@ namespace JeanStation.Controllers
             {
                 Id = user.Id,
                 Email = user.Email,
-                Name = user.FullName,
+                FullName = user.FullName,
+                LastName = user.LastName,
+                FirstName = user.FirstName,
             };
             return View(model);
         }
@@ -50,8 +52,10 @@ namespace JeanStation.Controllers
                 {
                     UserName = model.Email,
                     Email = model.Email,
-                    FullName = model.Name,
-                };
+                    FirstName = model.FirstName,
+                    LastName = model.LastName,
+                    FullName = model.FirstName + " " + model.LastName,
+            };
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
@@ -108,7 +112,8 @@ namespace JeanStation.Controllers
             {
                 Id = user.Id,
                 Email = user.Email,
-                Name = user.FullName,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
                 //Claims = userClaims.Select(c => c.Value).ToList(),
                 //Roles = userRoles
             };
@@ -127,13 +132,15 @@ namespace JeanStation.Controllers
             else
             {
                 user.Email = model.Email;
-                user.FullName = model.Name;
+                user.FirstName = model.FirstName;
+                user.LastName = model.LastName;
+                user.FullName = model.FirstName +" "+model.LastName;
                 user.UserName = model.Email;
 
                 var result = await UserManager.UpdateAsync(user);
                 if (result.Succeeded)
                 {
-                    return RedirectToAction("Index", "Account");
+                    return RedirectToAction("Index", "Account" ,new { model.Id });
                 };
                 foreach (var error in result.Errors)
                 {
