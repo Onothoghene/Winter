@@ -176,5 +176,36 @@ namespace JeanStation.Controllers
           
          }
 
+        public IActionResult ChangePassword()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ChangePassword( ChangePasswordViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await UserManager.GetUserAsync(User);
+
+                if (user == null)
+                {
+                    return RedirectToAction("Login", "Account");
+                }
+                var result = await UserManager.ChangePasswordAsync(user, model.CurrentPassword, model.NewPassword);
+                if (!result.Succeeded)
+                {
+                    foreach (var error in result.Errors)
+                    {
+                        ModelState.AddModelError(string.Empty, error.Description);
+                    }
+                    return View();
+                }
+                await SignInManager.RefreshSignInAsync(user);
+                return RedirectToAction("Index","Account" , new { user.Id });
+            }
+            return View(model);
+        }
+
     }
 }
