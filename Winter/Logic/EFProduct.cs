@@ -119,6 +119,18 @@ namespace Winter.Logic
             return count;
         }
 
+        public IEnumerable<ProductOutputViewModel> GetNewArrivals()
+        {
+            var product = _context.Product.OrderByDescending(b =>b.DateAdded)
+                                                                    .Take(6)
+                                                                   .Include(x => x.Category)
+                                                                   .Include(x => x.ProductFile)
+                                                                   .ToList();
+            var resp = product.Select(x => _modelFactory.Create(x));
+
+            return resp;
+        }
+
         public static string GetFileExtensionFromFileName(string fileName)
         {
             string fileExtension = "";

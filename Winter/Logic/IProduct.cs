@@ -13,6 +13,7 @@ namespace Winter.Logic
         bool DeleteProduct(int? Id);
         ProductOutputViewModel GetProductById(int? Id);
         IEnumerable<ProductOutputViewModel> GetProducts();
+        IEnumerable<ProductOutputViewModel> GetNewArrivals();
         bool UpdateProduct(ProductEditViewModel model);
         void ConfigureInputViewModelForDropDown(ProductInputViewModel model);
         void ConfigureEditViewModelForDropDown(ProductEditViewModel model);

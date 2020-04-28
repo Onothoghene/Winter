@@ -17,6 +17,12 @@ namespace Winter.Controllers
 
         public IActionResult Category()
         {
+            //GeneralViewModel viewModel = new GeneralViewModel
+            //{
+            //    CategoryOutputViewModel = _category.GetCategory(),
+            //    ProductOutputViewModel = _product.GetProducts(),
+            //};
+            //return View(viewModel);
             return View();
         }
 
