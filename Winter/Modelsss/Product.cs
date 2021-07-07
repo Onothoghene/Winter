@@ -1,30 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
-namespace Winter.Models
+namespace Winter.Modelsss
 {
-    public partial class Product
+    public class Product
     {
         public Product()
         {
-            Cart = new HashSet<Cart>();
-            OrderRequest = new HashSet<OrderRequest>();
             ProductFile = new HashSet<ProductFile>();
-            Wish = new HashSet<Wish>();
         }
-
         public int Id { get; set; }
         public string ProductName { get; set; }
         public string Description { get; set; }
         public int UnitPrice { get; set; }
-        public int? CategoryId { get; set; }
+        public int? CategoryID { get; set; }
+        //public int? ProductFileId { get; set; }
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime? DateAdded { get; set; }
         public DateTime? DateModified { get; set; }
-
-        public Category Category { get; set; }
-        public ICollection<Cart> Cart { get; set; }
-        public ICollection<OrderRequest> OrderRequest { get; set; }
+        public virtual Category Category { get; set; }
         public ICollection<ProductFile> ProductFile { get; set; }
-        public ICollection<Wish> Wish { get; set; }
     }
 }

@@ -96,7 +96,7 @@ namespace Winter.Logic
                 product.UnitPrice = model.UnitPrice;
                 product.UnitPrice = model.UnitPrice;
                 product.Description = model.Description;
-                product.CategoryID = model.CategoryID;
+                //product.CategoryID = model.CategoryID;
                 product.DateModified = DateTime.Now;
                 _context.SaveChanges();
             }

@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
-namespace Winter.Models
+namespace Winter.Modelsss
 {
-    public partial class ProductFile
+    public class ProductFile
     {
         public int Id { get; set; }
         public string FileName { get; set; }
@@ -13,7 +15,6 @@ namespace Winter.Models
         public string Ext { get; set; }
         public int ProductId { get; set; }
         public DateTime? DateAdded { get; set; }
-
         public Product Product { get; set; }
     }
 }

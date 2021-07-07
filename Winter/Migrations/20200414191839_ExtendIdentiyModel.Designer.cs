@@ -9,7 +9,7 @@ using Winter.Data;
 
 namespace Winter.Migrations
 {
-    [DbContext(typeof(WinterContext))]
+    [DbContext(typeof(ApplicationDbContext))]
     [Migration("20200414191839_ExtendIdentiyModel")]
     partial class ExtendIdentiyModel
     {

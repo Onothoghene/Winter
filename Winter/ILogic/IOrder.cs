@@ -2,11 +2,11 @@
 using Winter.ViewModels.Output_Models;
 using System.Collections.Generic;
 
-namespace Winter.Logic
+namespace Winter.ILogic
 {
     public interface IOrder
     {
-        int AddOrder(OrderInputViewModel model);
+        bool AddOrder(OrderInputViewModel model);
         //bool DeleteOrder(int? Id);
         //CheckOutInputViewModel GetProductById(int? Id);
         IEnumerable<OrderOutputViewModel> GetOrders();

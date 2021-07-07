@@ -1,4 +1,4 @@
-﻿namespace Winter.Logic
+﻿namespace Winter.ILogic
 {
     public interface IAdmin
     {
