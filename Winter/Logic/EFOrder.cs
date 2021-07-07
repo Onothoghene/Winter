@@ -1,68 +1,112 @@
-﻿using Winter.Data;
+﻿using System;
+using Winter.Data;
 using Winter.Services;
 using Winter.ViewModels.Input_Models;
 using Winter.ViewModels.Output_Models;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
+using Winter.ILogic;
+using System.Transactions;
+using Winter.Models;
 
 namespace Winter.Logic
 {
     public class EFOrder : IOrder
     {
-        private readonly ApplicationDbContext _context;
+        //private readonly ApplicationDbContext _context;
+        private readonly WinterContext _context;
         ModelFactory _modelFactory = new ModelFactory();
 
-
-        public EFOrder(ApplicationDbContext context)
+        public EFOrder(WinterContext context)
         {
             _context = context;
         }
 
-        public int AddOrder(OrderInputViewModel model)
+        public bool AddOrder(OrderInputViewModel model)
         {
-            var order = _modelFactory.Parse(model);
-            _context.Order.Add(order);
-            _context.SaveChanges();
+            try
+            {
+                using (TransactionScope ts = new TransactionScope())
+                {
+                    var order = _modelFactory.Parse(model);
+                    _context.Order.Add(order);
+                    int bit = _context.SaveChanges();
+                    ts.Complete();
 
-            return order.Id;
+                    if (bit > 0)
+                        return true;
+                    else
+                        return false;
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
 
         public IEnumerable<OrderOutputViewModel> GetOrders()
         {
+            try
+            {
+                var order = _context.Order.Include(x => x.Category).Include(x => x.Product).ToList();
+                var resp = order.Select(x => _modelFactory.Create(x));
 
-            var order = _context.Order.Include(x => x.Category).Include(x => x.Products).ToList();
-            var resp = order.Select(x => _modelFactory.Create(x));
+                return resp;
+            }
+            catch (Exception)
+            {
 
-            return resp;
+                throw;
+            }
         }
 
         public bool EditOrder(OrderOutputViewModel model)
         {
-            var order = _context.Order.Find(model.ProductId);
-
-            if (order != null)
+            try
             {
-                order.Id = model.OrderId;
-                order.ProductName = model.ProductName;
-                order.ProductId = model.ProductId;
-                order.CategoryId = model.CategoryId;
-                //order.DateModified = model.DateModified;
-                order.Quantity = model.Quantity;
-                order.TotalPrice = model.TotalPrice;
-                order.DateAdded = model.DateAdded;
-                order.DeliveryDate = model.DeliveryDate;
-                order.Address = model.Address;
-                _context.SaveChanges();
-            }
+                var order = _context.Order.Find(model.ProductId);
 
-            return true;
+                if (order != null)
+                {
+                    order.Id = model.OrderId;
+                    order.ProductName = model.ProductName;
+                    order.ProductId = model.ProductId;
+                    order.CategoryId = model.CategoryId;
+                    //order.DateModified = model.DateModified;
+                    order.Quantity = model.Quantity;
+                    order.TotalPrice = model.TotalPrice;
+                    order.DateAdded = model.DateAdded;
+                    order.DeliveryDate = model.DeliveryDate;
+                    order.Address = model.Address;
+
+                    _context.SaveChanges();
+                    return true;
+                }
+
+                return false;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
 
         public int CountOrders()
         {
-            var count = _context.Order.ToList().Count();
-            return count;
+            try
+            {
+                var count = _context.Order.ToList().Count();
+                return count;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
     }
 }

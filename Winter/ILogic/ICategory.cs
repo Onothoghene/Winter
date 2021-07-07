@@ -3,7 +3,7 @@ using Winter.ViewModels.Input_Models;
 using Winter.ViewModels.Output_Models;
 using System.Collections.Generic;
 
-namespace Winter.Logic
+namespace Winter.ILogic
 {
     public interface ICategory
     {

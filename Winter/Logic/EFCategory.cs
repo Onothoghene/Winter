@@ -6,6 +6,8 @@ using Winter.ViewModels.Output_Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Winter.ILogic;
+using System.Transactions;
 
 namespace Winter.Logic
 {
@@ -48,27 +50,54 @@ namespace Winter.Logic
 
         public bool DeleteCategory(int? Id)
         {
-            var category = _context.Category.Find(Id);
-            _context.Category.Remove(category);
-            _context.SaveChanges();
+            try
+            {
+                var category = _context.Category.Find(Id);
+                if (category != null)
+                {
+                    _context.Category.Remove(category);
+                    _context.SaveChanges();
 
-            return true;
+                    return true;
+                }
+                return false;
+               
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
 
         public bool UpdateCategory(CategoryEditViewModel model)
         {
-            var category = _context.Category.Find(model.CategoryId);
-
-            if (category != null)
+            try
             {
-                category.CategoryName = model.CategoryName;
-                category.Id = model.CategoryId;
-                category.Description = model.Description;
-                category.DateModified = DateTime.Now;
-                _context.SaveChanges();
-            }
+                using (TransactionScope ts = new TransactionScope())
+                {
+                    var category = _context.Category.Find(model.CategoryId);
 
-            return true;
+                    if (category != null)
+                    {
+                        category.CategoryName = model.CategoryName;
+                        category.Id = model.CategoryId;
+                        category.Description = model.Description;
+                        category.DateModified = DateTime.Now;
+                        _context.SaveChanges();
+
+                        ts.Complete();
+                        return true;
+                    }
+
+                    return false;
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
 
         //public int CountCategory(CategoryOutputViewModel model)
