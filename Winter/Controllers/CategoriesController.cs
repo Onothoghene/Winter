@@ -1,188 +1,176 @@
-﻿//using System;
-//using System.Linq;
-//using System.Threading.Tasks;
-//using Microsoft.AspNetCore.Mvc;
-//using Microsoft.EntityFrameworkCore;
-//using Winter.Data;
-//using Winter.ILogic;
+﻿using System;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Winter.Data;
+using Winter.ILogic;
 
-//namespace Winter.Controllers
-//{
-//    public class CategoriesController : Controller
-//    {
-//        //private readonly ApplicationDbContext _context;
-//        private readonly ICategory _category;
+namespace Winter.Controllers
+{
+    public class CategoriesController : Controller
+    {
+        private readonly ICategory _category;
 
-//        public CategoriesController(ApplicationDbContext context, ICategory category)
-//        {
-//            //_context = context;
-//            _category = category;
-//        }
+        public CategoriesController(ICategory category)
+        {
+            _category = category;
+        }
 
-//        public async Task<IActionResult> Index()
-//        {
-//            try
-//            {
-//                var data = await Task.Run(() => _category.GetCategory());
-//                return View(data);
-//            }
-//            catch (Exception)
-//            {
+        public async Task<IActionResult> Index()
+        {
+            try
+            {
+                var data = await Task.Run(() => _category.GetCategory());
+                return View(data);
+            }
+            catch (Exception)
+            {
 
-//                throw;
-//            }
-//        }
+                throw;
+            }
+        }
 
-//        public async Task<IActionResult> Details(int? id)
-//        {
-//            try
-//            {
-//                if (id == null)
-//                {
-//                    return NotFound();
-//                }
+        public async Task<IActionResult> Details(int categoryId)
+        {
+            try
+            {
+                if (categoryId > 0)
+                {
+                    var category = await Task.Run(() => _category.GetCategoryById(categoryId));
+                    return View(category);
+                }
+                return NotFound();
+            }
+            catch (Exception)
+            {
 
-//                var category = await _context.Category
-//                    .FirstOrDefaultAsync(m => m.Id == id);
-//                if (category == null)
-//                {
-//                    return NotFound();
-//                }
+                throw;
+            }
+        }
 
-//                return View(category);
-//            }
-//            catch (Exception)
-//            {
+        public IActionResult Create()
+        {
+            return View();
+        }
 
-//                throw;
-//            }
-//        }
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> Create([Bind("Id,CategoryName,Description,DateAdded,DateModified")] Category category)
+        //{
+        //    try
+        //    {
+        //        if (ModelState.IsValid)
+        //        {
+        //            _context.Add(category);
+        //            await _context.SaveChangesAsync();
+        //            return RedirectToAction(nameof(Index));
+        //        }
+        //        return View(category);
+        //    }
+        //    catch (Exception)
+        //    {
 
-//        public IActionResult Create()
-//        {
-//            return View();
-//        }
+        //        throw;
+        //    }
+        //}
 
-//        // POST: Categories/Create
-//        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-//        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-//        [HttpPost]
-//        [ValidateAntiForgeryToken]
-//        public async Task<IActionResult> Create([Bind("Id,CategoryName,Description,DateAdded,DateModified")] Category category)
-//        {
-//            if (ModelState.IsValid)
-//            {
-//                _context.Add(category);
-//                await _context.SaveChangesAsync();
-//                return RedirectToAction(nameof(Index));
-//            }
-//            return View(category);
-//        }
+        //public async Task<IActionResult> Edit(int? id)
+        //{
+        //    try
+        //    {
+        //        if (id == null)
+        //        {
+        //            return NotFound();
+        //        }
 
-//        public async Task<IActionResult> Edit(int? id)
-//        {
-//            try
-//            {
-//                if (id == null)
-//                {
-//                    return NotFound();
-//                }
+        //        var category = await _context.Category.FindAsync(id);
+        //        if (category == null)
+        //        {
+        //            return NotFound();
+        //        }
+        //        return View(category);
+        //    }
+        //    catch (Exception)
+        //    {
 
-//                var category = await _context.Category.FindAsync(id);
-//                if (category == null)
-//                {
-//                    return NotFound();
-//                }
-//                return View(category);
-//            }
-//            catch (Exception)
-//            {
+        //        throw;
+        //    }
+        //}
 
-//                throw;
-//            }
-//        }
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> Edit(int id, [Bind("Id,CategoryName,Description,DateAdded,DateModified")] Category category)
+        //{
+        //    try
+        //    {
+        //        if (id != category.Id)
+        //        {
+        //            return NotFound();
+        //        }
 
-//        // POST: Categories/Edit/5
-//        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-//        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-//        [HttpPost]
-//        [ValidateAntiForgeryToken]
-//        public async Task<IActionResult> Edit(int id, [Bind("Id,CategoryName,Description,DateAdded,DateModified")] Category category)
-//        {
-//            try
-//            {
-//                if (id != category.Id)
-//                {
-//                    return NotFound();
-//                }
+        //        if (ModelState.IsValid)
+        //        {
+        //            try
+        //            {
+        //                _context.Update(category);
+        //                await _context.SaveChangesAsync();
+        //            }
+        //            catch (DbUpdateConcurrencyException)
+        //            {
+        //                if (!CategoryExists(category.Id))
+        //                {
+        //                    return NotFound();
+        //                }
+        //                else
+        //                {
+        //                    throw;
+        //                }
+        //            }
+        //            return RedirectToAction(nameof(Index));
+        //        }
+        //        return View(category);
+        //    }
+        //    catch (Exception)
+        //    {
 
-//                if (ModelState.IsValid)
-//                {
-//                    try
-//                    {
-//                        _context.Update(category);
-//                        await _context.SaveChangesAsync();
-//                    }
-//                    catch (DbUpdateConcurrencyException)
-//                    {
-//                        if (!CategoryExists(category.Id))
-//                        {
-//                            return NotFound();
-//                        }
-//                        else
-//                        {
-//                            throw;
-//                        }
-//                    }
-//                    return RedirectToAction(nameof(Index));
-//                }
-//                return View(category);
-//            }
-//            catch (Exception)
-//            {
+        //        throw;
+        //    }
+        //}
 
-//                throw;
-//            }
-//        }
+        //public async Task<IActionResult> Delete(int categoryId)
+        //{
+        //    try
+        //    {
+        //        if (categoryId > 0 )
+        //        {
+        //            var response = await Task.Run(() => _category.DeleteCategory(categoryId));
+        //            if (true)
+        //            {
 
-//        public async Task<IActionResult> Delete(int? id)
-//        {
-//            try
-//            {
-//                if (id == null)
-//                {
-//                    return NotFound();
-//                }
+        //            }
+        //        }
+        //    }
+        //    catch (Exception)
+        //    {
 
-//                var category = await _context.Category
-//                    .FirstOrDefaultAsync(m => m.Id == id);
-//                if (category == null)
-//                {
-//                    return NotFound();
-//                }
+        //        throw;
+        //    }
+        //}
 
-//                return View(category);
-//            }
-//            catch (Exception)
-//            {
+        //[HttpPost, ActionName("Delete")]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> DeleteConfirmed(int id)
+        //{
+        //    var category = await _context.Category.FindAsync(id);
+        //    _context.Category.Remove(category);
+        //    await _context.SaveChangesAsync();
+        //    return RedirectToAction(nameof(Index));
+        //}
 
-//                throw;
-//            }
-//        }
-
-//        [HttpPost, ActionName("Delete")]
-//        [ValidateAntiForgeryToken]
-//        public async Task<IActionResult> DeleteConfirmed(int id)
-//        {
-//            var category = await _context.Category.FindAsync(id);
-//            _context.Category.Remove(category);
-//            await _context.SaveChangesAsync();
-//            return RedirectToAction(nameof(Index));
-//        }
-
-//        private bool CategoryExists(int id)
-//        {
-//            return _context.Category.Any(e => e.Id == id);
-//        }
-//    }
-//}
+        //private bool CategoryExists(int id)
+        //{
+        //    return _context.Category.Any(e => e.Id == id);
+        //}
+    }
+}
