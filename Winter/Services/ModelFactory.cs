@@ -11,6 +11,36 @@ namespace Winter.Services
 {
     public class ModelFactory
     {
+        #region WishList
+
+        public Wish Parse(WishIM model)
+        {
+            var _model = new Wish
+            {
+                ProductId = model.ProductId,
+                UserId = model.UserId,
+                DateAdded = DateTime.Now,
+            };
+            return _model;
+        }
+
+        public WishOM Create(Wish model)
+        {
+            var _model = new WishOM
+            {
+                ProductId = model.ProductId,
+                ProductName = model.Product.ProductName,
+                UserId = model.UserId,
+                UserName = Create(model.User.FullName, model.User.LastName),
+                DateAdded = model.DateAdded,
+            };
+            return _model;
+        }
+
+        #endregion
+
+        #region Product
+
         public Product Parse(ProductInputViewModel model)
         {
             var _model = new Product
@@ -25,6 +55,7 @@ namespace Winter.Services
             };
             return _model;
         }
+
         public ProductOutputViewModel Create(Product model)
         {
             ProductOutputViewModel _model = new ProductOutputViewModel
@@ -34,7 +65,7 @@ namespace Winter.Services
                 Category = model.Category.CategoryName,
                 Description = model.Description,
                 UnitPrice = model.UnitPrice,
-               // CategoryID = model.CategoryID,
+                // CategoryID = model.CategoryID,
                 DateAdded = model.DateAdded,
                 DateModified = model.DateModified,
             };
@@ -50,6 +81,10 @@ namespace Winter.Services
             return _model;
         }
 
+        #endregion
+
+        #region Category
+
         public Category Parse(CategoryInputViewModel model)
         {
 
@@ -64,6 +99,7 @@ namespace Winter.Services
 
             return _model;
         }
+
         public CategoryOutputViewModel Create(Category model)
         {
             CategoryOutputViewModel _model = new CategoryOutputViewModel()
@@ -78,47 +114,51 @@ namespace Winter.Services
             return _model;
         }
 
-        public Order Parse(OrderInputViewModel model)
+        #endregion
+
+        #region Order
+
+        public OrderRequest Parse(OrderInputViewModel model)
         {
 
-            Order _model = new Order()
+            OrderRequest _model = new OrderRequest()
             {
                 Id = model.OrderId,
                 ProductId = model.ProductId,
-                CategoryId = model.CategoryId,
-                UserId = model.UserId,
-                UserName = model.UserName,
-                ProductName = model.ProductName,
-                UnitPrice = model.UnitPrice,
-                Quantity = model.Quantity,
-                TotalPrice = model.TotalPrice,
-                Address = model.Address,
-                DateAdded = DateTime.Now,
-                DeliveryDate = model.DeliveryDate
+                AddedBy = model.UserId,
+                //UnitPrice = model.UnitPrice,
+                //Quantity = model.Quantity,
+                //TotalPrice = model.TotalPrice,
+                //Address = model.Address,
+                //DateAdded = DateTime.Now,
+                //DeliveryDate = model.DeliveryDate
             };
 
             return _model;
         }
-        public OrderOutputViewModel Create(Order model)
+
+        public OrderOutputViewModel Create(OrderRequest model)
         {
             OrderOutputViewModel _model = new OrderOutputViewModel()
             {
                 OrderId = model.Id,
                 ProductId = model.ProductId,
-                CategoryId = model.CategoryId,
-                UserId = model.UserId,
-                UserName = model.UserName,
-                ProductName = model.ProductName,
-                UnitPrice = model.UnitPrice,
-                Quantity = model.Quantity,
-                TotalPrice = model.TotalPrice,
-                Address = model.Address,
-                DateAdded = model.DateAdded,
-                DeliveryDate = model.DeliveryDate
+                UserId = model.AddedBy,
+                UserName = Create(model.AddedByNavigation.FullName, model.AddedByNavigation.LastName),
+                ProductName = model.Product.ProductName,
+                //UnitPrice = model.UnitPrice,
+                //Quantity = model.Quantity,
+                //TotalPrice = model.TotalPrice,
+                //Address = model.Address,
+                //DateAdded = model.DateAdded,
+                //DeliveryDate = model.DeliveryDate
             };
 
             return _model;
         }
+
+        #endregion
+
 
         //public ProductFile Parse(ProductFileInputViewModel model)
         //{
@@ -181,6 +221,15 @@ namespace Winter.Services
         //    };
         //    return _model;
         //}
+
+        #region Methods
+
+        public string Create(string FirstName, string LastName)
+        {
+            return FirstName + " " + LastName;
+        }
+
+        #endregion
 
     }
 }
