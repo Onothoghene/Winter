@@ -31,7 +31,7 @@ namespace Winter.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    var response = await Task.Run(() => _wishList.AddToWish(model));
+                    var response = await Task.Run(() => _wishList.AddToWishLIst(model));
                     if (response == true)
                     {
                         return Ok(true);
@@ -49,34 +49,56 @@ namespace Winter.Controllers
             }
         }
 
-        //[HttpGet]
-        //[Route("/wishId/")]
-        //public async Task<IActionResult> WishDetail(int wishId)
-        //{
-        //    if (wishId > 0)
-        //    {
-        //        var wish = await Task.Run(() => _wishList.);
-        //    }
-        //    var productdetails = _product.GetProductById(Id);
-
-        //    var generalView = new GeneralViewModel
-        //    {
-        //        ProductViewModel = productdetails,
-        //    };
-
-        //   // return View(generalView);
-        //}
+        [HttpGet]
+        [Route("/wishId/Detail")]
+        public async Task<IActionResult> WishDetail(long wishId)
+        {
+            try
+            {
+                var wish = await Task.Run(() => _wishList.GetWishDetail(wishId));
+                return Ok(wish);
+            }
+            catch (Exception)
+            {
+                return NotFound("The Wish requested for could not be found.");
+            }
+        }
 
         [HttpGet]
         [Route("/UserId/WishList")]
-        public async Task<IActionResult> UserWishLIst(int wishId)
+        public async Task<IActionResult> UserWishLIst(long userId)
+        {
+            try
+            {
+                if (userId > 0)
+                {
+                    var wish = await Task.Run(() => _wishList.GetUserWishList(userId));
+                    return Ok(wish);
+                }
+                return NotFound("Not Found");
+            }
+            catch (Exception ex)
+            {
+
+                return StatusCode(500, ex);
+            }
+
+        }
+
+        [HttpDelete]
+        [Route("/Id/Delete")]
+        public async Task<IActionResult> RemoveItem(long wishId)
         {
             try
             {
                 if (wishId > 0)
                 {
-                    var wish = await Task.Run(() => _wishList.GetUserWishList(wishId));
-                    return Ok(wish);
+                    var response = await Task.Run(() => _wishList.RemoveItem(wishId));
+                    if (response == true)
+                    {
+                        return Ok(response);
+                    }
+                    return BadRequest(false);
                 }
                 return NotFound("Not Found");
             }
