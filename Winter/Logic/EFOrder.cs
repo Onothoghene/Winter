@@ -30,7 +30,7 @@ namespace Winter.Logic
                 using (TransactionScope ts = new TransactionScope())
                 {
                     var order = _modelFactory.Parse(model);
-                    _context.Order.Add(order);
+                    _context.OrderRequest.Add(order);
                     int bit = _context.SaveChanges();
                     ts.Complete();
 
@@ -51,7 +51,9 @@ namespace Winter.Logic
         {
             try
             {
-                var order = _context.Order.Include(x => x.Category).Include(x => x.Product).ToList();
+                var order = _context.OrderRequest
+                                                    .Include(x => x.Product).ToList();
+
                 var resp = order.Select(x => _modelFactory.Create(x));
 
                 return resp;
@@ -67,20 +69,18 @@ namespace Winter.Logic
         {
             try
             {
-                var order = _context.Order.Find(model.ProductId);
+                var order = _context.OrderRequest.Find(model.ProductId);
 
                 if (order != null)
                 {
                     order.Id = model.OrderId;
-                    order.ProductName = model.ProductName;
                     order.ProductId = model.ProductId;
-                    order.CategoryId = model.CategoryId;
-                    //order.DateModified = model.DateModified;
+                    order.AddedBy = model.UserId;
                     order.Quantity = model.Quantity;
-                    order.TotalPrice = model.TotalPrice;
-                    order.DateAdded = model.DateAdded;
-                    order.DeliveryDate = model.DeliveryDate;
-                    order.Address = model.Address;
+                    order.Price = model.Price;
+                    order.DateAdded = DateTime.Now;
+                    //order.DeliveryDate = model.DeliveryDate;
+                    //order.Address = model.Address;
 
                     _context.SaveChanges();
                     return true;
@@ -99,7 +99,22 @@ namespace Winter.Logic
         {
             try
             {
-                var count = _context.Order.ToList().Count();
+                var count = _context.OrderRequest.ToList().Count();
+                return count;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public int UserTotalOrderCount(long userId)
+        {
+            try
+            {
+                var count = _context.OrderRequest.Where(x => x.AddedBy == userId)
+                                    .ToList().Count();
                 return count;
             }
             catch (Exception)
