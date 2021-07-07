@@ -7,7 +7,6 @@ namespace Winter.Models
     {
         public Category()
         {
-            Order = new HashSet<Order>();
             Product = new HashSet<Product>();
         }
 
@@ -17,7 +16,6 @@ namespace Winter.Models
         public DateTime? DateAdded { get; set; }
         public DateTime? DateModified { get; set; }
 
-        public ICollection<Order> Order { get; set; }
         public ICollection<Product> Product { get; set; }
     }
 }

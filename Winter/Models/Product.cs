@@ -8,7 +8,7 @@ namespace Winter.Models
         public Product()
         {
             Cart = new HashSet<Cart>();
-            Order = new HashSet<Order>();
+            OrderRequest = new HashSet<OrderRequest>();
             ProductFile = new HashSet<ProductFile>();
             Wish = new HashSet<Wish>();
         }
@@ -23,7 +23,7 @@ namespace Winter.Models
 
         public Category Category { get; set; }
         public ICollection<Cart> Cart { get; set; }
-        public ICollection<Order> Order { get; set; }
+        public ICollection<OrderRequest> OrderRequest { get; set; }
         public ICollection<ProductFile> ProductFile { get; set; }
         public ICollection<Wish> Wish { get; set; }
     }

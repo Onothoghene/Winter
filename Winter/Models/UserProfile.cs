@@ -9,6 +9,7 @@ namespace Winter.Models
         {
             AdditionalInfo = new HashSet<AdditionalInfo>();
             Cart = new HashSet<Cart>();
+            OrderRequest = new HashSet<OrderRequest>();
             Wish = new HashSet<Wish>();
         }
 
@@ -22,6 +23,7 @@ namespace Winter.Models
 
         public ICollection<AdditionalInfo> AdditionalInfo { get; set; }
         public ICollection<Cart> Cart { get; set; }
+        public ICollection<OrderRequest> OrderRequest { get; set; }
         public ICollection<Wish> Wish { get; set; }
     }
 }

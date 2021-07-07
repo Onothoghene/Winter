@@ -27,7 +27,7 @@ namespace Winter.Models
         public virtual DbSet<AspNetUserTokens> AspNetUserTokens { get; set; }
         public virtual DbSet<Cart> Cart { get; set; }
         public virtual DbSet<Category> Category { get; set; }
-        public virtual DbSet<Order> Order { get; set; }
+        public virtual DbSet<OrderRequest> OrderRequest { get; set; }
         public virtual DbSet<Product> Product { get; set; }
         public virtual DbSet<ProductFile> ProductFile { get; set; }
         public virtual DbSet<UserProfile> UserProfile { get; set; }
@@ -40,6 +40,7 @@ namespace Winter.Models
             //#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
             //                optionsBuilder.UseSqlServer("Data Source=.;Initial Catalog=Winter;Integrated Security=True");
             //            }
+
             if (!optionsBuilder.IsConfigured)
             {
 
@@ -184,19 +185,27 @@ namespace Winter.Models
                     .HasConstraintName("FK__Cart__UserId__5070F446");
             });
 
-            modelBuilder.Entity<Order>(entity =>
+            modelBuilder.Entity<OrderRequest>(entity =>
             {
-                entity.HasIndex(e => e.CategoryId);
+                entity.Property(e => e.DateAdded).HasColumnType("datetime");
 
-                entity.HasIndex(e => e.ProductId);
+                entity.Property(e => e.DateDeleted).HasColumnType("datetime");
 
-                entity.HasOne(d => d.Category)
-                    .WithMany(p => p.Order)
-                    .HasForeignKey(d => d.CategoryId);
+                entity.Property(e => e.Description)
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.HasOne(d => d.AddedByNavigation)
+                    .WithMany(p => p.OrderRequest)
+                    .HasForeignKey(d => d.AddedBy)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__OrderRequ__Added__571DF1D5");
 
                 entity.HasOne(d => d.Product)
-                    .WithMany(p => p.Order)
-                    .HasForeignKey(d => d.ProductId);
+                    .WithMany(p => p.OrderRequest)
+                    .HasForeignKey(d => d.ProductId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__OrderRequ__Produ__5629CD9C");
             });
 
             modelBuilder.Entity<Product>(entity =>
