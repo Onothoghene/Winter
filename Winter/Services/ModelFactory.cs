@@ -19,7 +19,7 @@ namespace Winter.Services
                 ProductName = model.ProductName,
                 Description = model.Description,
                 UnitPrice = model.UnitPrice,
-                CategoryID = model.CategoryID,
+                //CategoryID = model.CategoryID,
                 //ProductFileId = model.ProductFileId,
                 DateAdded = DateTime.Now,
             };
@@ -34,7 +34,7 @@ namespace Winter.Services
                 Category = model.Category.CategoryName,
                 Description = model.Description,
                 UnitPrice = model.UnitPrice,
-                CategoryID = model.CategoryID,
+               // CategoryID = model.CategoryID,
                 DateAdded = model.DateAdded,
                 DateModified = model.DateModified,
             };
