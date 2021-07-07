@@ -7,13 +7,13 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Winter.Data;
 
-namespace Winter.Models
+namespace Winter.Controllers
 {
     public class CategoriesController : Controller
     {
-        private readonly WinterContext _context;
+        private readonly ApplicationDbContext _context;
 
-        public CategoriesController(WinterContext context)
+        public CategoriesController(ApplicationDbContext context)
         {
             _context = context;
         }

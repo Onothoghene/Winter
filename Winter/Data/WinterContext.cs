@@ -6,21 +6,15 @@ using Winter.Models;
 
 namespace Winter.Data
 {
-    public class WinterContext : IdentityDbContext<ApplicationUser>
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
-        public WinterContext()
+        public ApplicationDbContext()
         {
         }
-        public WinterContext (DbContextOptions<WinterContext> options)
+        public ApplicationDbContext (DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
         }
-        //public DBModels()
-        //    : base("name=DBModels")
-        //{
-        //}
-
-
 
         public DbSet<Category> Category { get; set; }
         public DbSet<Product> Product { get; set; }

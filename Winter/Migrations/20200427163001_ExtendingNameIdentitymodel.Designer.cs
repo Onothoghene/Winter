@@ -9,7 +9,7 @@ using Winter.Data;
 
 namespace Winter.Migrations
 {
-    [DbContext(typeof(WinterContext))]
+    [DbContext(typeof(ApplicationDbContext))]
     [Migration("20200427163001_ExtendingNameIdentitymodel")]
     partial class ExtendingNameIdentitymodel
     {

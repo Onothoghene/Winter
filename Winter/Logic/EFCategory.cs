@@ -11,11 +11,11 @@ namespace Winter.Logic
 {
     public class EFCategory : ICategory
     {
-        private readonly WinterContext _context;
+        private readonly ApplicationDbContext _context;
         ModelFactory _modelFactory = new ModelFactory();
 
 
-        public EFCategory(WinterContext context)
+        public EFCategory(ApplicationDbContext context)
         {
             _context = context;
         }

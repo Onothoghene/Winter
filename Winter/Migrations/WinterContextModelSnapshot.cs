@@ -8,7 +8,7 @@ using Winter.Data;
 
 namespace Winter.Migrations
 {
-    [DbContext(typeof(WinterContext))]
+    [DbContext(typeof(ApplicationDbContext))]
     partial class WinterContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
