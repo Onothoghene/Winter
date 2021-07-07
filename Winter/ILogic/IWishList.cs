@@ -6,9 +6,9 @@ namespace Winter.ILogic
 {
     public interface IWishList
     {
-        bool AddToWish(WishIM model);
+        bool AddToWishLIst(WishIM model);
         bool RemoveItem(long wishId);
         IEnumerable<WishOM> GetUserWishList(long UserProfile);
-        WishOM GetWishDetail(int wishId);
+        WishOM GetWishDetail(long wishId);
     }
 }
