@@ -7,10 +7,10 @@ namespace Winter.ILogic
 {
     public interface ICategory
     {
-        int AddCategory(CategoryInputViewModel model);
+        bool AddCategory(CategoryInputViewModel model);
         IEnumerable<CategoryOutputViewModel> GetCategory();
-        CategoryOutputViewModel GetCategoryById(int? Id);
-        bool DeleteCategory(int? Id);
+        CategoryOutputViewModel GetCategoryById(int Id);
+        bool DeleteCategory(int Id);
         bool UpdateCategory(CategoryEditViewModel model);
         //int CountCategory(CategoryOutputViewModel model);
         int CountCategory();
