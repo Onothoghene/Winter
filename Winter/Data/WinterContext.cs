@@ -19,7 +19,7 @@ namespace Winter.Data
         public DbSet<Category> Category { get; set; }
         public DbSet<Product> Product { get; set; }
         public DbSet<ProductFile> ProductFile { get; set; }
-        public DbSet<Order> Order { get; set; }
+        public DbSet<OrderRequest> Order { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
