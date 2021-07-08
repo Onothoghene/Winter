@@ -5,7 +5,7 @@ namespace Winter.Logic
 {
     public interface IUsers
     {
-        int CountUser();
-        IEnumerable<ApplicationUser> GetUsers();
+        //int CountUser();
+        //IEnumerable<ApplicationUser> GetUsers();
     }
 }

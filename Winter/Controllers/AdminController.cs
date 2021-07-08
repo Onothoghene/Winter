@@ -30,23 +30,23 @@ namespace Winter.Controllers
           //  _context = winterContext;
         }
 
-        public IActionResult Index()
-        {
-            GeneralViewModel viewModel = new GeneralViewModel
-            {
-                CategoryCount = _category.CountCategory(),
-                UserCount = _users.CountUser(),
-                ProductCount = _product.CountProduct(),
-                OrderCount = _order.CountOrders(),
-                CategoryOutputViewModel = _category.GetCategory(),
-                ProductOutputViewModel = _product.GetProducts(),
-                OrderOutputViewModel = _order.GetOrders(),
-                ApplicationUser = _users.GetUsers(),
-            };
+        //public IActionResult Index()
+        //{
+        //    GeneralViewModel viewModel = new GeneralViewModel
+        //    {
+        //        CategoryCount = _category.CountCategory(),
+        //        UserCount = _users.CountUser(),
+        //        ProductCount = _product.CountProduct(),
+        //        OrderCount = _order.CountOrders(),
+        //        CategoryOutputViewModel = _category.GetCategory(),
+        //        ProductOutputViewModel = _product.GetProducts(),
+        //        OrderOutputViewModel = _order.GetOrders(),
+        //        ApplicationUser = _users.GetUsers(),
+        //    };
 
 
-            return View(viewModel);
-        }
+        //    return View(viewModel);
+        //}
 
         //public IActionResult CategoryCount()
         //{
@@ -89,7 +89,7 @@ namespace Winter.Controllers
         //    return View(viewModel);
         //}
 
-        public IActionResult CategoryDetails(int? Id)
+        public IActionResult CategoryDetails(int Id)
         {
             if (Id == null)
             {
@@ -100,7 +100,7 @@ namespace Winter.Controllers
             return View(categorydetails);
         }
 
-        public IActionResult Edit_Category(int? Id)
+        public IActionResult Edit_Category(int Id)
         {
             var category = _category.GetCategoryById(Id);
 
@@ -140,7 +140,7 @@ namespace Winter.Controllers
         //}
 
         [HttpPost]
-        public IActionResult DeleteCategory(int? Id)
+        public IActionResult DeleteCategory(int Id)
         {
             _category.DeleteCategory(Id);
 
@@ -430,12 +430,12 @@ namespace Winter.Controllers
         //    return View(model);
         //}
 
-        public IActionResult UserList()
-        {
-            var users = _users.GetUsers();
+        //public IActionResult UserList()
+        //{
+        //    var users = _users.GetUsers();
 
-            return View(users);
-        }
+        //    return View(users);
+        //}
 
         public static string GetFileExtensionFromFileName(string fileName)
         {
