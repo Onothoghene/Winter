@@ -43,6 +43,9 @@ namespace Winter
             services.AddScoped<IOrder, EFOrder>();
             services.AddScoped<ICategory, EFCategory>();
             services.AddScoped<IUsers, EFUser>();
+            services.AddScoped<IWishList, EFWishList>();
+            services.AddScoped<IAdmin, EFAdmin>();
+            services.AddScoped<ICartItem, EFCartItem>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

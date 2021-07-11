@@ -5,7 +5,11 @@ namespace Winter.Logic
 {
     public interface IUsers
     {
-        //int CountUser();
-        //IEnumerable<ApplicationUser> GetUsers();
+        long CountUser();
+        IEnumerable<UserOM> GetUsers();
+        bool AddUser(UserIM model);
+        bool EditUser(UserEM model);
+        bool DeleteUser(long UserId);
+        UserOM GetUserDetail(long UserId);
     }
 }

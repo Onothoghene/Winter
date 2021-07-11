@@ -160,6 +160,37 @@ namespace Winter.Services
         #endregion
 
 
+        #region Cart Item
+
+        public Cart Parse(CartIM model)
+        {
+            var _model = new Cart
+            {
+                ProductId = model.ProductId,
+                UserId = model.UserId,
+                DateAdded = DateTime.Now,
+            };
+            _model.Quantity = model.Quantity > 0 ? model.Quantity : _model.Quantity++;
+
+            return _model;
+        }
+
+        public CartOM Create(Cart model)
+        {
+            var _model = new CartOM
+            {
+                ProductId = model.ProductId,
+                ProductName = model.Product.ProductName,
+                UserId = model.UserId,
+                UserName = Create(model.User.FullName, model.User.LastName),
+                DateAdded = (DateTime)model.DateAdded,
+                Quantity = (int)model.Quantity,
+            };
+            return _model;
+        }
+
+        #endregion
+
         //public ProductFile Parse(ProductFileInputViewModel model)
         //{
         //    var _model = new ProductFile
@@ -191,6 +222,7 @@ namespace Winter.Services
 
             return _model;
         }
+
         public ProductFileInputViewModel Create(ProductFile model)
         {
             var _model = new ProductFileInputViewModel

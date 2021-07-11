@@ -7,10 +7,12 @@ namespace Winter.ILogic
     public interface IOrder
     {
         bool AddOrder(OrderInputViewModel model);
-        //bool DeleteOrder(int? Id);
-        //CheckOutInputViewModel GetProductById(int? Id);
+        int TotalOrders();
+        int UserTotalOrderCount(long userId);
+        bool DeleteOrder(int orderId);
+        IEnumerable<OrderOutputViewModel> GetUserOrders(long UserId);
+        bool CancelOrder(int orderId);
         IEnumerable<OrderOutputViewModel> GetOrders();
         bool EditOrder(OrderOutputViewModel model);
-        int CountOrders();
     }
 }

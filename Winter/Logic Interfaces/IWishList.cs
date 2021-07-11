@@ -10,5 +10,6 @@ namespace Winter.ILogic
         bool RemoveItem(long wishId);
         IEnumerable<WishOM> GetUserWishList(long UserProfile);
         WishOM GetWishDetail(long wishId);
+        long GetUserWishListCount(long userId);
     }
 }

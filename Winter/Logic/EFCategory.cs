@@ -13,13 +13,13 @@ namespace Winter.Logic
 {
     public class EFCategory : ICategory
     {
-        private readonly WinterContext _winterContext;
-        ModelFactory _modelFactory = new ModelFactory();
+        private readonly WinterContext _context;
+        readonly ModelFactory _modelFactory = new ModelFactory();
 
 
         public EFCategory(WinterContext context)
         {
-            _winterContext = context;
+            _context = context;
         }
 
         public bool AddCategory(CategoryInputViewModel model)
@@ -27,8 +27,8 @@ namespace Winter.Logic
             try
             {
                 var category = _modelFactory.Parse(model);
-                _winterContext.Category.Add(category);
-               int bit =  _winterContext.SaveChanges();
+                _context.Category.Add(category);
+               int bit = _context.SaveChanges();
 
                 if (bit > 0)
                     return true;
@@ -46,7 +46,7 @@ namespace Winter.Logic
         {
             try
             {
-                var category = _winterContext.Category.ToList();
+                var category = _context.Category.ToList();
                 var resp = category.Select(x => _modelFactory.Create(x));
 
                 return resp;
@@ -62,7 +62,7 @@ namespace Winter.Logic
         {
             try
             {
-                var category = _winterContext.Category.Find(Id);
+                var category = _context.Category.Find(Id);
                 var resp = _modelFactory.Create(category);
 
                 return resp;
@@ -78,11 +78,11 @@ namespace Winter.Logic
         {
             try
             {
-                var category = _winterContext.Category.Find(Id);
+                var category = _context.Category.Find(Id);
                 if (category != null)
                 {
-                    _winterContext.Category.Remove(category);
-                    _winterContext.SaveChanges();
+                    _context.Category.Remove(category);
+                    _context.SaveChanges();
 
                     return true;
                 }
@@ -102,7 +102,7 @@ namespace Winter.Logic
             {
                 using (TransactionScope ts = new TransactionScope())
                 {
-                    var category = _winterContext.Category.Find(model.CategoryId);
+                    var category = _context.Category.Find(model.CategoryId);
 
                     if (category != null)
                     {
@@ -111,7 +111,7 @@ namespace Winter.Logic
                         category.Description = model.Description;
                         category.DateModified = DateTime.Now;
 
-                        _winterContext.SaveChanges();
+                        _context.SaveChanges();
 
                         ts.Complete();
                         return true;
@@ -140,7 +140,7 @@ namespace Winter.Logic
         {
             try
             {
-                var count = _winterContext.Category.ToList().Count();
+                var count = _context.Category.ToList().Count();
                 return count;
             }
             catch (Exception)

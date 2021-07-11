@@ -50,5 +50,9 @@ namespace Winter.Controllers
             return View();
         }
 
+        #region Methods
+
+        #endregion
+
     }
 }

@@ -14,7 +14,6 @@ namespace Winter.Logic
 {
     public class EFOrder : IOrder
     {
-        //private readonly ApplicationDbContext _context;
         private readonly WinterContext _context;
         ModelFactory _modelFactory = new ModelFactory();
 
@@ -95,7 +94,57 @@ namespace Winter.Logic
             }
         }
 
-        public int CountOrders()
+        public bool CancelOrder(int orderId)
+        {
+            try
+            {
+                using (TransactionScope ts = new TransactionScope())
+                {
+                    var order = _context.OrderRequest.Find(orderId);
+                    if (order != null)
+                    {
+                        //order.IsCancelled = true;
+                        //order.DateCancelled = DateTime.Now;
+
+                        _context.SaveChanges();
+                        ts.Complete();
+                        return true;
+                    }
+                    return false;
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public bool DeleteOrder(int orderId)
+        {
+            try
+            {
+                using (TransactionScope ts = new TransactionScope())
+                {
+                    var order = _context.OrderRequest.Find(orderId);
+                    if (order != null)
+                    {
+                        _context.OrderRequest.Remove(order);
+                        _context.SaveChanges();
+                        ts.Complete();
+                        return true;
+                    }
+                    return false;
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public int TotalOrders()
         {
             try
             {
@@ -123,5 +172,45 @@ namespace Winter.Logic
                 throw;
             }
         }
+
+        public IEnumerable<OrderOutputViewModel> GetUserOrders(long UserId)
+        {
+            try
+            {
+                var order = _context.OrderRequest.Where(w => w.AddedBy == UserId)
+                                                                              .Include(c => c.AddedByNavigation)
+                                                                              .Include(x => x.Product)
+                                                                              .ToList();
+
+                var resp = order.Select(x => _modelFactory.Create(x));
+
+                return resp;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        //public IEnumerable<OrderOutputViewModel> GetUserCancelledORd(long UserId)
+        //{
+        //    try
+        //    {
+        //        var order = _context.OrderRequest.Where(w => w.AddedBy == UserId)
+        //                                                                      .Include(c => c.AddedByNavigation)
+        //                                                                      .Include(x => x.Product)
+        //                                                                      .ToList();
+
+        //        var resp = order.Select(x => _modelFactory.Create(x));
+
+        //        return resp;
+        //    }
+        //    catch (Exception)
+        //    {
+
+        //        throw;
+        //    }
+        //}
     }
 }

@@ -116,5 +116,22 @@ namespace Winter.Logic
             }
         }
 
+        public long GetUserWishListCount(long userId)
+        {
+            try
+            {
+                var count = _context.Wish.Where(s => s.UserId == userId)
+                                                          .ToList()
+                                                          .Count();
+
+                return count;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
     }
 }
