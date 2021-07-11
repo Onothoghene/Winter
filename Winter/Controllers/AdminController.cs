@@ -250,26 +250,28 @@ namespace Winter.Controllers
             return View(categories);
         }
 
-        public IActionResult Product_Details(int? Id)
+        public IActionResult Product_Details(int Id)
         {
-            if (Id == null)
-            {
-                return RedirectToAction("Index");
-            }
+            //if (Id <= 0)
+            //{
+            //    return RedirectToAction("Index");
+            //}
 
-            var productdetails = _product.GetProductById(Id);
+            //var productdetails = _product.GetProductById(Id);
 
-            var generalView = new GeneralViewModel
-            {
-                ProductViewModel = productdetails,
-            };
+            //var generalView = new GeneralViewModel
+            //{
+            //    ProductViewModel = productdetails,
+            //};
 
-            
 
-            return View(generalView);
+
+            //return View(generalView);
+
+            return View();
         }
 
-        public IActionResult UpdateProduct(int? Id)
+        public IActionResult UpdateProduct(int Id)
         {
             var productOutput = _product.GetProductById(Id);
 
@@ -281,7 +283,7 @@ namespace Winter.Controllers
                 Description = productOutput.Description,
                 UnitPrice = productOutput.UnitPrice,
                 ProductFile = productOutput.ProductFile,
-                DateModified = DateTime.Now,
+                //DateModified = DateTime.Now,
             };
             _product.ConfigureEditViewModelForDropDown(productEdit);
 
@@ -358,8 +360,8 @@ namespace Winter.Controllers
         //    return View(productEdit);
         //}
 
-        [HttpPost]
-        public IActionResult DeleteProduct(int? Id)
+        [HttpDelete]
+        public IActionResult DeleteProduct(int Id)
         {
             _product.DeleteProduct(Id);
             TempData["Message"] = "Deleted Successfully";

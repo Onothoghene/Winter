@@ -29,4 +29,9 @@ namespace Winter.ViewModels.Input_Models
 
 
     }
+
+    public class ProductIM
+    {
+
+    }
 }

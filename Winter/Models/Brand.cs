@@ -3,21 +3,21 @@ using System.Collections.Generic;
 
 namespace Winter.Models
 {
-    public partial class Category
+    public partial class Brand
     {
-        public Category()
+        public Brand()
         {
             Product = new HashSet<Product>();
-            SubCategory = new HashSet<SubCategory>();
         }
 
         public int Id { get; set; }
-        public string CategoryName { get; set; }
+        public string Name { get; set; }
         public string Description { get; set; }
-        public DateTime? DateAdded { get; set; }
+        public DateTime DateAdded { get; set; }
+        public bool? IsDeleted { get; set; }
+        public DateTime? DateDeleted { get; set; }
         public DateTime? DateModified { get; set; }
 
         public ICollection<Product> Product { get; set; }
-        public ICollection<SubCategory> SubCategory { get; set; }
     }
 }

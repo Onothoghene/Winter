@@ -81,6 +81,46 @@ namespace Winter.Services
             return _model;
         }
 
+        public Product Parse(ProductIM model)
+        {
+            var _model = new Product
+            {
+                //Id = model.ProductId,
+                //ProductName = model.ProductName,
+                //Description = model.Description,
+                //UnitPrice = model.UnitPrice,
+                //CategoryID = model.CategoryID,
+                //ProductFileId = model.ProductFileId,
+                DateAdded = DateTime.Now,
+            };
+            return _model;
+        }
+
+        public ProductOM Create2(Product model)
+        {
+            var _model = new ProductOM
+            {
+                ProductId = model.Id,
+                ProductName = model.ProductName,
+                Category = model.Category.CategoryName,
+                Description = model.Description,
+                UnitPrice = model.UnitPrice,
+                // CategoryID = model.CategoryID,
+                DateAdded = model.DateAdded,
+                DateModified = model.DateModified,
+            };
+
+            if (model.ProductFile != null)
+            {
+                if (model.ProductFile.Count > 0)
+                {
+                    _model.ProductFile = model.ProductFile.Select(x => Create(x)).ToList();
+                }
+            }
+
+            return _model;
+        }
+
         #endregion
 
         #region Category
@@ -111,6 +151,16 @@ namespace Winter.Services
                 DateModified = model.DateModified,
             };
 
+            return _model;
+        }
+
+        public CategoryOMLite CreateLite(Category model)
+        {
+            var _model = new CategoryOMLite()
+            {
+                CategoryId = model.Id,
+                CategoryName = model.CategoryName,
+            };
             return _model;
         }
 
@@ -159,6 +209,27 @@ namespace Winter.Services
 
         #endregion
 
+        #region Users
+
+        public UserOM Create(UserProfile model)
+        {
+            var _model = new UserOM()
+            {
+
+            };
+            return _model;
+        }
+
+        public UserProfile Parse(UserIM model)
+        {
+            var _model = new UserProfile()
+            {
+
+            };
+            return _model;
+        }
+
+        #endregion
 
         #region Cart Item
 

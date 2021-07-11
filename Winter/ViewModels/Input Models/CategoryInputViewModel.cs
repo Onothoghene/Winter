@@ -16,4 +16,9 @@ namespace Winter.ViewModels.Input_Models
         public DateTime? DateModified { get; set; }
         public ICollection<Product> Product { get; set; }
     }
+
+    public class CategoryIM
+    {
+
+    }
 }

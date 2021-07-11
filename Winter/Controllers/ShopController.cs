@@ -16,6 +16,11 @@ namespace Winter.Controllers
             _category = category;
         }
 
+        public IActionResult Index()
+        {
+            return View();
+        }
+
         public IActionResult Category()
         {
             //GeneralViewModel viewModel = new GeneralViewModel
@@ -27,20 +32,23 @@ namespace Winter.Controllers
             return View();
         }
 
-        public IActionResult ProductDetails(int? Id)
+        public IActionResult ProductDetails(int Id)
         {
-            if (Id == null)
-            {
-                return RedirectToAction("Index", "Home");
-            }
-            var productdetails = _product.GetProductById(Id);
+            //if (Id == null)
+            //{
+            //    return RedirectToAction("Index", "Home");
+            //}
+            //var productdetails = _product.GetProductById(Id);
 
-            var generalView = new GeneralViewModel
-            {
-                ProductViewModel = productdetails,
-            };
+            //var generalView = new GeneralViewModel
+            //{
+            //    ProductViewModel = productdetails,
+            //};
 
-            return View(generalView);
+            //return View(generalView);
+
+            return View();
         }
+
     }
 }

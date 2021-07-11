@@ -18,11 +18,13 @@ namespace Winter.Controllers
 
         public IActionResult Index()
         {
-            GeneralViewModel viewModel = new GeneralViewModel
-            {
-                ProductOutputViewModel = _product.GetNewArrivals(),
-            };
-            return View(viewModel);
+            //GeneralViewModel viewModel = new GeneralViewModel
+            //{
+            //    ProductOutputViewModel = _product.GetNewArrivals(),
+            //};
+            //return View(viewModel);
+
+            return View();
         }
 
         //public IActionResult NewArrivals()

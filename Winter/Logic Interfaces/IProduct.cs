@@ -10,13 +10,13 @@ namespace Winter.Logic
     {
         int AddProduct(Product model, List<ProductFileInputViewModel> productFiles);
         //int AddProduct(ProductInputViewModel model);
-        bool DeleteProduct(int? Id);
-        ProductOutputViewModel GetProductById(int? Id);
-        IEnumerable<ProductOutputViewModel> GetProducts();
-        IEnumerable<ProductOutputViewModel> GetNewArrivals();
-        bool UpdateProduct(ProductEditViewModel model);
+        bool DeleteProduct(int Id);
+        ProductOM GetProductById(int Id);
+        IEnumerable<ProductOM> GetProducts();
+        IEnumerable<ProductOM> GetNewArrivals();
+        bool UpdateProduct(ProductEM model);
         void ConfigureInputViewModelForDropDown(ProductInputViewModel model);
         void ConfigureEditViewModelForDropDown(ProductEditViewModel model);
-        int CountProduct();
+        long CountProduct();
     }
 }

@@ -15,6 +15,10 @@ namespace Winter.Models
         public long AddedBy { get; set; }
         public bool? IsDeleted { get; set; }
         public DateTime? DateDeleted { get; set; }
+        public bool? IsCancelled { get; set; }
+        public bool? IsApproved { get; set; }
+        public DateTime? DateCancelled { get; set; }
+        public DateTime? DateApproved { get; set; }
 
         public UserProfile AddedByNavigation { get; set; }
         public Product Product { get; set; }

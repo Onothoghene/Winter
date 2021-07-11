@@ -1,5 +1,4 @@
-﻿using Winter.Data;
-using Winter.Services;
+﻿using Winter.Services;
 using Winter.ViewModels.Edit_Models;
 using Winter.ViewModels.Input_Models;
 using Winter.ViewModels.Output_Models;
@@ -8,8 +7,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Winter.Models;
-using System.IO;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Winter.Logic
@@ -17,7 +14,7 @@ namespace Winter.Logic
     public class EFProduct : IProduct
     {
         private readonly WinterContext _context;
-        ModelFactory _modelFactory = new ModelFactory();
+        readonly ModelFactory _modelFactory = new ModelFactory();
         ProductFileInputViewModel filemodel = new ProductFileInputViewModel();
 
         public EFProduct(WinterContext context)
@@ -62,40 +59,56 @@ namespace Winter.Logic
             }
         }
 
-        public IEnumerable<ProductOutputViewModel> GetProducts()
+        public IEnumerable<ProductOM> GetProducts()
         {
-            var product = _context.Product.Include(x => x.Category)
-                                                                    .Include(x => x.ProductFile)
-                                                                    .ToList();
-            var resp = product.Select(x => _modelFactory.Create(x));
-
-            return resp;
-        }
-
-        public ProductOutputViewModel GetProductById(int? Id)
-        {
-            //var product = _context.Product.Find(Id);
-            var product = _context.Product.Include(x => x.Category)
+            try
+            {
+                var product = _context.Product.Include(x => x.Category)
                                                                    .Include(x => x.ProductFile)
-                                                                   .Where(a => a.Id == Id).FirstOrDefault();
+                                                                   .ToList();
+                var resp = product.Select(x => _modelFactory.Create2(x));
 
-            var resp = _modelFactory.Create(product);
+                return resp;
+            }
+            catch (Exception)
+            {
 
-            return resp;
+                throw;
+            }
         }
 
-        public bool UpdateProduct(ProductEditViewModel model)
+        public ProductOM GetProductById(int Id)
+        {
+            try
+            {
+                var product = _context.Product.Where(a => a.Id == Id)
+                                                                        .Include(x => x.Category)
+                                                                       .Include(x => x.ProductFile)
+                                                                       .FirstOrDefault();
+
+                var resp = _modelFactory.Create2(product);
+
+                return resp;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public bool UpdateProduct(ProductEM model)
         {
             var product = _context.Product.Find(model.ProductId);
 
             if (product != null)
             {
-                product.ProductName = model.ProductName;
-                product.Id = model.ProductId;
-                product.Description = model.Description;
-                product.UnitPrice = model.UnitPrice;
-                product.UnitPrice = model.UnitPrice;
-                product.Description = model.Description;
+                //product.ProductName = model.ProductName;
+                //product.Id = model.ProductId;
+                //product.Description = model.Description;
+                //product.UnitPrice = model.UnitPrice;
+                //product.UnitPrice = model.UnitPrice;
+                //product.Description = model.Description;
                 //product.CategoryID = model.CategoryID;
                 product.DateModified = DateTime.Now;
                 _context.SaveChanges();
@@ -104,31 +117,55 @@ namespace Winter.Logic
             return true;
         }
 
-        public bool DeleteProduct(int? Id)
+        public bool DeleteProduct(int Id)
         {
-            var product = _context.Product.Find(Id);
-            _context.Product.Remove(product);
-            _context.SaveChanges();
+            try
+            {
+                var product = _context.Product.Find(Id);
+                _context.Product.Remove(product);
+                _context.SaveChanges();
 
-            return true;
+                return true;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
 
-       public  int CountProduct()
+        public long CountProduct()
         {
-            var count = _context.Product.ToList().Count();
-            return count;
+            try
+            {
+                var count = _context.Product.ToList().Count();
+                return count;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
 
-        public IEnumerable<ProductOutputViewModel> GetNewArrivals()
+        public IEnumerable<ProductOM> GetNewArrivals()
         {
-            var product = _context.Product.OrderByDescending(b =>b.DateAdded)
+            try
+            {
+                var products = _context.Product.OrderByDescending(b => b.DateAdded)
                                                                     .Take(6)
                                                                    .Include(x => x.Category)
                                                                    .Include(x => x.ProductFile)
                                                                    .ToList();
-            var resp = product.Select(x => _modelFactory.Create(x));
+                var resp = products.Select(x => _modelFactory.Create2(x));
 
-            return resp;
+                return resp;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
 
         public static string GetFileExtensionFromFileName(string fileName)
@@ -150,12 +187,32 @@ namespace Winter.Logic
 
         public void ConfigureInputViewModelForDropDown(ProductInputViewModel model)
         {
-            model.Categories = new SelectList(_context.Category.ToList(), "Id", "CategoryName");
+            try
+            {
+                var categoryList = _context.Category.ToList();
+                //model.Categories = new SelectList(_context.Category.ToList(), "Id", "CategoryName");
+                model.Categories = new SelectList(categoryList.Select(f => _modelFactory.CreateLite(f)));
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
 
         public void ConfigureEditViewModelForDropDown(ProductEditViewModel model)
         {
-            model.Categories = new SelectList(_context.Category.ToList(), "Id", "CategoryName");
+            try
+            {
+                var categoryList = _context.Category.ToList();
+                //model.Categories = new SelectList(_context.Category.ToList(), "Id", "CategoryName");
+                model.Categories = new SelectList(categoryList.Select(f => _modelFactory.CreateLite(f)));
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
 
         //public async Task<IActionResult> Upload(ProductInputViewModel model)

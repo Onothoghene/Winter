@@ -20,7 +20,9 @@ namespace Winter.Models
         public int? CategoryId { get; set; }
         public DateTime? DateAdded { get; set; }
         public DateTime? DateModified { get; set; }
+        public int? BrandId { get; set; }
 
+        public Brand Brand { get; set; }
         public Category Category { get; set; }
         public ICollection<Cart> Cart { get; set; }
         public ICollection<OrderRequest> OrderRequest { get; set; }
