@@ -1,4 +1,5 @@
-﻿using Winter.Services;
+﻿using Winter.Data;
+using Winter.Services;
 using Winter.ViewModels.Edit_Models;
 using Winter.ViewModels.Input_Models;
 using Winter.ViewModels.Output_Models;
@@ -7,70 +8,44 @@ using System.Collections.Generic;
 using System.Linq;
 using Winter.ILogic;
 using System.Transactions;
-using Winter.Models;
 
 namespace Winter.Logic
 {
-    public class EFCategory : ICategory
+    public class EFSubCategory : ICategory
     {
-        private readonly WinterContext _context;
-        readonly ModelFactory _modelFactory = new ModelFactory();
+        private readonly ApplicationDbContext _context;
+        ModelFactory _modelFactory = new ModelFactory();
 
-        public EFCategory(WinterContext context)
+
+        public EFSubCategory(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        public bool AddCategory(CategoryInputViewModel model)
+        public int AddCategory(CategoryInputViewModel model)
         {
-            try
-            {
-                var category = _modelFactory.Parse(model);
-                _context.Category.Add(category);
-                int bit = _context.SaveChanges();
+            var category = _modelFactory.Parse(model);
+            _context.Category.Add(category);
+            _context.SaveChanges();
 
-                if (bit > 0)
-                    return true;
-                else
-                    return false;
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
+            return category.Id;
         }
 
         public IEnumerable<CategoryOutputViewModel> GetCategory()
         {
-            try
-            {
-                var category = _context.Category.ToList();
-                var resp = category.Select(x => _modelFactory.Create(x));
 
-                return resp;
-            }
-            catch (Exception)
-            {
+            var category = _context.Category.ToList();
+            var resp = category.Select(x => _modelFactory.Create(x));
 
-                throw;
-            }
+            return resp;
         }
 
         public CategoryOutputViewModel GetCategoryById(int? Id)
         {
-            try
-            {
-                var category = _context.Category.Find(Id);
-                var resp = _modelFactory.Create(category);
+            var category = _context.Category.Find(Id);
+            var resp = _modelFactory.Create(category);
 
-                return resp;
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
+            return resp;
         }
 
         public bool DeleteCategory(int? Id)
@@ -86,7 +61,7 @@ namespace Winter.Logic
                     return true;
                 }
                 return false;
-
+               
             }
             catch (Exception)
             {
@@ -135,18 +110,10 @@ namespace Winter.Logic
         //    return model.count;
         //}
 
-        public long CountCategory()
+        public int CountCategory()
         {
-            try
-            {
-                var count = _context.Category.ToList().Count();
-                return count;
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
+            var count = _context.Category.ToList().Count();
+            return count;
 
         }
 

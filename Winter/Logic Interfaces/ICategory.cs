@@ -13,6 +13,6 @@ namespace Winter.ILogic
         bool DeleteCategory(int Id);
         bool UpdateCategory(CategoryEditViewModel model);
         //int CountCategory(CategoryOutputViewModel model);
-        int CountCategory();
+        long CountCategory();
     }
 }
