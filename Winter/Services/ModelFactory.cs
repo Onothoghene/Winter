@@ -49,6 +49,7 @@ namespace Winter.Services
                 ProductName = model.ProductName,
                 Description = model.Description,
                 UnitPrice = model.UnitPrice,
+
                 //CategoryID = model.CategoryID,
                 //ProductFileId = model.ProductFileId,
                 DateAdded = DateTime.Now,
