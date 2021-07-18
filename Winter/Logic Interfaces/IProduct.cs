@@ -9,7 +9,7 @@ namespace Winter.Logic
     public interface IProduct
     {
         int AddProduct(Product model, List<ProductFileInputViewModel> productFiles);
-        //int AddProduct(ProductInputViewModel model);
+        IEnumerable<ProductOM> GetRandomProducts();
         bool DeleteProduct(int Id);
         ProductOM GetProductById(int Id);
         IEnumerable<ProductOM> GetProducts();

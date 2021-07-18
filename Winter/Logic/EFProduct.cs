@@ -168,6 +168,26 @@ namespace Winter.Logic
             }
         }
 
+        public IEnumerable<ProductOM> GetRandomProducts()
+        {
+            try
+            {
+                var rand = new Random();
+                var products = _context.Product.OrderBy(x => rand.Next()).Take(5)
+                                                                         .Include(d => d.Brand)
+                                                                         .Include(t => t.ProductFile);
+
+                var resp = products.Select(x => _modelFactory.Create2(x));
+
+                return resp;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
         public static string GetFileExtensionFromFileName(string fileName)
         {
             string fileExtension = "";

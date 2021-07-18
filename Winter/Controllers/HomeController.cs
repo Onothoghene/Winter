@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Winter.ILogic;
 using Winter.Logic;
-using Winter.ViewModels;
 
 namespace Winter.Controllers
 {
@@ -18,12 +17,20 @@ namespace Winter.Controllers
 
         public IActionResult Index()
         {
-            //GeneralViewModel viewModel = new GeneralViewModel
+            //try
             //{
-            //    ProductOutputViewModel = _product.GetNewArrivals(),
-            //};
-            //return View(viewModel);
+            //    GeneralViewModel viewModel = new GeneralViewModel
+            //    {
+            //        ProductOutputViewModel = _product.GetNewArrivals(),
+            //    };
+            //    return View(viewModel);
+            //}
+            //catch (Exception)
+            //{
 
+            //    throw;
+            //}
+            
             return View();
         }
 
