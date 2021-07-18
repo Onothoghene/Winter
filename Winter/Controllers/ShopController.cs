@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Winter.ILogic;
 using Winter.Logic;
-using Winter.ViewModels;
 
 namespace Winter.Controllers
 {

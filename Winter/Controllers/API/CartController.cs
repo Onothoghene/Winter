@@ -44,7 +44,7 @@ namespace Winter.Controllers
         }
 
         [HttpGet]
-        [Route("/cartId/Detail")]
+        [Route("/cartId/CartDetail")]
         public async Task<IActionResult> CartDetail(long cartId)
         {
             try
@@ -84,7 +84,7 @@ namespace Winter.Controllers
         }
 
         [HttpDelete]
-        [Route("/Id/Delete")]
+        [Route("/Id/Delete/CartItem")]
         public async Task<IActionResult> RemoveItem(long Id)
         {
             try
@@ -109,7 +109,7 @@ namespace Winter.Controllers
         }
 
         [HttpDelete]
-        [Route("/UserId/Delete")]
+        [Route("/UserId/Delete/CartItems")]
         public async Task<IActionResult> RemoveUserItems(long UserId)
         {
             try
