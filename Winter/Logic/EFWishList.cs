@@ -133,5 +133,30 @@ namespace Winter.Logic
             }
         }
 
+        public bool RemoveWishListItems(long userId)
+        {
+            try
+            {
+                using (TransactionScope ts = new TransactionScope())
+                {
+                    var wishes = _context.Wish.Where(x => x.UserId == userId);
+
+                    if (wishes != null)
+                    {
+                        _context.Wish.RemoveRange(wishes);
+                        _context.SaveChanges();
+                        ts.Complete();
+                        return true;
+                    }
+                    return false;
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
     }
 }

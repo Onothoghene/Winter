@@ -7,30 +7,30 @@ using Winter.ViewModels.Input_Models;
 namespace Winter.Controllers
 {
     [ApiController]
-    [Route("api/Wish")]
-    public class WishController : ControllerBase
+    [Route("api/Cart")]
+    public class CartController : ControllerBase
     {
-        public readonly IWishList _wishList;
+        public readonly ICartItem _cartItem;
 
-        public WishController(IWishList wishList)
+        public CartController(ICartItem cartItem)
         {
-            _wishList = wishList;
+            _cartItem = cartItem;
         }
 
         [HttpPost]
-        [Route("/AddToWish")]
-        public async Task<IActionResult> AddToWish([FromBody] WishIM model)
+        [Route("/AddToCart")]
+        public async Task<IActionResult> AddToCart([FromBody] CartIM model)
         {
             try
             {
                 if (ModelState.IsValid)
                 {
-                    var response = await Task.Run(() => _wishList.AddToWishLIst(model));
+                    var response = await Task.Run(() => _cartItem.AddToCart(model));
                     if (response == true)
                     {
                         return Ok(true);
                     }
-                    return BadRequest("Unable to add");
+                    return BadRequest("Unable to Add!!");
                 }
                 else
                 {
@@ -44,29 +44,33 @@ namespace Winter.Controllers
         }
 
         [HttpGet]
-        [Route("/wishId/Detail")]
-        public async Task<IActionResult> WishDetail(long wishId)
+        [Route("/cartId/Detail")]
+        public async Task<IActionResult> CartDetail(long cartId)
         {
             try
             {
-                var wish = await Task.Run(() => _wishList.GetWishDetail(wishId));
-                return Ok(wish);
+                if (cartId > 0)
+                {
+                    var wish = await Task.Run(() => _cartItem.GetCartDetails(cartId));
+                    return Ok(wish);
+                }
+                return NotFound();
             }
             catch (Exception)
             {
-                return NotFound("The Wish requested for could not be found.");
+                return NotFound("The Cart Item requested for could not be found.");
             }
         }
 
         [HttpGet]
-        [Route("/UserId/WishList")]
-        public async Task<IActionResult> UserWishLIst(long userId)
+        [Route("/UserId/CartList")]
+        public async Task<IActionResult> UserCartList(long userId)
         {
             try
             {
                 if (userId > 0)
                 {
-                    var wish = await Task.Run(() => _wishList.GetUserWishList(userId));
+                    var wish = await Task.Run(() => _cartItem.GetUserCartList(userId));
                     return Ok(wish);
                 }
                 return NotFound("Not Found");
@@ -87,33 +91,12 @@ namespace Winter.Controllers
             {
                 if (Id > 0)
                 {
-                    var response = await Task.Run(() => _wishList.RemoveItem(Id));
+                    var response = await Task.Run(() => _cartItem.RemoveItem(Id));
                     if (response == true)
                     {
                         return Ok(response);
                     }
                     return BadRequest(false);
-                }
-                return NotFound("Not Found");
-            }
-            catch (Exception ex)
-            {
-
-                return StatusCode(500, ex);
-            }
-
-        }
-
-        [HttpDelete]
-        [Route("/UserId/WishList/Count")]
-        public async Task<IActionResult> UserWishListCount(long UserId)
-        {
-            try
-            {
-                if (UserId > 0)
-                {
-                    var response = await Task.Run(() => _wishList.GetUserWishListCount(UserId));
-                    return Ok(response);
                 }
                 return NotFound("Not Found");
             }
@@ -127,13 +110,13 @@ namespace Winter.Controllers
 
         [HttpDelete]
         [Route("/UserId/Delete")]
-        public async Task<IActionResult> RemoveWishItems(long UserId)
+        public async Task<IActionResult> RemoveUserItems(long UserId)
         {
             try
             {
                 if (UserId > 0)
                 {
-                    var response = await Task.Run(() => _wishList.RemoveWishListItems(UserId));
+                    var response = await Task.Run(() => _cartItem.RemoveUserItems(UserId));
                     if (response == true)
                     {
                         return Ok(response);
@@ -149,5 +132,28 @@ namespace Winter.Controllers
             }
 
         }
+
+        [HttpDelete]
+        [Route("/UserId/CartCount")]
+        public async Task<IActionResult> UserCartCount(long UserId)
+        {
+            try
+            {
+                if (UserId > 0)
+                {
+                    var response = await Task.Run(() => _cartItem.GetUserCartItemCount(UserId));
+                    return Ok(response);
+                }
+                return NotFound("Not Found");
+            }
+            catch (Exception ex)
+            {
+
+                return StatusCode(500, ex);
+            }
+
+        }
+
+
     }
 }

@@ -54,17 +54,43 @@ namespace Winter.Logic
             }
         }
 
-        public bool RemoveItem(long cartId, long userId)
+        //public bool RemoveItem(long cartId, long userId)
+        public bool RemoveItem(long cartId)
         {
             try
             {
                 using (TransactionScope ts = new TransactionScope())
                 {
-                    var cartItem = _context.Cart.Where(x => x.Id == cartId && x.UserId == userId).FirstOrDefault();
+                    var cartItem = _context.Cart.Where(x => x.Id == cartId).FirstOrDefault();
 
                     if (cartItem != null)
                     {
                         _context.Cart.Remove(cartItem);
+                        _context.SaveChanges();
+                        ts.Complete();
+                        return true;
+                    }
+                    return false;
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public bool RemoveUserItems(long userId)
+        {
+            try
+            {
+                using (TransactionScope ts = new TransactionScope())
+                {
+                    var cartItem = _context.Cart.Where(x => x.UserId == userId);
+
+                    if (cartItem != null)
+                    {
+                        _context.Cart.RemoveRange(cartItem);
                         _context.SaveChanges();
                         ts.Complete();
                         return true;
@@ -152,10 +178,8 @@ namespace Winter.Logic
 
                     if (cartItem != null)
                     {
-                        // cartItem.ProductId = model.ProductId;
-                        //cartItem.UserId = model.UserId;
                         cartItem.Quantity++;
-                        //cartItem.DateModified = DateTime.Now;
+                        cartItem.DateModified = DateTime.Now;
 
                         _context.SaveChanges();
 
