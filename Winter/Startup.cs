@@ -46,6 +46,8 @@ namespace Winter
             services.AddScoped<IWishList, EFWishList>();
             services.AddScoped<IAdmin, EFAdmin>();
             services.AddScoped<ICartItem, EFCartItem>();
+
+            services.AddSwaggerGen();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -77,6 +79,16 @@ namespace Winter
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
+
+            // Enable middleware to serve generated Swagger as a JSON endpoint.
+            app.UseSwagger();
+            // Enable middleware to serve swagger - ui(HTML, JS, CSS, etc.), specifying the Swagger JSON endpoint.
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("../swagger/v1/swagger.json", "Winter API");
+                // c.RoutePrefix = string.Empty;
+            });
+
         }
     }
 
