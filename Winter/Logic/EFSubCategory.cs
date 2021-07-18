@@ -1,5 +1,4 @@
-﻿using Winter.Data;
-using Winter.Services;
+﻿using Winter.Services;
 using Winter.ViewModels.Edit_Models;
 using Winter.ViewModels.Input_Models;
 using Winter.ViewModels.Output_Models;
@@ -8,60 +7,32 @@ using System.Collections.Generic;
 using System.Linq;
 using Winter.ILogic;
 using System.Transactions;
+using Winter.Models;
 
 namespace Winter.Logic
 {
-    public class EFSubCategory : ICategory
+    public class EFSubCategory : ISubCategory
     {
-        private readonly ApplicationDbContext _context;
+        private readonly WinterContext _context;
         ModelFactory _modelFactory = new ModelFactory();
 
-
-        public EFSubCategory(ApplicationDbContext context)
+        public EFSubCategory(WinterContext context)
         {
             _context = context;
         }
 
-        public int AddCategory(CategoryInputViewModel model)
-        {
-            var category = _modelFactory.Parse(model);
-            _context.Category.Add(category);
-            _context.SaveChanges();
-
-            return category.Id;
-        }
-
-        public IEnumerable<CategoryOutputViewModel> GetCategory()
-        {
-
-            var category = _context.Category.ToList();
-            var resp = category.Select(x => _modelFactory.Create(x));
-
-            return resp;
-        }
-
-        public CategoryOutputViewModel GetCategoryById(int? Id)
-        {
-            var category = _context.Category.Find(Id);
-            var resp = _modelFactory.Create(category);
-
-            return resp;
-        }
-
-        public bool DeleteCategory(int? Id)
+        public bool AddSubCategory(CategoryInputViewModel model)
         {
             try
             {
-                var category = _context.Category.Find(Id);
-                if (category != null)
-                {
-                    _context.Category.Remove(category);
-                    _context.SaveChanges();
+                var category = _modelFactory.Parse(model);
+                _context.Category.Add(category);
+                int bit = _context.SaveChanges();
 
+                if (bit > 0)
                     return true;
-                }
-                return false;
-               
+                else
+                    return false;
             }
             catch (Exception)
             {
@@ -70,7 +41,46 @@ namespace Winter.Logic
             }
         }
 
-        public bool UpdateCategory(CategoryEditViewModel model)
+        public IEnumerable<CategoryOutputViewModel> GetSubCategory()
+        {
+
+            var category = _context.Category.ToList();
+            var resp = category.Select(x => _modelFactory.Create(x));
+
+            return resp;
+        }
+
+        public CategoryOutputViewModel GetSubCategoryById(int Id)
+        {
+            var category = _context.Category.Find(Id);
+            var resp = _modelFactory.Create(category);
+
+            return resp;
+        }
+
+        public bool DeleteSubCategory(int Id)
+        {
+            try
+            {
+                var data = _context.SubCategory.Find(Id);
+                if (data != null)
+                {
+                    _context.SubCategory.Remove(data);
+                    _context.SaveChanges();
+
+                    return true;
+                }
+                return false;
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public bool UpdateSubCategory(CategoryEditViewModel model)
         {
             try
             {
@@ -100,20 +110,18 @@ namespace Winter.Logic
             }
         }
 
-        //public int CountCategory(CategoryOutputViewModel model)
-        //{
-        //    //var count = db.Activities.Cart(c => c.UserName == "dd").ToList().Count;
-
-        //    //var count = _context.Category.ToList().Count();
-
-        //    model.count = _context.Category.ToList().Count();
-        //    return model.count;
-        //}
-
-        public int CountCategory()
+        public long CountSubCategory()
         {
-            var count = _context.Category.ToList().Count();
-            return count;
+            try
+            {
+                var count = _context.SubCategory.ToList().Count();
+                return count;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
 
         }
 

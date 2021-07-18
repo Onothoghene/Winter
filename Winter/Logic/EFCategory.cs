@@ -57,7 +57,7 @@ namespace Winter.Logic
             }
         }
 
-        public CategoryOutputViewModel GetCategoryById(int? Id)
+        public CategoryOutputViewModel GetCategoryById(int Id)
         {
             try
             {
@@ -73,7 +73,7 @@ namespace Winter.Logic
             }
         }
 
-        public bool DeleteCategory(int? Id)
+        public bool DeleteCategory(int Id)
         {
             try
             {
