@@ -18,9 +18,8 @@ namespace Winter.Controllers
             _products = product;
         }
 
-
         [HttpGet]
-        [Route("/RandomProducts")]
+        [Route("RandomProducts")]
         public async Task<IActionResult> RandomProducts()
         {
             try
@@ -36,7 +35,7 @@ namespace Winter.Controllers
         }
 
         [HttpGet]
-        [Route("/NewArrivals")]
+        [Route("NewArrivals")]
         public async Task<IActionResult> NewArrivals()
         {
             try
@@ -53,7 +52,7 @@ namespace Winter.Controllers
         }
 
         [HttpDelete]
-        [Route("/ProductId/Delete")]
+        [Route("ProductId/Delete")]
         public async Task<IActionResult> RemoveProduct(int ProductId)
         {
             try

@@ -18,7 +18,7 @@ namespace Winter.Controllers
         }
 
         [HttpPost]
-        [Route("/AddToWish")]
+        [Route("AddToWish")]
         public async Task<IActionResult> AddToWish([FromBody] WishIM model)
         {
             try
@@ -44,7 +44,7 @@ namespace Winter.Controllers
         }
 
         [HttpGet]
-        [Route("/wishId/WishDetail")]
+        [Route("{wishId}/WishDetail")]
         public async Task<IActionResult> WishDetail(long wishId)
         {
             try
@@ -59,7 +59,7 @@ namespace Winter.Controllers
         }
 
         [HttpGet]
-        [Route("/UserId/WishList")]
+        [Route("{UserId}/WishList")]
         public async Task<IActionResult> UserWishLIst(long userId)
         {
             try
@@ -80,7 +80,7 @@ namespace Winter.Controllers
         }
 
         [HttpDelete]
-        [Route("/Id/Delete/WishItem")]
+        [Route("{Id}/Delete/WishItem")]
         public async Task<IActionResult> RemoveItem(long Id)
         {
             try
@@ -105,7 +105,7 @@ namespace Winter.Controllers
         }
 
         [HttpDelete]
-        [Route("/UserId/WishList/Count")]
+        [Route("{UserId}WishList/Count")]
         public async Task<IActionResult> UserWishListCount(long UserId)
         {
             try
@@ -126,7 +126,7 @@ namespace Winter.Controllers
         }
 
         [HttpDelete]
-        [Route("/UserId/Delete/WishItems")]
+        [Route("{UserId}/Delete/WishItems")]
         public async Task<IActionResult> RemoveWishItems(long UserId)
         {
             try

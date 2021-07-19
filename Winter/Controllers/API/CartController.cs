@@ -18,7 +18,7 @@ namespace Winter.Controllers
         }
 
         [HttpPost]
-        [Route("/AddToCart")]
+        [Route("AddToCart")]
         public async Task<IActionResult> AddToCart([FromBody] CartIM model)
         {
             try
@@ -44,7 +44,7 @@ namespace Winter.Controllers
         }
 
         [HttpGet]
-        [Route("/cartId/CartDetail")]
+        [Route("{cartId}/CartDetail")]
         public async Task<IActionResult> CartDetail(long cartId)
         {
             try
@@ -63,7 +63,7 @@ namespace Winter.Controllers
         }
 
         [HttpGet]
-        [Route("/UserId/CartList")]
+        [Route("{UserId}/CartList")]
         public async Task<IActionResult> UserCartList(long userId)
         {
             try
@@ -84,7 +84,7 @@ namespace Winter.Controllers
         }
 
         [HttpDelete]
-        [Route("/Id/Delete/CartItem")]
+        [Route("{Id}/Delete/CartItem")]
         public async Task<IActionResult> RemoveItem(long Id)
         {
             try
@@ -109,7 +109,7 @@ namespace Winter.Controllers
         }
 
         [HttpDelete]
-        [Route("/UserId/Delete/CartItems")]
+        [Route("{UserId}/Delete/CartItems")]
         public async Task<IActionResult> RemoveUserItems(long UserId)
         {
             try
@@ -134,7 +134,7 @@ namespace Winter.Controllers
         }
 
         [HttpDelete]
-        [Route("/UserId/CartCount")]
+        [Route("{UserId}/CartCount")]
         public async Task<IActionResult> UserCartCount(long UserId)
         {
             try

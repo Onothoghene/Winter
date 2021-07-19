@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Winter.Models;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Transactions;
 
 namespace Winter.Logic
 {
@@ -21,16 +22,6 @@ namespace Winter.Logic
         {
             _context = context;
         }
-
-        //public int AddProduct(ProductInputViewModel model)
-        //{
-        //    FileUpload(filemodel);
-        //    var product = _modelFactory.Parse(model);
-        //    _context.Product.Add(product);
-        //    _context.SaveChanges();
-
-        //    return product.Id;
-        //}
 
         public int AddProduct(Product model, List<ProductFileInputViewModel> productFiles)
         {
@@ -58,6 +49,52 @@ namespace Winter.Logic
                 throw;
             }
         }
+
+        public bool AddProduct(ProductIM model)
+        {
+            try
+            {
+                using (TransactionScope ts = new TransactionScope())
+                {
+                    var prodct = _modelFactory.Parse(model);
+                    _context.Product.Add(prodct);
+                    int bit = _context.SaveChanges();
+                    ts.Complete();
+
+                    if (bit > 0)
+                        return true;
+                    else
+                        return false;
+                }
+            }
+            catch(Exception ex)
+            {
+                throw;
+            }
+        }
+
+        //public bool AddProductFile(ProductIM model)
+        //{
+        //    try
+        //    {
+        //        using (TransactionScope ts = new TransactionScope())
+        //        {
+        //            var prodct = _modelFactory.Parse(model);
+        //            _context.ProductFile.Add(prodct);
+        //            int bit = _context.SaveChanges();
+        //            ts.Complete();
+
+        //            if (bit > 0)
+        //                return true;
+        //            else
+        //                return false;
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw;
+        //    }
+        //}
 
         public IEnumerable<ProductOM> GetProducts()
         {
@@ -99,33 +136,52 @@ namespace Winter.Logic
 
         public bool UpdateProduct(ProductEM model)
         {
-            var product = _context.Product.Find(model.ProductId);
-
-            if (product != null)
+            try
             {
-                //product.ProductName = model.ProductName;
-                //product.Id = model.ProductId;
-                //product.Description = model.Description;
-                //product.UnitPrice = model.UnitPrice;
-                //product.UnitPrice = model.UnitPrice;
-                //product.Description = model.Description;
-                //product.CategoryID = model.CategoryID;
-                product.DateModified = DateTime.Now;
-                _context.SaveChanges();
-            }
+                using (TransactionScope ts = new TransactionScope())
+                {
+                    var product = _context.Product.Find(model.ProductId);
 
-            return true;
+                    if (product != null)
+                    {
+                        product.ProductName = model.ProductName;
+                        product.Id = model.ProductId;
+                        product.Description = model.Description;
+                        product.UnitPrice = model.UnitPrice;
+                        product.CategoryId = model.CategoryId;
+                        product.DateModified = DateTime.Now;
+
+                        _context.SaveChanges();
+                        ts.Complete();
+                        return true;
+                    }
+                    return false;
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
 
         public bool DeleteProduct(int Id)
         {
             try
             {
-                var product = _context.Product.Find(Id);
-                _context.Product.Remove(product);
-                _context.SaveChanges();
-
-                return true;
+                using (TransactionScope ts = new TransactionScope())
+                {
+                    var product = _context.Product.Find(Id);
+                    if (product != null)
+                    {
+                        _context.Product.Remove(product);
+                        _context.SaveChanges();
+                        ts.Complete();
+                        return true;
+                        
+                    }
+                    return false;
+                }
             }
             catch (Exception)
             {
@@ -173,11 +229,18 @@ namespace Winter.Logic
             try
             {
                 var rand = new Random();
-                var products = _context.Product.OrderBy(x => rand.Next()).Take(5)
-                                                                         .Include(d => d.Brand)
-                                                                         .Include(t => t.ProductFile);
+                var products = _context.Product.Include(d => d.Brand).Include(t => t.ProductFile).ToList();
 
-                var resp = products.Select(x => _modelFactory.Create2(x));
+                var chosenItems = new List<Product>();
+                var productstoGet = 5;
+
+                for (int i = 0; i < productstoGet; i++)
+                {
+                    int index = rand.Next(products.Count());
+                    chosenItems.Add(products[i]);
+                }
+
+                var resp = chosenItems.Select(x => _modelFactory.Create2(x));
 
                 return resp;
             }
