@@ -4,7 +4,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@model Winter.ViewModels.GeneralViewModel
+@model Winter.ViewModels.Output_Models.ProductOutputViewModel
 
 <!--================Single Product Area =================-->
 <div class="product_image_area section_padding">
@@ -13,19 +13,22 @@
             <div class="col-lg-5">
                 <div class="product_slider_img">
                     <div id="vertical">
-                        <img src='@Url.Action("DownloadDocument", "Admin", 
-                                 new { Filename = Model.ProductViewModel.ProductFile.FirstOrDefault().FileUniqueName}) ' height="405" width="450" />
+                        @*<img src='@Url.Action("DownloadDocument", "Admin",
+        new { Filename = Model.ProductFile.FirstOrDefault().FileUniqueName}) ' height="405" width="450" />*@
+
+                        <img src="/Admin/DownloadDocument?Filename=@Model.ProductFile.FirstOrDefault().FileUniqueName" height="405" width="450" />
+
                     </div>
                 </div>
             </div>
             <div class="col-lg-5 offset-lg-1">
                 <div class="s_product_text">
-                    <h3>@Html.DisplayFor(model => model.ProductViewModel.ProductName)</h3>
-                    <h2>$@Html.DisplayFor(model => model.ProductViewModel.UnitPrice)</h2>
+                    <h3>@Html.DisplayFor(model => model.ProductName)</h3>
+                    <h2>$@Html.DisplayFor(model => model.UnitPrice)</h2>
                     <ul class="list">
                         <li>
                             <a class="active" href="#">
-                                <span>Category</span> : @Html.DisplayFor(model => model.ProductViewModel.Category)
+                                <span>Category</span> : @Html.DisplayFor(model => model.Category)
                             </a>
                         </li>
                         <li>
@@ -38,7 +41,7 @@
         </li>*@
                     </ul>
                     <p>
-                        @Html.DisplayFor(model => model.ProductViewModel.Description)
+                        @Html.DisplayFor(model => model.Description)
                     </p>
                     <div class="card_area">
                         <div class="product_count d-inline-block">
