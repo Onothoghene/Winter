@@ -1,6 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using System.Collections.Generic;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using Winter.Helpers;
 using Winter.ILogic;
 using Winter.Logic;
+using Winter.ViewModels.Output_Models;
 
 namespace Winter.Controllers
 {
@@ -8,11 +14,13 @@ namespace Winter.Controllers
     {
         public readonly IProduct _product;
         public readonly ICategory _category;
+        readonly HttpClientHelper _helper ;
 
-        public ShopController(IProduct product, ICategory category)
+        public ShopController(IProduct product, ICategory category, HttpClientHelper helper)
         {
             _product = product;
             _category = category;
+            _helper = helper;
         }
 
         public IActionResult Index()
@@ -47,6 +55,19 @@ namespace Winter.Controllers
             //return View(generalView);
 
             return View();
+        }
+
+        public List<ProductOutputViewModel> GetNotifications()
+        {
+            var products = new List<ProductOutputViewModel>();
+            HttpClient client = _helper.Initial();
+            HttpResponseMessage response = client.GetAsync($"api/v1/Notification").Result;
+            if (response.IsSuccessStatusCode)
+            {
+                var stringData = response.Content.ReadAsStringAsync().Result;
+                products = JsonConvert.DeserializeObject<List<ProductOutputViewModel>>(stringData);
+            }
+            return products;
         }
 
     }
