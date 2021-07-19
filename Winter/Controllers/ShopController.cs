@@ -14,13 +14,12 @@ namespace Winter.Controllers
     {
         public readonly IProduct _product;
         public readonly ICategory _category;
-        readonly HttpClientHelper _helper ;
+        readonly HttpClientHelper _helper = new HttpClientHelper();
 
-        public ShopController(IProduct product, ICategory category, HttpClientHelper helper)
+        public ShopController(IProduct product, ICategory category)
         {
             _product = product;
             _category = category;
-            _helper = helper;
         }
 
         public IActionResult Index()
@@ -39,7 +38,7 @@ namespace Winter.Controllers
             return View();
         }
 
-        public IActionResult ProductDetails(int Id)
+        public IActionResult ProductDetails(int ProductId)
         {
             //if (Id == null)
             //{

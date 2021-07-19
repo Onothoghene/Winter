@@ -26,16 +26,6 @@ namespace Winter.Controllers
             return View();
         }
 
-        //public IActionResult NewArrivals()
-        //{
-        //    GeneralViewModel viewModel = new GeneralViewModel
-        //    {
-        //        ProductOutputViewModel = _product.GetNewArrivals(),
-        //    };
-
-        //    return PartialView(viewModel);
-        //}
-
         public IActionResult Category()
         {
             return View();

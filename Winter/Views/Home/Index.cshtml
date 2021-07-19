@@ -4,7 +4,6 @@
     Layout = "/Views/Shared/_Layout.cshtml";
 }
 
-@model Winter.ViewModels.GeneralViewModel
 <!-- banner part start-->
 <section class="banner_part">
     <div class="container">
@@ -81,37 +80,31 @@
                 </div>*@
         </div>
     </div>
-    @*<div class="container-fluid">
+    <div class="container-fluid">
         <div class="row">
            
             <div class="col-lg-12">
                 
-                <div class="new_arrival_iner filter-container">
-                    @if (Model.ProductOutputViewModel != null)
-                    {
-                        @foreach (var product in Model.ProductOutputViewModel)
-                        {
-                            <div class="single_arrivel_item weidth_3  mix shoes">
-                                <img src='@Url.Action("DownloadDocument", "Admin", new { Filename = product.ProductFile.FirstOrDefault().FileUniqueName }) ' height="450" width="45" />
+                <div class="new_arrival_iner filter-container" id="NewArrivals">
+                            @*<div class="single_arrivel_item weidth_3  mix shoes">
+                                <img height="450" width="45" />
                                 <div class="hover_text">
-                                    <p>@Html.DisplayFor(model => product.Category)</p>
-                                    <a asp-action="ProductDetails" asp-controller="Shop" asp-route-id="@product.ProductId">
-                                   <h3> @Html.DisplayFor(modelItem => product.ProductName)</h3></a>
-                                    <h5> @Html.DisplayFor(modelItem => product.UnitPrice)</h5>
+                                    <p></p>
+                                    <a>
+                                   <h3></h3></a>
+                                    <h5></h5>
                                     <div class="social_icon">
                                         <a href="#"><i class="ti-heart"></i></a>
                                         <a href="#"><i class="ti-shopping-cart-full"></i></a>
                                     </div>
                                 </div>
-                            </div>
-                        }
-                    }
+                            </div>*@
                 </div>
                    
             </div>
               
         </div>
-    </div>*@
+    </div>
 </section>
 <!-- new arrival part end -->
 
@@ -157,7 +150,7 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-lg-12">
-                <div class="instagram_photo_iner">
+                <div class="instagram_photo_iner" id="RandomProducts">
                     <div class="single_instgram_photo">
                         <img src="img/instagram/inst_1.png" alt="">
                         <a href="#"><i class="ti-instagram"></i></a>
@@ -186,4 +179,7 @@
 <!--::subscribe_area part end::-->
 
 @*<partial name="_Footer" />*@
+
+<script type="text/javascript" src="~/HomeScript.js"></script>
+<script type="text/javascript" src="~/jquery.min.js"></script>
 
