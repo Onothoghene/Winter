@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using Winter.Models;
 using System;
+using Winter.Logic;
 
 namespace JeanStation.Controllers
 {
@@ -11,11 +12,13 @@ namespace JeanStation.Controllers
     {
         public readonly UserManager<ApplicationUser> UserManager;
         public readonly SignInManager<ApplicationUser> SignInManager;
+        readonly IUsers _users;
 
-        public AccountController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
+        public AccountController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, IUsers users)
         {
             UserManager = userManager;
             SignInManager = signInManager;
+            _users = users;
         }
 
         public async Task<IActionResult> Index(string Id)

@@ -104,7 +104,7 @@ namespace Winter.Controllers
 
         }
 
-        [HttpDelete]
+        [HttpGet]
         [Route("{UserId}WishList/Count")]
         public async Task<IActionResult> UserWishListCount(long UserId)
         {

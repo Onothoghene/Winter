@@ -133,7 +133,7 @@ namespace Winter.Controllers
 
         }
 
-        [HttpDelete]
+        [HttpGet]
         [Route("{UserId}/CartCount")]
         public async Task<IActionResult> UserCartCount(long UserId)
         {
