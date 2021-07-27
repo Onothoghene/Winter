@@ -31,6 +31,7 @@ namespace Winter.Models
         public string FullName { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
+        public DateTime? LastDateLoggedIn { get; set; }
 
         public ICollection<AspNetUserClaims> AspNetUserClaims { get; set; }
         public ICollection<AspNetUserLogins> AspNetUserLogins { get; set; }

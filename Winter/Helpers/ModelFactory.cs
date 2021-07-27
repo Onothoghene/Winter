@@ -31,7 +31,7 @@ namespace Winter.Services
                 ProductId = model.ProductId,
                 ProductName = model.Product.ProductName,
                 UserId = model.UserId,
-                UserName = Create(model.User.FullName, model.User.LastName),
+                UserName = Create(model.User.FirstName, model.User.LastName),
                 DateAdded = model.DateAdded,
             };
             return _model;
@@ -71,11 +71,11 @@ namespace Winter.Services
                 DateModified = model.DateModified,
             };
 
-            if (model.ProductFile != null)
+            if (model.Files != null)
             {
-                if (model.ProductFile.Count > 0)
+                if (model.Files.Count > 0)
                 {
-                    _model.ProductFile = model.ProductFile.Select(x => Create(x)).ToList();
+                    _model.ProductFile = model.Files.Select(x => Create(x)).ToList();
                 }
             }
 
@@ -111,11 +111,11 @@ namespace Winter.Services
                 DateModified = model.DateModified,
             };
 
-            if (model.ProductFile != null)
+            if (model.Files != null)
             {
-                if (model.ProductFile.Count > 0)
+                if (model.Files.Count > 0)
                 {
-                    _model.ProductFile = model.ProductFile.Select(x => Create(x)).ToList();
+                    _model.ProductFile = model.Files.Select(x => Create(x)).ToList();
                 }
             }
 
@@ -195,7 +195,7 @@ namespace Winter.Services
                 OrderId = model.Id,
                 ProductId = model.ProductId,
                 UserId = model.AddedBy,
-                UserName = Create(model.AddedByNavigation.FullName, model.AddedByNavigation.LastName),
+                UserName = Create(model.AddedByNavigation.FirstName, model.AddedByNavigation.LastName),
                 ProductName = model.Product.ProductName,
                 //UnitPrice = model.UnitPrice,
                 //Quantity = model.Quantity,
@@ -254,7 +254,7 @@ namespace Winter.Services
                 ProductId = model.ProductId,
                 ProductName = model.Product.ProductName,
                 UserId = model.UserId,
-                UserName = Create(model.User.FullName, model.User.LastName),
+                UserName = Create(model.User.FirstName, model.User.LastName),
                 DateAdded = (DateTime)model.DateAdded,
                 Quantity = (int)model.Quantity,
             };
@@ -278,9 +278,9 @@ namespace Winter.Services
         //    return _model;
         //}
 
-        public ProductFile Parse(ProductFileInputViewModel model, int productId)
+        public Files Parse(ProductFileInputViewModel model, int productId)
         {
-            var _model = new ProductFile
+            var _model = new Files
             {
                  Id = model.ProductFileId,
                 DateAdded = DateTime.UtcNow,
@@ -295,7 +295,7 @@ namespace Winter.Services
             return _model;
         }
 
-        public ProductFileInputViewModel Create(ProductFile model)
+        public ProductFileInputViewModel Create(Files model)
         {
             var _model = new ProductFileInputViewModel
             {

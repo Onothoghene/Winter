@@ -10,11 +10,12 @@ namespace Winter.Models
             AdditionalInfo = new HashSet<AdditionalInfo>();
             Cart = new HashSet<Cart>();
             OrderRequest = new HashSet<OrderRequest>();
+            UserRoles = new HashSet<UserRoles>();
             Wish = new HashSet<Wish>();
         }
 
         public long Id { get; set; }
-        public string FullName { get; set; }
+        public string FirstName { get; set; }
         public string LastName { get; set; }
         public string PhoneNumber { get; set; }
         public string Email { get; set; }
@@ -24,6 +25,7 @@ namespace Winter.Models
         public ICollection<AdditionalInfo> AdditionalInfo { get; set; }
         public ICollection<Cart> Cart { get; set; }
         public ICollection<OrderRequest> OrderRequest { get; set; }
+        public ICollection<UserRoles> UserRoles { get; set; }
         public ICollection<Wish> Wish { get; set; }
     }
 }

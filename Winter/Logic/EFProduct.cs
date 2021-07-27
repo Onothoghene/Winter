@@ -101,7 +101,7 @@ namespace Winter.Logic
             try
             {
                 var product = _context.Product.Include(x => x.Category)
-                                                                   .Include(x => x.ProductFile)
+                                                                   .Include(x => x.Files)
                                                                    .ToList();
                 var resp = product.Select(x => _modelFactory.Create2(x));
 
@@ -120,7 +120,7 @@ namespace Winter.Logic
             {
                 var product = _context.Product.Where(a => a.Id == Id)
                                                                         .Include(x => x.Category)
-                                                                       .Include(x => x.ProductFile)
+                                                                       .Include(x => x.Files)
                                                                        .FirstOrDefault();
 
                 var resp = _modelFactory.Create2(product);
@@ -211,7 +211,7 @@ namespace Winter.Logic
                 var products = _context.Product.OrderByDescending(b => b.DateAdded)
                                                                     .Take(6)
                                                                    .Include(x => x.Category)
-                                                                   .Include(x => x.ProductFile)
+                                                                   .Include(x => x.Files)
                                                                    .ToList();
                 var resp = products.Select(x => _modelFactory.Create2(x));
 
@@ -229,7 +229,7 @@ namespace Winter.Logic
             try
             {
                 var rand = new Random();
-                var products = _context.Product.Include(d => d.Brand).Include(t => t.ProductFile).ToList();
+                var products = _context.Product.Include(d => d.Brand).Include(t => t.Files).ToList();
 
                 var chosenItems = new List<Product>();
                 var productstoGet = 5;

@@ -5,6 +5,8 @@ namespace Winter.ViewModels
 {
     public class RegisterViewModel
     {
+        public long UserId { get; set; }
+        public string Id { get; set; }
         [Required]
         [EmailAddress]
         public string Email { get; set; }
@@ -22,7 +24,7 @@ namespace Winter.ViewModels
 
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public string FullName { get; set; }
+        public string PhoneNumber { get; set; }
 
     }
 

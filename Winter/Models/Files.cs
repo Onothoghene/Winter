@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Winter.Models
 {
-    public partial class ProductFile
+    public partial class Files
     {
         public int Id { get; set; }
         public string FileName { get; set; }
