@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using Winter.Models;
 using System;
 using Winter.Logic;
+using Winter.ViewModels.Input_Models;
+using Winter.ViewModels.Edit_Models;
 
 namespace JeanStation.Controllers
 {
@@ -35,7 +37,7 @@ namespace JeanStation.Controllers
             {
                 Id = user.Id,
                 Email = user.Email,
-                FullName = user.FullName,
+                //FullName = user.FullName,
                 LastName = user.LastName,
                 FirstName = user.FirstName,
             };
@@ -60,11 +62,15 @@ namespace JeanStation.Controllers
                         Email = model.Email,
                         FirstName = model.FirstName,
                         LastName = model.LastName,
-                        FullName = model.FirstName + " " + model.LastName,
+                        //FullName = model.FirstName + " " + model.LastName,
                     };
                     var result = await UserManager.CreateAsync(user, model.Password);
                     if (result.Succeeded)
                     {
+                        var newuser = new UserIM
+                        {
+
+                        };
                         await SignInManager.SignInAsync(user, isPersistent: false);
                         return RedirectToAction("Index", "Home");
                     };
@@ -83,6 +89,104 @@ namespace JeanStation.Controllers
 
         }
 
+        [HttpPost]
+        public async Task<IActionResult> RegisterOrUpdate(RegisterViewModel model)
+        {
+            try
+            {
+                if (model.UserId > 0)
+                {
+                    var user = await UserManager.FindByIdAsync(model.Id);
+                    if (user == null)
+                    {
+                        ViewBag.ErrorMessage = "User not Found";
+                        return RedirectToAction("Index", "Home");
+                    }
+                    else
+                    {
+                        user.FirstName = model.FirstName;
+                        user.LastName = model.LastName;
+                        user.FullName = model.FirstName + " " + model.LastName;
+
+                        var result = await UserManager.UpdateAsync(user);
+                        if (result.Succeeded)
+                        {
+                            var userdetail = new UserEM
+                            {
+                                Id = model.UserId,
+                                LastName = model.LastName,
+                                FirstName = model.FirstName,
+                                PhoneNumber = model.PhoneNumber,
+                            };
+                            var response = _users.EditUser(userdetail);
+                            if (response != true)
+                            {
+                                return View("EditProfile", model);
+                            }
+                            else
+                            {
+                                return View("Index");
+                            }
+                        };
+                        foreach (var error in result.Errors)
+                        {
+                            ModelState.AddModelError("", error.Description);
+                        }
+                    }
+                    return View("EditProfile", model);
+                }
+                else
+                {
+                    if (ModelState.IsValid)
+                    {
+                        var user = new ApplicationUser
+                        {
+                            UserName = model.Email,
+                            Email = model.Email,
+                            FirstName = model.FirstName,
+                            LastName = model.LastName,
+                            FullName = model.FirstName + " " + model.LastName,
+                        };
+                        var result = await UserManager.CreateAsync(user, model.Password);
+                        if (!result.Succeeded)
+                        {
+                            foreach (var error in result.Errors)
+                            {
+                                ModelState.AddModelError("", error.Description);
+                            }
+                            return View("Register", model);
+                        }
+
+                        var newuser = new UserIM
+                        {
+                            AspNetId = user.Id,
+                            FirstName = model.FirstName,
+                            LastName = model.LastName,
+                            PhoneNumber = model.PhoneNumber,
+                        };
+                        //var response = _users.AddUser(newuser);
+
+                        if (_users.AddUser(newuser) == true)
+                        {
+                            await SignInManager.SignInAsync(user, isPersistent: false);
+                            return RedirectToAction("Index", "Home");
+                        }
+                        else
+                        {
+                            return View("Register");
+                        }
+                    }
+                    return View("Register", model);
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            //return View();
+        }
+
         public IActionResult Login()
         {
             return View();
@@ -98,6 +202,7 @@ namespace JeanStation.Controllers
                     var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, false);
                     if (result.Succeeded)
                     {
+                        //TempData["UserId"] = result.
                         return RedirectToAction("Index", "Home");
                     };
                     ModelState.AddModelError(string.Empty, "Invalid Login Attempt");
@@ -190,7 +295,6 @@ namespace JeanStation.Controllers
             }
             catch (Exception)
             {
-
                 throw;
             }
         }
@@ -209,6 +313,7 @@ namespace JeanStation.Controllers
                 }
                 else
                 {
+                    
                     var result = await UserManager.DeleteAsync(user);
 
                     if (result.Succeeded)

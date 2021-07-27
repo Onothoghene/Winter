@@ -12,6 +12,7 @@ using Winter.Models;
 using AutoMapper;
 using Winter.ViewModels.Input_Models;
 using Winter.ILogic;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace Winter
 {
@@ -33,6 +34,10 @@ namespace Winter
 
             services.AddDbContext<WinterContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
+            services.AddIdentityCore<ApplicationUser>(options => { });
+            services.AddScoped<IUserStore<ApplicationUser>, UserStore<ApplicationUser, IdentityRole, ApplicationDbContext>>();
+            //services.AddScoped<IRoleStore<IdentityRole>, RoleStore<IdentityRole, ApplicationDbContext>>();
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
                            .AddEntityFrameworkStores<WinterContext>();
@@ -69,7 +74,7 @@ namespace Winter
                
                 cfg.CreateMap<ProductInputViewModel, Product>();
 
-                cfg.CreateMap<ProductFileInputViewModel, ProductFile>();
+                cfg.CreateMap<ProductFileInputViewModel, Files>();
 
             });
 

@@ -18,6 +18,7 @@ namespace Winter.Models
         }
 
         public virtual DbSet<AdditionalInfo> AdditionalInfo { get; set; }
+        public virtual DbSet<ApplicationRoles> ApplicationRoles { get; set; }
         public virtual DbSet<AspNetRoleClaims> AspNetRoleClaims { get; set; }
         public virtual DbSet<AspNetRoles> AspNetRoles { get; set; }
         public virtual DbSet<AspNetUserClaims> AspNetUserClaims { get; set; }
@@ -28,11 +29,12 @@ namespace Winter.Models
         public virtual DbSet<Brand> Brand { get; set; }
         public virtual DbSet<Cart> Cart { get; set; }
         public virtual DbSet<Category> Category { get; set; }
+        public virtual DbSet<Files> Files { get; set; }
         public virtual DbSet<OrderRequest> OrderRequest { get; set; }
         public virtual DbSet<Product> Product { get; set; }
-        public virtual DbSet<ProductFile> ProductFile { get; set; }
         public virtual DbSet<SubCategory> SubCategory { get; set; }
         public virtual DbSet<UserProfile> UserProfile { get; set; }
+        public virtual DbSet<UserRoles> UserRoles { get; set; }
         public virtual DbSet<Wish> Wish { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -74,6 +76,15 @@ namespace Winter.Models
                     .HasForeignKey(d => d.UserId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK__Additiona__UserI__534D60F1");
+            });
+
+            modelBuilder.Entity<ApplicationRoles>(entity =>
+            {
+                entity.Property(e => e.DateAdded).HasColumnType("datetime");
+
+                entity.Property(e => e.DateDeleted).HasColumnType("datetime");
+
+                entity.Property(e => e.Name).HasMaxLength(50);
             });
 
             modelBuilder.Entity<AspNetRoleClaims>(entity =>
@@ -154,6 +165,8 @@ namespace Winter.Models
 
                 entity.Property(e => e.Email).HasMaxLength(256);
 
+                entity.Property(e => e.LastDateLoggedIn).HasColumnType("datetime");
+
                 entity.Property(e => e.NormalizedEmail).HasMaxLength(256);
 
                 entity.Property(e => e.NormalizedUserName).HasMaxLength(256);
@@ -204,6 +217,17 @@ namespace Winter.Models
                     .HasConstraintName("FK__Cart__UserId__5070F446");
             });
 
+            modelBuilder.Entity<Files>(entity =>
+            {
+                entity.HasIndex(e => e.ProductId)
+                    .HasName("IX_ProductFile_ProductId");
+
+                entity.HasOne(d => d.Product)
+                    .WithMany(p => p.Files)
+                    .HasForeignKey(d => d.ProductId)
+                    .HasConstraintName("FK_ProductFile_Product_ProductId");
+            });
+
             modelBuilder.Entity<OrderRequest>(entity =>
             {
                 entity.Property(e => e.DateAdded).HasColumnType("datetime");
@@ -247,15 +271,6 @@ namespace Winter.Models
                     .HasForeignKey(d => d.CategoryId);
             });
 
-            modelBuilder.Entity<ProductFile>(entity =>
-            {
-                entity.HasIndex(e => e.ProductId);
-
-                entity.HasOne(d => d.Product)
-                    .WithMany(p => p.ProductFile)
-                    .HasForeignKey(d => d.ProductId);
-            });
-
             modelBuilder.Entity<SubCategory>(entity =>
             {
                 entity.Property(e => e.DateAdded).HasColumnType("datetime");
@@ -283,11 +298,26 @@ namespace Winter.Models
 
                 entity.Property(e => e.Email).HasMaxLength(450);
 
-                entity.Property(e => e.FullName).HasMaxLength(50);
+                entity.Property(e => e.FirstName).HasMaxLength(50);
 
                 entity.Property(e => e.LastName).HasMaxLength(50);
 
                 entity.Property(e => e.PhoneNumber).HasMaxLength(50);
+            });
+
+            modelBuilder.Entity<UserRoles>(entity =>
+            {
+                entity.HasOne(d => d.Role)
+                    .WithMany(p => p.UserRoles)
+                    .HasForeignKey(d => d.RoleId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__UserRoles__RoleI__76969D2E");
+
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.UserRoles)
+                    .HasForeignKey(d => d.UserId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__UserRoles__UserI__778AC167");
             });
 
             modelBuilder.Entity<Wish>(entity =>

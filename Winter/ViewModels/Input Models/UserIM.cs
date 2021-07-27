@@ -4,10 +4,10 @@ namespace Winter.ViewModels.Input_Models
 {
     public class UserIM
     {
-        //public int ProductId { get; set; }
-        //public long UserId { get; set; }
-        //public int Quantity { get; set; }
-
-        //public DateTime DateAdded { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string PhoneNumber { get; set; }
+        public string AspNetId { get; set; }
+        public DateTime DateAdded { get; set; }
     }
 }
