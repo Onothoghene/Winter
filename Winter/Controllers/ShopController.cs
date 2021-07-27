@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using System.Net.Http;
 using Winter.Helpers;
 using Winter.ILogic;
 using Winter.Logic;
@@ -48,31 +50,35 @@ namespace Winter.Controllers
 
         }
 
-        //public List<ProductOutputViewModel> GetNotifications()
-        //{
-        //    var products = new List<ProductOutputViewModel>();
-        //    HttpClient client = _helper.Initial();
-        //    HttpResponseMessage response = client.GetAsync($"api/v1/Notification").Result;
-        //    if (response.IsSuccessStatusCode)
-        //    {
-        //        var stringData = response.Content.ReadAsStringAsync().Result;
-        //        products = JsonConvert.DeserializeObject<List<ProductOutputViewModel>>(stringData);
-        //    }
-        //    return products;
-        //}
+        #region Methods
 
-        //public ProductOutputViewModel GetProductDetail()
-        //{
-        //    var product = new ProductOutputViewModel();
-        //    HttpClient client = _helper.Initial();
-        //    HttpResponseMessage response = client.GetAsync($"api/Products/RandomProducts").Result;
-        //    if (response.IsSuccessStatusCode)
-        //    {
-        //        var stringData = response.Content.ReadAsStringAsync().Result;
-        //        product = JsonConvert.DeserializeObject<ProductOutputViewModel>(stringData);
-        //    }
-        //    return product;
-        //}
+        public long GetWishListCount(long UserId)
+        {
+            long wishlistCount = 0;
+            HttpClient client = _helper.Initial();
+            HttpResponseMessage response = client.GetAsync($"api/Wish/{UserId}WishList/Count").Result;
+            if (response.IsSuccessStatusCode)
+            {
+                var stringData = response.Content.ReadAsStringAsync().Result;
+                wishlistCount = JsonConvert.DeserializeObject<long>(stringData);
+            }
+            return wishlistCount;
+        }
+        
+        public long GetCartCount(long UserId)
+        {
+            long CartCount = 0;
+            HttpClient client = _helper.Initial();
+            HttpResponseMessage response = client.GetAsync($"api/Cart/{UserId}/CartCount").Result;
+            if (response.IsSuccessStatusCode)
+            {
+                var stringData = response.Content.ReadAsStringAsync().Result;
+                CartCount = JsonConvert.DeserializeObject<long>(stringData);
+            }
+            return CartCount;
+        }
+
+        #endregion
 
     }
 }
