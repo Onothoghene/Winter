@@ -216,7 +216,12 @@ namespace Winter.Services
         {
             var _model = new UserOM()
             {
-
+                Email = model.Email,
+                FirstName = model.FirstName,
+                LastName = model.LastName,
+                PhoneNumber = model.PhoneNumber,
+                AspNetId = model.AspNetId,
+                Id = model.Id,
             };
             return _model;
         }
@@ -225,7 +230,12 @@ namespace Winter.Services
         {
             var _model = new UserProfile()
             {
-
+                FirstName = model.FirstName,
+                LastName = model.LastName,
+                PhoneNumber = model.PhoneNumber,
+                Email = model.Email,
+                DateAdded = DateTime.Now,
+                AspNetId = model.AspNetId,
             };
             return _model;
         }

@@ -3,11 +3,11 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
-using Winter.Data;
 using Microsoft.AspNetCore.Identity;
 using Winter.Logic;
 using Microsoft.AspNetCore.Mvc;
 using Winter.Services;
+using Winter.Data;
 using Winter.Models;
 using AutoMapper;
 using Winter.ViewModels.Input_Models;
@@ -30,17 +30,18 @@ namespace Winter
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddMvc().AddSessionStateTempDataProvider().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddSession();
 
-            services.AddDbContext<WinterContext>(options =>
+            services.AddDbContext<ApplicationDbContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddIdentityCore<ApplicationUser>(options => { });
-            services.AddScoped<IUserStore<ApplicationUser>, UserStore<ApplicationUser, IdentityRole, ApplicationDbContext>>();
+            //services.AddIdentityCore<ApplicationUser>(options => { });
+            //services.AddScoped<IUserStore<ApplicationUser>, UserStore<ApplicationUser, IdentityRole, ApplicationDbContext>>();
             //services.AddScoped<IRoleStore<IdentityRole>, RoleStore<IdentityRole, ApplicationDbContext>>();
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
-                           .AddEntityFrameworkStores<WinterContext>();
+                           .AddEntityFrameworkStores<ApplicationDbContext>();
 
             services.AddTransient<WinterContext>();
             services.AddSingleton<ModelFactory, ModelFactory>();
@@ -78,6 +79,7 @@ namespace Winter
 
             });
 
+            app.UseSession();
             app.UseMvc(routes =>
             {
                 routes.MapRoute(

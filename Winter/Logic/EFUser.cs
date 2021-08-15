@@ -57,7 +57,7 @@ namespace Winter.Logic
             }
         }
 
-        public bool AddUser(UserIM model)
+        public bool AddUser(UserIM model, out long UserId)
         {
             try
             {
@@ -69,9 +69,15 @@ namespace Winter.Logic
                     ts.Complete();
 
                     if (bit > 0)
+                    {
+                        UserId = bit;
                         return true;
+                    }
                     else
+                    {
+                        UserId = 0;
                         return false;
+                    }
                 }
             }
             catch (Exception)
@@ -90,13 +96,23 @@ namespace Winter.Logic
                     var user = _context.UserProfile.Find(model.Id);
                     if (user != null)
                     {
-                        //user
-                    }
-                    int bit = _context.SaveChanges();
-                    ts.Complete();
+                        if (!string.IsNullOrEmpty(model.PhoneNumber))
+                            user.PhoneNumber = model.PhoneNumber;
 
-                    if (bit > 0)
+                        if (!string.IsNullOrEmpty(model.FirstName))
+                            user.FirstName = model.FirstName;
+
+                        if (!string.IsNullOrEmpty(model.LastName))
+                            user.LastName = model.LastName;
+
+                        if (!string.IsNullOrEmpty(model.FirstName))
+                            user.FirstName = model.FirstName;
+
+                        int bit = _context.SaveChanges();
+                        ts.Complete();
+
                         return true;
+                    }
                     else
                         return false;
                 }
@@ -145,6 +161,12 @@ namespace Winter.Logic
 
                 throw;
             }
+        }
+
+        public long GetUserId(string Email)
+        {
+            var userId = _context.UserProfile.Where(i => i.Email == Email).FirstOrDefault().Id;
+            return userId;
         }
 
     }
