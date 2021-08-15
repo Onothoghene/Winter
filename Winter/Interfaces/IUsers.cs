@@ -10,7 +10,7 @@ namespace Winter.Logic
     {
         long CountUser();
         IEnumerable<UserOM> GetUsers();
-        bool AddUser(UserIM model, out long UserId);
+        bool AddUser(UserIM model, out int UserId);
         bool EditUser(UserEM model);
         bool DeleteUser(long UserId);
         UserOM GetUserDetail(long UserId);

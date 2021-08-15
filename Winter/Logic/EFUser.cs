@@ -63,7 +63,7 @@ namespace Winter.Logic
             }
         }
 
-        public bool AddUser(UserIM model, out long UserId)
+        public bool AddUser(UserIM model, out int UserId)
         {
             try
             {
