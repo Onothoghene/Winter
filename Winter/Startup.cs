@@ -13,6 +13,7 @@ using AutoMapper;
 using Winter.ViewModels.Input_Models;
 using Winter.ILogic;
 using Microsoft.AspNetCore.Http;
+using System;
 
 namespace Winter
 {
@@ -30,8 +31,30 @@ namespace Winter
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
-            services.AddSession();
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
+                             .AddSessionStateTempDataProvider();
+
+            services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromSeconds(20);//You can set Time   
+                options.Cookie.HttpOnly = true;
+            });
+
+            services.Configure<CookiePolicyOptions>(options =>
+            {
+                // This lambda determines whether user consent for non-essential cookies is needed for a given request.
+                options.CheckConsentNeeded = context => true;
+                options.MinimumSameSitePolicy = SameSiteMode.None;
+            });
+
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.Cookie.HttpOnly = true;
+                options.ExpireTimeSpan = TimeSpan.FromSeconds(20);
+                options.LoginPath = $"/Views/Account/Login";
+                options.LogoutPath = $"/Identity/Account/Logout";
+                options.AccessDeniedPath = $"/Identity/Account/AccessDenied";
+            });
 
             services.AddDbContext<ApplicationDbContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
@@ -68,13 +91,13 @@ namespace Winter
 
             app.UseDeveloperExceptionPage();
 
+            app.UseHttpsRedirection();
             app.UseStaticFiles();
-
             app.UseAuthentication();
 
             Mapper.Initialize(cfg =>
             {
-               
+
                 cfg.CreateMap<ProductInputViewModel, Product>();
 
                 cfg.CreateMap<ProductFileInputViewModel, Files>();

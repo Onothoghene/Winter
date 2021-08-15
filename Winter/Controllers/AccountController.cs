@@ -7,10 +7,11 @@ using System;
 using Winter.Logic;
 using Winter.ViewModels.Input_Models;
 using Winter.ViewModels.Edit_Models;
+using Microsoft.AspNetCore.Http;
 
-namespace JeanStation.Controllers
+namespace Winter.Controllers
 {
-    public class AccountController : Controller
+    public class AccountController : BaseController
     {
         public readonly UserManager<ApplicationUser> UserManager;
         public readonly SignInManager<ApplicationUser> SignInManager;
@@ -139,7 +140,7 @@ namespace JeanStation.Controllers
                 {
                     if (ModelState.IsValid)
                     {
-                        long newUserId;
+                        int newUserId;
                         var user = new ApplicationUser
                         {
                             UserName = model.Email,
@@ -170,7 +171,7 @@ namespace JeanStation.Controllers
                         if (_users.AddUser(newuser, out newUserId) == true)
                         {
                             await SignInManager.SignInAsync(user, isPersistent: false);
-                            //Session["UserId"] = newUserId;
+                            HttpContext.Session.SetInt32(UserId, newUserId);
                             return RedirectToAction("Index", "Home");
                         }
                         else
@@ -200,11 +201,17 @@ namespace JeanStation.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    var userId = _users.GetUserId(model.Email);
+                    var user = await UserManager.FindByNameAsync(model.Email);
+                    if (user == null)
+                    {
+                        ModelState.AddModelError(string.Empty, "User not found");
+                        return View() ;
+                    }
                     var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, false);
                     if (result.Succeeded)
                     {
-                        ViewBag["UserId"] = userId;
+                        var userId = _users.GetUserId(model.Email);
+                        HttpContext.Session.SetInt32(UserId, (int)userId);
                         return RedirectToAction("Index", "Home");
                     };
                     ModelState.AddModelError(string.Empty, "Invalid Login Attempt");
@@ -224,6 +231,7 @@ namespace JeanStation.Controllers
             try
             {
                 await SignInManager.SignOutAsync();
+                HttpContext.Session.Remove(UserId);
                 return RedirectToAction("Index", "home");
             }
             catch (Exception)
