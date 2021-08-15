@@ -7,6 +7,12 @@
 @{
     var user = await UserManager.GetUserAsync(User);
 }
+@{
+    if (TempData.Peek("userId") != null)
+    {
+        var userId = @TempData["userId"];
+    }
+}
 <!--::header part start::-->
 <header class="main_menu home_menu">
     <div class="container-fluid">
@@ -49,6 +55,18 @@
 
                     <ul class="nav navbar-nav navbar-right">
 
+                        @if (TempData.Peek("userId") == null)
+                        {
+                            <li>
+                            <h2>TempData has not been set.</h2>
+                            </li>
+                        }
+                        else
+                        {
+                            <li>
+                                <h2>TempData has been set == @TempData.Values("userId")</h2>
+                            </li>
+                        }
 
                         @if (signInManager.IsSignedIn(User))
                         {
@@ -59,7 +77,7 @@
                                     @User.Identity.Name
                                 </a>
                                 <div class="dropdown-menu" aria-labelledby="navbarDropdown_2">
-                                    <a class="dropdown-item" asp-action="Index" asp-controller="Account" asp-route-id="@user.Id">
+                                    <a class="dropdown-item" asp-action="Index" asp-controller="Account" asp-route-id="@TempData[" UserId"]">
                                         <i class="fas fa-user " style="color: whitesmoke"></i>
                                         Profile
                                     </a>

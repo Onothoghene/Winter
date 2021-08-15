@@ -16,10 +16,10 @@ namespace Winter.Data
         {
         }
 
-        public DbSet<Category> Category { get; set; }
-        public DbSet<Product> Product { get; set; }
-        public DbSet<Files> Files { get; set; }
-        public DbSet<OrderRequest> Order { get; set; }
+        //public DbSet<Category> Category { get; set; }
+        //public DbSet<Product> Product { get; set; }
+        //public DbSet<Files> Files { get; set; }
+        //public DbSet<OrderRequest> Order { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -27,20 +27,20 @@ namespace Winter.Data
             // modelBuilder.Seed();
         }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            if (!optionsBuilder.IsConfigured)
-            {
+        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        //{
+            //if (!optionsBuilder.IsConfigured)
+            //{
 
-                var builder = new ConfigurationBuilder()
-                               .SetBasePath(Directory.GetCurrentDirectory())
-                               .AddJsonFile("appsettings.json");
+            //    var builder = new ConfigurationBuilder()
+            //                   .SetBasePath(Directory.GetCurrentDirectory())
+            //                   .AddJsonFile("appsettings.json");
 
-                IConfiguration Configuration = builder.Build();
+            //    IConfiguration Configuration = builder.Build();
 
-                optionsBuilder.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
+            //    optionsBuilder.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
 
-            }
-        }
+            //}
+     //   }
     }
 }

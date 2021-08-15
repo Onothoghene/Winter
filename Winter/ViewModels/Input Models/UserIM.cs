@@ -8,6 +8,7 @@ namespace Winter.ViewModels.Input_Models
         public string LastName { get; set; }
         public string PhoneNumber { get; set; }
         public string AspNetId { get; set; }
+        public string Email { get; set; }
         public DateTime DateAdded { get; set; }
     }
 }

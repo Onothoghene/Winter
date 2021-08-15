@@ -28,15 +28,15 @@
     </environment>
 </head>
 <body>
-
     <partial name="_NavBar" />
+    @*<partial name="_NavBar" model="@TempData["userId"]" />*@
 
     <div>
         @RenderBody()
     </div>
 
     <partial name="_Footer" />
-    
+
     <environment include="Development">
         <!-- jquery plugins here-->
         <script type="text/javascript" src="~/jquery.min.js"></script>

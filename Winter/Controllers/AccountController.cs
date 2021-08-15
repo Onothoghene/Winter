@@ -15,6 +15,7 @@ namespace JeanStation.Controllers
         public readonly UserManager<ApplicationUser> UserManager;
         public readonly SignInManager<ApplicationUser> SignInManager;
         readonly IUsers _users;
+        //long newUserId;
 
         public AccountController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, IUsers users)
         {
@@ -49,48 +50,48 @@ namespace JeanStation.Controllers
             return View();
         }
 
+        //[HttpPost]
+        //public async Task<IActionResult> Register(RegisterViewModel model)
+        //{
+        //    try
+        //    {
+        //        if (ModelState.IsValid)
+        //        {
+        //            var user = new ApplicationUser
+        //            {
+        //                UserName = model.Email,
+        //                Email = model.Email,
+        //                FirstName = model.FirstName,
+        //                LastName = model.LastName,
+        //                FullName = model.FirstName + " " + model.LastName,
+        //            };
+        //            var result = await UserManager.CreateAsync(user, model.Password);
+        //            if (result.Succeeded)
+        //            {
+        //                var newuser = new UserIM
+        //                {
+
+        //                };
+        //                await SignInManager.SignInAsync(user, isPersistent: false);
+        //                return RedirectToAction("Index", "Home");
+        //            };
+        //            foreach (var error in result.Errors)
+        //            {
+        //                ModelState.AddModelError("", error.Description);
+        //            }
+        //        }
+        //        return View(model);
+        //    }
+        //    catch (Exception)
+        //    {
+
+        //        throw;
+        //    }
+
+        //}
+
         [HttpPost]
-        public async Task<IActionResult> Register(RegisterViewModel model)
-        {
-            try
-            {
-                if (ModelState.IsValid)
-                {
-                    var user = new ApplicationUser
-                    {
-                        UserName = model.Email,
-                        Email = model.Email,
-                        FirstName = model.FirstName,
-                        LastName = model.LastName,
-                        //FullName = model.FirstName + " " + model.LastName,
-                    };
-                    var result = await UserManager.CreateAsync(user, model.Password);
-                    if (result.Succeeded)
-                    {
-                        var newuser = new UserIM
-                        {
-
-                        };
-                        await SignInManager.SignInAsync(user, isPersistent: false);
-                        return RedirectToAction("Index", "Home");
-                    };
-                    foreach (var error in result.Errors)
-                    {
-                        ModelState.AddModelError("", error.Description);
-                    }
-                }
-                return View(model);
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
-
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> RegisterOrUpdate(RegisterViewModel model)
+        public async Task<IActionResult> RegisterOrUpdateUser(RegisterViewModel model)
         {
             try
             {
@@ -106,7 +107,7 @@ namespace JeanStation.Controllers
                     {
                         user.FirstName = model.FirstName;
                         user.LastName = model.LastName;
-                        user.FullName = model.FirstName + " " + model.LastName;
+                        //user.FullName = model.FirstName + " " + model.LastName;
 
                         var result = await UserManager.UpdateAsync(user);
                         if (result.Succeeded)
@@ -139,13 +140,14 @@ namespace JeanStation.Controllers
                 {
                     if (ModelState.IsValid)
                     {
+                        long newUserId
                         var user = new ApplicationUser
                         {
                             UserName = model.Email,
                             Email = model.Email,
                             FirstName = model.FirstName,
                             LastName = model.LastName,
-                            FullName = model.FirstName + " " + model.LastName,
+                            //FullName = model.FirstName + " " + model.LastName,
                         };
                         var result = await UserManager.CreateAsync(user, model.Password);
                         if (!result.Succeeded)
@@ -163,12 +165,14 @@ namespace JeanStation.Controllers
                             FirstName = model.FirstName,
                             LastName = model.LastName,
                             PhoneNumber = model.PhoneNumber,
+                            Email = model.Email,
                         };
                         //var response = _users.AddUser(newuser);
 
-                        if (_users.AddUser(newuser) == true)
+                        if (_users.AddUser(newuser, out newUserId) == true)
                         {
                             await SignInManager.SignInAsync(user, isPersistent: false);
+                            //Session["UserId"] = newUserId;
                             return RedirectToAction("Index", "Home");
                         }
                         else
@@ -199,11 +203,13 @@ namespace JeanStation.Controllers
             {
                 if (ModelState.IsValid)
                 {
+                    var userId = _users.GetUserId(model.Email);
                     var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, false);
                     if (result.Succeeded)
                     {
-                        //TempData["UserId"] = result.
-                        return RedirectToAction("Index", "Home");
+                        var userId = _users.GetUserId(model.Email);
+                        //Session["UserId"] = userId;
+                        return RedirectToAction("Index","Home");
                     };
                     ModelState.AddModelError(string.Empty, "Invalid Login Attempt");
                 }
@@ -222,6 +228,7 @@ namespace JeanStation.Controllers
             try
             {
                 await SignInManager.SignOutAsync();
+                TempData.Remove("UserId");
                 return RedirectToAction("Index", "home");
             }
             catch (Exception)
@@ -262,42 +269,42 @@ namespace JeanStation.Controllers
             }
         }
 
-        [HttpPost]
-        public async Task<IActionResult> EditProfile(EditUserViewModel model)
-        {
-            try
-            {
-                var user = await UserManager.FindByIdAsync(model.Id);
-                if (user == null)
-                {
-                    ViewBag.ErrorMessage = "User not Found";
-                    return RedirectToAction("Index", "Home");
-                }
-                else
-                {
-                    user.Email = model.Email;
-                    user.FirstName = model.FirstName;
-                    user.LastName = model.LastName;
-                    user.FullName = model.FirstName + " " + model.LastName;
-                    user.UserName = model.Email;
+        //[HttpPost]
+        //public async Task<IActionResult> EditProfile(EditUserViewModel model)
+        //{
+        //    try
+        //    {
+        //        var user = await UserManager.FindByIdAsync(model.Id);
+        //        if (user == null)
+        //        {
+        //            ViewBag.ErrorMessage = "User not Found";
+        //            return RedirectToAction("Index", "Home");
+        //        }
+        //        else
+        //        {
+        //            user.Email = model.Email;
+        //            user.FirstName = model.FirstName;
+        //            user.LastName = model.LastName;
+        //            user.FullName = model.FirstName + " " + model.LastName;
+        //            user.UserName = model.Email;
 
-                    var result = await UserManager.UpdateAsync(user);
-                    if (result.Succeeded)
-                    {
-                        return RedirectToAction("Index", "Account", new { model.Id });
-                    };
-                    foreach (var error in result.Errors)
-                    {
-                        ModelState.AddModelError("", error.Description);
-                    }
-                }
-                return View(model);
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-        }
+        //            var result = await UserManager.UpdateAsync(user);
+        //            if (result.Succeeded)
+        //            {
+        //                return RedirectToAction("Index", "Account", new { model.Id });
+        //            };
+        //            foreach (var error in result.Errors)
+        //            {
+        //                ModelState.AddModelError("", error.Description);
+        //            }
+        //        }
+        //        return View(model);
+        //    }
+        //    catch (Exception)
+        //    {
+        //        throw;
+        //    }
+        //}
 
         [HttpPost]
         public async Task<IActionResult> DeleteAccount(string id)
