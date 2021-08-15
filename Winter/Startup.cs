@@ -12,7 +12,7 @@ using Winter.Models;
 using AutoMapper;
 using Winter.ViewModels.Input_Models;
 using Winter.ILogic;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Http;
 
 namespace Winter
 {
@@ -30,7 +30,7 @@ namespace Winter
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc().AddSessionStateTempDataProvider().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddSession();
 
             services.AddDbContext<ApplicationDbContext>(options =>
@@ -42,6 +42,8 @@ namespace Winter
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
                            .AddEntityFrameworkStores<ApplicationDbContext>();
+
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             services.AddTransient<WinterContext>();
             services.AddSingleton<ModelFactory, ModelFactory>();

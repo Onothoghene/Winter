@@ -5,11 +5,11 @@ namespace Winter.Models
 {
     public partial class Cart
     {
-        public long Id { get; set; }
+        public int Id { get; set; }
+        public int UserId { get; set; }
         public int ProductId { get; set; }
-        public long UserId { get; set; }
-        public int? Quantity { get; set; }
         public DateTime? DateAdded { get; set; }
+        public int? Quantity { get; set; }
         public DateTime? DateModified { get; set; }
 
         public Product Product { get; set; }

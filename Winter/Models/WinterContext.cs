@@ -34,7 +34,6 @@ namespace Winter.Models
         public virtual DbSet<Product> Product { get; set; }
         public virtual DbSet<SubCategory> SubCategory { get; set; }
         public virtual DbSet<UserProfile> UserProfile { get; set; }
-        public virtual DbSet<UserRoles> UserRoles { get; set; }
         public virtual DbSet<Wish> Wish { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -65,7 +64,7 @@ namespace Winter.Models
             {
                 entity.Property(e => e.AdditionalPhoneNumber).HasMaxLength(50);
 
-                entity.Property(e => e.Address).HasMaxLength(450);
+                entity.Property(e => e.Address).HasMaxLength(100);
 
                 entity.Property(e => e.DateAdded).HasColumnType("datetime");
 
@@ -75,7 +74,7 @@ namespace Winter.Models
                     .WithMany(p => p.AdditionalInfo)
                     .HasForeignKey(d => d.UserId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Additiona__UserI__534D60F1");
+                    .HasConstraintName("FK__Additiona__UserI__04E4BC85");
             });
 
             modelBuilder.Entity<ApplicationRoles>(entity =>
@@ -208,13 +207,13 @@ namespace Winter.Models
                     .WithMany(p => p.Cart)
                     .HasForeignKey(d => d.ProductId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Cart__ProductId__4F7CD00D");
+                    .HasConstraintName("FK__Cart__ProductId__14270015");
 
                 entity.HasOne(d => d.User)
                     .WithMany(p => p.Cart)
                     .HasForeignKey(d => d.UserId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Cart__UserId__5070F446");
+                    .HasConstraintName("FK__Cart__UserId__1332DBDC");
             });
 
             modelBuilder.Entity<Files>(entity =>
@@ -238,21 +237,23 @@ namespace Winter.Models
 
                 entity.Property(e => e.DateDeleted).HasColumnType("datetime");
 
-                entity.Property(e => e.Description)
-                    .HasMaxLength(100)
-                    .IsUnicode(false);
+                entity.Property(e => e.Description).HasMaxLength(50);
+
+                entity.Property(e => e.Price).HasColumnType("decimal(18, 0)");
+
+                entity.Property(e => e.TotalAmount).HasColumnType("decimal(18, 0)");
 
                 entity.HasOne(d => d.AddedByNavigation)
                     .WithMany(p => p.OrderRequest)
                     .HasForeignKey(d => d.AddedBy)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__OrderRequ__Added__571DF1D5");
+                    .HasConstraintName("FK__OrderRequ__Added__0F624AF8");
 
                 entity.HasOne(d => d.Product)
                     .WithMany(p => p.OrderRequest)
                     .HasForeignKey(d => d.ProductId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__OrderRequ__Produ__5629CD9C");
+                    .HasConstraintName("FK__OrderRequ__Produ__10566F31");
             });
 
             modelBuilder.Entity<Product>(entity =>
@@ -290,34 +291,17 @@ namespace Winter.Models
 
             modelBuilder.Entity<UserProfile>(entity =>
             {
-                entity.Property(e => e.AspNetId)
-                    .IsRequired()
-                    .HasMaxLength(100);
+                entity.Property(e => e.AspNetId).HasMaxLength(100);
 
                 entity.Property(e => e.DateAdded).HasColumnType("datetime");
 
-                entity.Property(e => e.Email).HasMaxLength(450);
+                entity.Property(e => e.Email).HasMaxLength(50);
 
-                entity.Property(e => e.FirstName).HasMaxLength(50);
+                entity.Property(e => e.FirstName).HasMaxLength(100);
 
-                entity.Property(e => e.LastName).HasMaxLength(50);
+                entity.Property(e => e.LastName).HasMaxLength(100);
 
                 entity.Property(e => e.PhoneNumber).HasMaxLength(50);
-            });
-
-            modelBuilder.Entity<UserRoles>(entity =>
-            {
-                entity.HasOne(d => d.Role)
-                    .WithMany(p => p.UserRoles)
-                    .HasForeignKey(d => d.RoleId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__UserRoles__RoleI__76969D2E");
-
-                entity.HasOne(d => d.User)
-                    .WithMany(p => p.UserRoles)
-                    .HasForeignKey(d => d.UserId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__UserRoles__UserI__778AC167");
             });
 
             modelBuilder.Entity<Wish>(entity =>
@@ -328,13 +312,13 @@ namespace Winter.Models
                     .WithMany(p => p.Wish)
                     .HasForeignKey(d => d.ProductId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Wish__ProductId__4BAC3F29");
+                    .HasConstraintName("FK__Wish__ProductId__0C85DE4D");
 
                 entity.HasOne(d => d.User)
                     .WithMany(p => p.Wish)
                     .HasForeignKey(d => d.UserId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Wish__UserId__4CA06362");
+                    .HasConstraintName("FK__Wish__UserId__0B91BA14");
             });
         }
     }

@@ -3,127 +3,121 @@
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-@*@using Microsoft.AspNetCore.Identity
-        @inject SignInManager<ApplicationUser> signInManager;
-        @inject UserManager<ApplicationUser> UserManager;
-        @{
-            var user = await UserManager.GetUserAsync(User);
-        }
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<ApplicationUser> signInManager;
+@inject UserManager<ApplicationUser> UserManager;
+@{
+    var user = await UserManager.GetUserAsync(User);
+}
 
 
-    @{
-    if (TempData.Peek("UserId") != null)
-    {
-        var userId = @TempData["UserId"];
-        }
-        }*@
+}
 
-        @model Winter.ViewModels.EditUserViewModel*@
-
-        <!--================Category Product Area =================-->
-        <section class="cat_product_area section_padding border_top">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-3">
-                        <div class="left_sidebar_area">
-                            <aside class="left_widgets p_filter_widgets sidebar_box_shadow">
-                                <div class="l_w_title">
-                                    <h3>
-                                        <i class="fas fa-user "></i>
-                                        My Winter Account
-                                    </h3>
-                                </div>
-                                <div class="widgets_inner">
-                                    <ul class="list">
-                                        <li>
-                                            <a href="#">
-                                                <i class="fas fa-home "></i>  Orders
-                                            </a>
-                                        </li>
-                                        <li>
-                                            @*<a asp-action="EditProfile" asp-controller="Account" asp-route-id="userId">*@
-                                            <a asp-action="EditProfile" asp-controller="Account" asp-route-id="@Model.Id">
-                                                <i class="fas fa-user-edit "></i> Edit Details
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#">Cart</a>
-                                        </li>
-                                        <li>
-                                            <a href="#">Saved</a>
-                                        </li>
-                                        <li>
-                                            <form method="post" asp-action="Logout" asp-controller="Account">
-                                                <button type="submit" class=" genric-btn warning circle arrow ">
-                                                    Log Out
-                                                </button>
-                                            </form>
-                                        </li>
-                                    </ul>
-                                    <ul class="list">
-
-                                        <li>
-                                            <form method="post">
-                                                <button type="submit" class=" genric-btn danger circle arrow ">
-                                                    Delete Account
-                                                </button>
-                                            </form>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </aside>
+@model Winter.ViewModels.EditUserViewModel
+<!--================Category Product Area =================-->
+<section class="cat_product_area section_padding border_top">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3">
+                <div class="left_sidebar_area">
+                    <aside class="left_widgets p_filter_widgets sidebar_box_shadow">
+                        <div class="l_w_title">
+                            <h3>
+                                <i class="fas fa-user "></i>
+                                My Winter Account
+                            </h3>
                         </div>
-                    </div>
+                        <div class="widgets_inner">
+                            <ul class="list">
+                                <li>
+                                    <a href="#">
+                                        <i class="fas fa-home "></i>  Orders
+                                    </a>
+                                </li>
+                                <li>
+                                    @*<a asp-action="EditProfile" asp-controller="Account" asp-route-id="userId">*@
+                                    <a asp-action="EditProfile" asp-controller="Account" asp-route-id="@Model.Id">
+                                        <i class="fas fa-user-edit "></i> Edit Details
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">Cart</a>
+                                </li>
+                                <li>
+                                    <a href="#">Saved</a>
+                                </li>
+                                <li>
+                                    <form method="post" asp-action="Logout" asp-controller="Account">
+                                        <button type="submit" class=" genric-btn warning circle arrow ">
+                                            Log Out
+                                        </button>
+                                    </form>
+                                </li>
+                            </ul>
+                            <ul class="list">
 
-                    <div class="col-lg-9">
-                        <div class="left_sidebar_area">
-                            <aside class="left_widgets p_filter_widgets sidebar_box_shadow">
-                                <div class="l_w_title">
-                                    <h3>
-                                        Account Overview
-                                    </h3>
-                                </div>
-                                <div class="widgets_inner">
-
-                                    <div class="row">
-                                        <div class="col-6">
-                                            <article class="card">
-                                                <div class="card-header ">
-                                                    <h5>
-                                                        Account Details
-                                                        <a class="fa fa-pen float-right" style="color:orangered" asp-action="EditProfile" asp-controller="Account" asp-route-id="@Model.Id">
-                                                        </a>
-                                                    </h5>
-                                                </div>
-                                                <div class="card-body">
-                                                    <p class="card-text">@Model.Email</p>
-                                                    <p class="card-text">@Model.FullName</p>
-                                                    <a class="card-link genric-btn warning-border circle arrow" asp-action="ChangePassword"
-                                                       asp-controller="Account">Change Password</a>
-                                                </div>
-                                            </article>
-                                        </div>
-
-                                        <div class="col-6">
-                                            <article class="card">
-                                                <div class="card-header ">
-                                                    <h5>
-                                                        Address Details
-                                                        <a class="fa fa-pen float-right" style="color:orangered"></a>
-                                                    </h5>
-                                                </div>
-                                                <div class="card-body">
-                                                    <p class="card-text">My Address</p>
-                                                    <p class="card-text">My Address</p>
-                                                </div>
-                                            </article>
-                                        </div>
-                                    </div>
-
-                                </div>
-                            </aside>
+                                <li>
+                                    <form method="post">
+                                        <button type="submit" class=" genric-btn danger circle arrow ">
+                                            Delete Account
+                                        </button>
+                                    </form>
+                                </li>
+                            </ul>
                         </div>
-                    </div>
+                    </aside>
                 </div>
             </div>
-        </section>
+
+            <div class="col-lg-9">
+                <div class="left_sidebar_area">
+                    <aside class="left_widgets p_filter_widgets sidebar_box_shadow">
+                        <div class="l_w_title">
+                            <h3>
+                                Account Overview
+                            </h3>
+                        </div>
+                        <div class="widgets_inner">
+
+                            <div class="row">
+                                <div class="col-6">
+                                    <article class="card">
+                                        <div class="card-header ">
+                                            <h5>
+                                                Account Details
+                                                <a class="fa fa-pen float-right" style="color:orangered" asp-action="EditProfile" asp-controller="Account" asp-route-id="@Model.Id">
+                                                </a>
+                                            </h5>
+                                        </div>
+                                        <div class="card-body">
+                                            <p class="card-text">@Model.Email</p>
+                                            <p class="card-text">@Model.FullName</p>
+                                            <a class="card-link genric-btn warning-border circle arrow" asp-action="ChangePassword"
+                                               asp-controller="Account">Change Password</a>
+                                        </div>
+                                    </article>
+                                </div>
+
+                                <div class="col-6">
+                                    <article class="card">
+                                        <div class="card-header ">
+                                            <h5>
+                                                Address Details
+                                                <a class="fa fa-pen float-right" style="color:orangered"></a>
+                                            </h5>
+                                        </div>
+                                        <div class="card-body">
+                                            <p class="card-text">My Address</p>
+                                            <p class="card-text">My Address</p>
+                                        </div>
+                                    </article>
+                                </div>
+                            </div>
+
+                        </div>
+                    </aside>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
