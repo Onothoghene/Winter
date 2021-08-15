@@ -74,7 +74,7 @@ namespace Winter.Logic
                 {
                     order.Id = model.OrderId;
                     order.ProductId = model.ProductId;
-                    order.AddedBy = model.UserId;
+                    //order.AddedBy = model.UserId;
                     order.Quantity = model.Quantity;
                     order.Price = model.Price;
                     order.DateAdded = DateTime.Now;

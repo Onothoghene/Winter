@@ -18,7 +18,7 @@ namespace Winter.Services
             var _model = new Wish
             {
                 ProductId = model.ProductId,
-                UserId = model.UserId,
+                //UserId = model.UserId,
                 DateAdded = DateTime.Now,
             };
             return _model;
@@ -32,7 +32,7 @@ namespace Winter.Services
                 ProductName = model.Product.ProductName,
                 UserId = model.UserId,
                 UserName = Create(model.User.FirstName, model.User.LastName),
-                DateAdded = model.DateAdded,
+                //DateAdded = model.DateAdded,
             };
             return _model;
         }
@@ -176,7 +176,7 @@ namespace Winter.Services
             {
                 Id = model.OrderId,
                 ProductId = model.ProductId,
-                AddedBy = model.UserId,
+                //AddedBy = model.UserId,
                 //UnitPrice = model.UnitPrice,
                 //Quantity = model.Quantity,
                 //TotalPrice = model.TotalPrice,
@@ -249,10 +249,10 @@ namespace Winter.Services
             var _model = new Cart
             {
                 ProductId = model.ProductId,
-                UserId = model.UserId,
+                //UserId = model.UserId,
                 DateAdded = DateTime.Now,
             };
-            _model.Quantity = model.Quantity > 0 ? model.Quantity : _model.Quantity++;
+          //  _model.Quantity = model.Quantity > 0 ? model.Quantity : _model.Quantity++;
 
             return _model;
         }
@@ -266,7 +266,7 @@ namespace Winter.Services
                 UserId = model.UserId,
                 UserName = Create(model.User.FirstName, model.User.LastName),
                 DateAdded = (DateTime)model.DateAdded,
-                Quantity = (int)model.Quantity,
+                //Quantity = (int)model.Quantity,
             };
             return _model;
         }

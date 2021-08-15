@@ -32,7 +32,7 @@ namespace Winter.Logic
                 {
                     if (userCart != null)
                     {
-                        userCart.Quantity++;
+                        //userCart.Quantity++;
                     }
                     else
                     {
@@ -178,8 +178,8 @@ namespace Winter.Logic
 
                     if (cartItem != null)
                     {
-                        cartItem.Quantity++;
-                        cartItem.DateModified = DateTime.Now;
+                       // cartItem.Quantity++;
+                        //cartItem.DateModified = DateTime.Now;
 
                         _context.SaveChanges();
 

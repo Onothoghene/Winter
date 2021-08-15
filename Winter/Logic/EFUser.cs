@@ -7,6 +7,8 @@ using Winter.Services;
 using Winter.ViewModels.Edit_Models;
 using Winter.ViewModels.Input_Models;
 using Winter.ViewModels.Output_Models;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 
 namespace Winter.Logic
 {
@@ -14,18 +16,22 @@ namespace Winter.Logic
     {
         readonly WinterContext _context;
         readonly ModelFactory _modelFactory = new ModelFactory();
+        public readonly UserManager<ApplicationUser> UserManager;
+        public readonly SignInManager<ApplicationUser> SignInManager;
+        private readonly IHttpContextAccessor _httpContext;
 
-        public EFUser(WinterContext context)
+        public EFUser( IHttpContextAccessor httpContext,UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, WinterContext context)
         {
+            UserManager = userManager;
             _context = context;
+            _httpContext = httpContext;
+
+            //if (_httpContext.HttpContext.User.Claims.ToList().Find(r => r.Type == "id") != null)
+            //{
+            //    string userId = _httpContext.HttpContext.User.Claims.ToList().Find(r => r.Type == "id").Value;
+            //    LoggedInUserId = Convert.ToInt64(userId);
+            //}
         }
-
-        //public readonly UserManager<ApplicationUser> UserManager;
-
-        //public EFUser(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
-        //{
-        //    UserManager = userManager;
-        //}
 
         public long CountUser()
         {

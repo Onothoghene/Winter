@@ -1,17 +1,12 @@
 ﻿@*
     For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 *@
+
 @using Microsoft.AspNetCore.Identity
 @inject SignInManager<ApplicationUser> signInManager;
 @inject UserManager<ApplicationUser> UserManager;
 @{
     var user = await UserManager.GetUserAsync(User);
-}
-@{
-    if (TempData.Peek("userId") != null)
-    {
-        var userId = @TempData["userId"];
-    }
 }
 <!--::header part start::-->
 <header class="main_menu home_menu">
@@ -55,7 +50,7 @@
 
                     <ul class="nav navbar-nav navbar-right">
 
-                        @if (TempData.Peek("userId") == null)
+                        @*@if (ViewBag["userId"] == null)
                         {
                             <li>
                             <h2>TempData has not been set.</h2>
@@ -64,9 +59,9 @@
                         else
                         {
                             <li>
-                                <h2>TempData has been set == @TempData.Values("userId")</h2>
+                                <h2>TempData has been set == @ViewBag["userId"]</h2>
                             </li>
-                        }
+                        }*@
 
                         @if (signInManager.IsSignedIn(User))
                         {
