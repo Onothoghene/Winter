@@ -8,6 +8,8 @@ using Winter.Logic;
 using Microsoft.AspNetCore.Http;
 using Winter.DTO.Edit_Models;
 using Winter.DTO.Input_Models;
+using AutoMapper;
+using Winter.ViewModels.Output_Models;
 
 namespace Winter.Controllers
 {
@@ -28,7 +30,7 @@ namespace Winter.Controllers
         public async Task<IActionResult> Index(int userId)
         {
             //var user = await UserManager.FindByIdAsync(Id);
-            var user =  _users.GetUserDetail(userId);
+            var user = _users.GetUserDetail(userId);
 
             if (user == null)
             {
@@ -36,15 +38,18 @@ namespace Winter.Controllers
                 return RedirectToAction("Index", "Home");
             }
 
-            var model = new EditUserViewModel
-            {
-                //Id = user.Id,
-                Email = user.Email,
-                //FullName = user.FullName,
-                LastName = user.LastName,
-                FirstName = user.FirstName,
-            };
-            return View(model);
+            //var model = new EditUserViewModel
+            //{
+            //    //Id = user.Id,
+            //    Email = user.Email,
+            //    //FullName = user.FullName,
+            //    LastName = user.LastName,
+            //    FirstName = user.FirstName,
+            //};
+
+            var response = Mapper.Map<UserViewModel>(user);
+
+            return View(response);
         }
 
         public IActionResult Register()
@@ -207,7 +212,7 @@ namespace Winter.Controllers
                     if (user == null)
                     {
                         ModelState.AddModelError(string.Empty, "User not found");
-                        return View() ;
+                        return View();
                     }
                     var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, false);
                     if (result.Succeeded)
@@ -325,7 +330,7 @@ namespace Winter.Controllers
                 }
                 else
                 {
-                    
+
                     var result = await UserManager.DeleteAsync(user);
 
                     if (result.Succeeded)

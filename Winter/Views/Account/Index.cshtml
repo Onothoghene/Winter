@@ -10,10 +10,9 @@
     var user = await UserManager.GetUserAsync(User);
 }
 
-
 }
 
-@model Winter.ViewModels.GeneralViewModel
+@model Winter.ViewModels.Output_Models.UserViewModel
 <!--================Category Product Area =================-->
 <section class="cat_product_area section_padding border_top">
     <div class="container">
@@ -89,8 +88,8 @@
                                             </h5>
                                         </div>
                                         <div class="card-body">
-                                            <p class="card-text">@Model.Email</p>
-                                            <p class="card-text">@Model.FullName</p>
+                                            <p class="card-text">@Model</p>
+                                            <p class="card-text">@Model</p>
                                             <a class="card-link genric-btn warning-border circle arrow" asp-action="ChangePassword"
                                                asp-controller="Account">Change Password</a>
                                         </div>

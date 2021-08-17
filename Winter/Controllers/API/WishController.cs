@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
+using Winter.DTO.Input_Models;
 using Winter.ILogic;
-using Winter.ViewModels.Input_Models;
 
 namespace Winter.Controllers
 {

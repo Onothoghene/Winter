@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
-using Winter.ViewModels.Input_Models;
-using Winter.ViewModels.Output_Models;
+using Winter.DTO.Input_Models;
+using Winter.DTO.Output_Models;
 
 namespace Winter.ILogic
 {

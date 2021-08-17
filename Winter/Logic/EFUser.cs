@@ -4,11 +4,11 @@ using System.Linq;
 using System.Transactions;
 using Winter.Models;
 using Winter.Services;
-using Winter.ViewModels.Edit_Models;
-using Winter.ViewModels.Input_Models;
-using Winter.ViewModels.Output_Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Winter.DTO.Output_Models;
+using Winter.DTO.Edit_Models;
+using Winter.DTO.Input_Models;
 
 namespace Winter.Logic
 {
