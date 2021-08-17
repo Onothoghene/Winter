@@ -8,6 +8,7 @@ using Winter.Logic;
 using Winter.ViewModels.Input_Models;
 using Winter.ViewModels.Edit_Models;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace Winter.Controllers
 {
@@ -24,9 +25,11 @@ namespace Winter.Controllers
             _users = users;
         }
 
-        public async Task<IActionResult> Index(string Id)
+        //public async Task<IActionResult> Index(string Id)
+        public async Task<IActionResult> Index(int userId)
         {
-            var user = await UserManager.FindByIdAsync(Id);
+            //var user = await UserManager.FindByIdAsync(Id);
+            var user =  _users.GetUserDetail(userId);
 
             if (user == null)
             {
@@ -36,7 +39,7 @@ namespace Winter.Controllers
 
             var model = new EditUserViewModel
             {
-                Id = user.Id,
+                //Id = user.Id,
                 Email = user.Email,
                 //FullName = user.FullName,
                 LastName = user.LastName,
