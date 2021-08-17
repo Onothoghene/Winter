@@ -1,8 +1,7 @@
 ﻿using System.Collections.Generic;
-using Winter.Models;
-using Winter.ViewModels.Edit_Models;
-using Winter.ViewModels.Input_Models;
-using Winter.ViewModels.Output_Models;
+using Winter.DTO.Edit_Models;
+using Winter.DTO.Input_Models;
+using Winter.DTO.Output_Models;
 
 namespace Winter.Logic
 {

@@ -3,11 +3,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Transactions;
+using Winter.DTO.Input_Models;
+using Winter.DTO.Output_Models;
 using Winter.ILogic;
 using Winter.Models;
 using Winter.Services;
-using Winter.ViewModels.Input_Models;
-using Winter.ViewModels.Output_Models;
 
 namespace Winter.Logic
 {
