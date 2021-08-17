@@ -8,6 +8,6 @@ namespace Winter.Controllers
 {
     public class BaseController : Controller
     {
-        public string UserId { get; set; }
+        public string UserId { get; set; } = "UserId";
     }
 }

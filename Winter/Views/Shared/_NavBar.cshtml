@@ -8,7 +8,7 @@
 
 @{
     var user = await UserManager.GetUserAsync(User);
-    var userId = @Context.Session.GetString("UserId");
+    var userId = Context.Session.GetInt32("UserId");
 }
 <!--::header part start::-->
 <header class="main_menu home_menu">
@@ -61,11 +61,12 @@
                                     @User.Identity.Name
                                 </a>
                                 <div class="dropdown-menu" aria-labelledby="navbarDropdown_2">
-                                    <a class="dropdown-item" asp-action="Index" asp-controller="Account" asp-route-id="@userId">
+                                    @*<a class="dropdown-item" asp-action="Index" asp-controller="Account" asp-route-Id="@user.Id">*@
+                                    <a class="dropdown-item" asp-action="Index" asp-controller="Account" asp-route-Id="@userId">
                                         <i class="fas fa-user " style="color: whitesmoke"></i>
                                         Profile
                                     </a>
-                                    <a class="dropdown-item" asp-action="Cart" asp-controller="Shop" asp-route-id="@user.Id">
+                                    <a class="dropdown-item" asp-action="Cart" asp-controller="Shop" asp-route-userId="@userId">
                                         <i class="fas fa-shopping-cart" style="color: whitesmoke"></i>
                                         Cart
                                     </a>

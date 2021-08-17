@@ -154,11 +154,12 @@ namespace Winter.Logic
             }
         }
 
-        public UserOM GetUserDetail(long UserId)
+        public UserOM GetUserDetail(int UserId)
         {
             try
             {
                 var data = _context.UserProfile.Find(UserId);
+                //var userEmail = _context.AspNetUsers.Where(f => f.Id == data.AspNetId).FirstOrDefault().Email;
                 var user = _modelFactory.Create(data);
                 return user;
             }

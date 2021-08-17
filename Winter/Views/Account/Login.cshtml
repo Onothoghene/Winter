@@ -27,7 +27,8 @@
                             Welcome Back ! <br>
                             Please Sign in now
                         </h3>
-                        <form class="row contact_form" asp-action="Login" asp-controller="Account"  method="post" >
+                        <form class="row contact_form" asp-action="Login" asp-controller="Account" method="post">
+                            <div asp-validation-summary="ModelOnly" class="text-danger col-md-12 form-group p_star text-lg"></div>
                             <div class="col-md-12 form-group p_star">
                                 <input type="text" class="form-control" asp-for="Email" placeholder="Your Name">
                                 <span asp-validation-for="Email" class="text-danger"></span>

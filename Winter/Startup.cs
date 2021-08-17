@@ -36,7 +36,7 @@ namespace Winter
 
             services.AddSession(options =>
             {
-                options.IdleTimeout = TimeSpan.FromSeconds(20);//You can set Time   
+                options.IdleTimeout = TimeSpan.FromDays(1000);//You can set Time   
                 options.Cookie.HttpOnly = true;
             });
 
@@ -50,7 +50,7 @@ namespace Winter
             services.ConfigureApplicationCookie(options =>
             {
                 options.Cookie.HttpOnly = true;
-                options.ExpireTimeSpan = TimeSpan.FromSeconds(20);
+                options.ExpireTimeSpan = TimeSpan.FromDays(1000);
                 options.LoginPath = $"/Views/Account/Login";
                 options.LogoutPath = $"/Identity/Account/Logout";
                 options.AccessDeniedPath = $"/Identity/Account/AccessDenied";
