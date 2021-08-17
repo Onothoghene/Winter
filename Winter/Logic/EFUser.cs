@@ -160,8 +160,14 @@ namespace Winter.Logic
             {
                 var data = _context.UserProfile.Where(e => e.Id == UserId).FirstOrDefault();
                 //var userEmail = _context.AspNetUsers.Where(f => f.Id == data.AspNetId).FirstOrDefault().Email;
-                var user = _modelFactory.Create(data);
-                return user;
+                if (data != null)
+                {
+                    var user = _modelFactory.Create(data);
+                    return user;
+                }
+                else
+                    return null;
+                
             }
             catch (Exception)
             {
