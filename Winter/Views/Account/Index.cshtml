@@ -88,10 +88,10 @@
                                             </h5>
                                         </div>
                                         <div class="card-body">
-                                            <p class="card-text">@Model.FirstName</p>
-                                            <p class="card-text">@Model.LastName</p>
+                                            <p class="card-text">@Model.FirstName @Model.LastName</p>
+                                            @*<p class="card-text">@Model.LastName</p>*@
                                             <p class="card-text">@Model.Email</p>
-                                            <p class="card-text">@Model.PhoneNumber</p>
+                                            @*<p class="card-text">@Model.PhoneNumber</p>*@
                                             <a class="card-link genric-btn warning-border circle arrow" asp-action="ChangePassword"
                                                asp-controller="Account">Change Password</a>
                                         </div>
