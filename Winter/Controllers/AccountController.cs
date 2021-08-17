@@ -26,10 +26,8 @@ namespace Winter.Controllers
             _users = users;
         }
 
-        //public async Task<IActionResult> Index(string Id)
         public async Task<IActionResult> Index(int userId)
         {
-            //var user = await UserManager.FindByIdAsync(Id);
             var user = _users.GetUserDetail(userId);
 
             if (user == null)
