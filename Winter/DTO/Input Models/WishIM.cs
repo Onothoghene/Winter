@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Winter.ViewModels.Input_Models
+namespace Winter.DTO.Input_Models
 {
     public class WishIM
     {

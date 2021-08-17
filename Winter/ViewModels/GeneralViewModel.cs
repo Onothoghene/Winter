@@ -12,6 +12,7 @@ namespace Winter.ViewModels
         public int OrderCount { get; set; }
 
         public ProductOutputViewModel ProductViewModel { get; set; }
+        public ProductOutputViewModel User { get; set; }
 
         public IEnumerable<CategoryOutputViewModel> CategoryOutputViewModel { get; set; }
         public IEnumerable<ProductOutputViewModel> ProductOutputViewModel { get; set; }

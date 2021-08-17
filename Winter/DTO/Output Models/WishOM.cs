@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace Winter.ViewModels.Output_Models
+namespace Winter.DTO.Output_Models
 {
     public class WishOM
     {
