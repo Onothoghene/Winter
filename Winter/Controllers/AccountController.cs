@@ -5,10 +5,9 @@ using System.Threading.Tasks;
 using Winter.Models;
 using System;
 using Winter.Logic;
-using Winter.ViewModels.Input_Models;
-using Winter.ViewModels.Edit_Models;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Authentication.Cookies;
+using Winter.DTO.Edit_Models;
+using Winter.DTO.Input_Models;
 
 namespace Winter.Controllers
 {

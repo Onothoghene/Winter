@@ -1,11 +1,10 @@
-﻿using Winter.Data;
-using Winter.Models;
+﻿using Winter.Models;
 using Winter.ViewModels.Input_Models;
 using Winter.ViewModels.Output_Models;
-using Microsoft.AspNetCore.Http;
 using System;
-using System.IO;
 using System.Linq;
+using Winter.DTO.Input_Models;
+using Winter.DTO.Output_Models;
 
 namespace Winter.Services
 {

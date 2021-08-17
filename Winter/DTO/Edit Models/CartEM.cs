@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Winter.ViewModels.Edit_Models
+namespace Winter.DTO.Edit_Models
 {
     public class CartEM
     {
