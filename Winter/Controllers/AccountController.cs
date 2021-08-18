@@ -15,11 +15,11 @@ namespace Winter.Controllers
 {
     public class AccountController : BaseController
     {
-        public readonly UserManager<ApplicationUser> UserManager;
-        public readonly SignInManager<ApplicationUser> SignInManager;
+        public new readonly UserManager<ApplicationUser> UserManager;
+        public new readonly SignInManager<ApplicationUser> SignInManager;
         readonly IUsers _users;
 
-        public AccountController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, IUsers users)
+        public AccountController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, IUsers users) : base(userManager, signInManager, users)
         {
             UserManager = userManager;
             SignInManager = signInManager;
@@ -176,7 +176,8 @@ namespace Winter.Controllers
                         if (_users.AddUser(newuser, out newUserId) == true)
                         {
                             await SignInManager.SignInAsync(user, isPersistent: false);
-                            HttpContext.Session.SetInt32(UserId, newUserId);
+                            // HttpContext.Session.SetInt32(UserId, newUserId);
+                            SetUserIdCookie();
                             return RedirectToAction("Index", "Home");
                         }
                         else
@@ -217,6 +218,7 @@ namespace Winter.Controllers
                     {
                         var userId = _users.GetUserId(model.Email);
                         HttpContext.Session.SetInt32(UserId, (int)userId);
+                        //SetUserIdCookie();
                         return RedirectToAction("Index", "Home");
                     };
                     ModelState.AddModelError(string.Empty, "Invalid Login Attempt");
