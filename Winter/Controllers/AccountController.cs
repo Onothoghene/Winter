@@ -26,6 +26,7 @@ namespace Winter.Controllers
             _users = users;
         }
 
+        [Route("user/index")]
         public async Task<IActionResult> Index(int userId)
         {
             var user = await Task.Run(() => _users.GetUserDetail(userId));
@@ -51,6 +52,7 @@ namespace Winter.Controllers
             return View(response);
         }
 
+        [Route("register")]
         public IActionResult Register()
         {
             return View();
@@ -196,6 +198,7 @@ namespace Winter.Controllers
             }
         }
 
+        [Route("login")]
         public IActionResult Login()
         {
             return View();
@@ -353,6 +356,7 @@ namespace Winter.Controllers
 
         }
 
+        [Route("user/change-password")]
         public IActionResult ChangePassword()
         {
             return View();

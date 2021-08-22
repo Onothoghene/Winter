@@ -26,11 +26,13 @@ namespace Winter.Controllers
             return View();
         }
 
+        [Route("product/category")]
         public IActionResult Category()
         {
             return View();
         }
 
+        [Route("contact")]
         public IActionResult Contact()
         {
             return View();

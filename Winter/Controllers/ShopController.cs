@@ -37,11 +37,13 @@ namespace Winter.Controllers
             return View();
         }
 
+        [Route("cart")]
         public IActionResult ShoppingCart()
         {
             return View();
         }
 
+        [Route("product/details")]
         public IActionResult ProductDetails(int ProductId)
         {
             if (ProductId > 0)

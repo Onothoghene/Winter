@@ -17,6 +17,7 @@ namespace Winter.Controllers
             _category = category;
         }
 
+        [Route("category/index")]
         public async Task<IActionResult> Index()
         {
             try
@@ -31,6 +32,7 @@ namespace Winter.Controllers
             }
         }
 
+        [Route("category/detail")]
         public async Task<IActionResult> Details(int categoryId)
         {
             try
