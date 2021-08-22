@@ -91,6 +91,7 @@ namespace Winter
 
             app.UseDeveloperExceptionPage();
 
+            app.UseSession();
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseAuthentication();
@@ -104,7 +105,7 @@ namespace Winter
 
             });
 
-            app.UseSession();
+            
             app.UseMvc(routes =>
             {
                 routes.MapRoute(

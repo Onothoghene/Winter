@@ -13,6 +13,6 @@ namespace Winter.Logic
         bool EditUser(UserEM model);
         bool DeleteUser(long UserId);
         UserOM GetUserDetail(int UserId);
-        long GetUserId(string Email);
+        int GetUserId(string Email);
     }
 }

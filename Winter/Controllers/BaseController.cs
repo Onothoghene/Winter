@@ -27,15 +27,17 @@ namespace Winter.Controllers
         public async void SetUserIdCookie()
         {
             bool IsSignedIn = SignInManager.IsSignedIn(User);
+            bool isAuthenticated = User.Identity.IsAuthenticated;
 
-            if (IsSignedIn)
+            if (IsSignedIn && isAuthenticated)
             {
                 var user = await Task.Run(() => UserManager.GetUserAsync(User));
-                var loggedInUser = _users.GetUserId(user.Email);
-                 HttpContext.Session.SetInt32(UserId, (int)loggedInUser);
+                loggedInUser =_users.GetUserId(user.Email);
+                 HttpContext.Session.SetInt32(UserId, loggedInUser);
             }
 
         }
         public string UserId { get; set; } = "UserId";
+        public int loggedInUser { get; set; }
     }
 }
