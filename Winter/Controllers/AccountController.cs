@@ -29,6 +29,7 @@ namespace Winter.Controllers
         public async Task<IActionResult> Index(int userId)
         {
             var user = await Task.Run(() => _users.GetUserDetail(userId));
+            //var user = await Task.Run(() => _users.GetUserDetail(loggedInUser));
 
             if (user == null)
             {

@@ -176,7 +176,7 @@ namespace Winter.Logic
             }
         }
 
-        public long GetUserId(string Email)
+        public int GetUserId(string Email)
         {
             var userId = _context.UserProfile.Where(i => i.Email == Email).FirstOrDefault().Id;
             return userId;
