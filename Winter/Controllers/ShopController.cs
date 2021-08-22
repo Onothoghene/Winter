@@ -37,6 +37,11 @@ namespace Winter.Controllers
             return View();
         }
 
+        public IActionResult ShoppingCart()
+        {
+            return View();
+        }
+
         public IActionResult ProductDetails(int ProductId)
         {
             if (ProductId > 0)
