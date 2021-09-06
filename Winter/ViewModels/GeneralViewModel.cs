@@ -17,7 +17,6 @@ namespace Winter.ViewModels
         public IEnumerable<CategoryOutputViewModel> CategoryOutputViewModel { get; set; }
         public IEnumerable<ProductOutputViewModel> ProductOutputViewModel { get; set; }
         public IEnumerable<OrderOutputViewModel> OrderOutputViewModel { get; set; }
-        public IEnumerable<ApplicationUser > ApplicationUser { get; set; }
 
       //  public IEnumerable<ProductOutputViewModel> ProductOutputViewModel { get; set; }
     }
