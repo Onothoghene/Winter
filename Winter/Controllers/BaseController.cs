@@ -1,9 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Winter.Logic;
 using Winter.Models;
-using Microsoft.AspNetCore.Http;
-using System.Threading.Tasks;
 
 namespace Winter.Controllers
 {
@@ -11,13 +8,13 @@ namespace Winter.Controllers
     {
         public readonly UserManager<ApplicationUser> UserManager;
         public readonly SignInManager<ApplicationUser> SignInManager;
-        readonly IUsers _users;
+       // readonly IUsers _users;
 
-        public BaseController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, IUsers users)
+        public BaseController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
         {
             UserManager = userManager;
             SignInManager = signInManager;
-            _users = users;
+            //_users = users;
 
             //bool isAuthenticated = User.Identity.IsAuthenticated;
             
