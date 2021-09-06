@@ -8,6 +8,7 @@ namespace Winter.API.Models
         public Category()
         {
             Product = new HashSet<Product>();
+            SubCategory = new HashSet<SubCategory>();
         }
 
         public int Id { get; set; }
@@ -17,5 +18,6 @@ namespace Winter.API.Models
         public DateTime? DateModified { get; set; }
 
         public ICollection<Product> Product { get; set; }
+        public ICollection<SubCategory> SubCategory { get; set; }
     }
 }

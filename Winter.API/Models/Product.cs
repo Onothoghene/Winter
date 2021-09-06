@@ -7,7 +7,10 @@ namespace Winter.API.Models
     {
         public Product()
         {
+            Cart = new HashSet<Cart>();
             Files = new HashSet<Files>();
+            OrderRequest = new HashSet<OrderRequest>();
+            Wish = new HashSet<Wish>();
         }
 
         public int Id { get; set; }
@@ -21,6 +24,9 @@ namespace Winter.API.Models
 
         public Brand Brand { get; set; }
         public Category Category { get; set; }
+        public ICollection<Cart> Cart { get; set; }
         public ICollection<Files> Files { get; set; }
+        public ICollection<OrderRequest> OrderRequest { get; set; }
+        public ICollection<Wish> Wish { get; set; }
     }
 }

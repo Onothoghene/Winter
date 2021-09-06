@@ -15,6 +15,8 @@ namespace Winter.API.Models
         {
         }
 
+        public virtual DbSet<AdditionalInfo> AdditionalInfo { get; set; }
+        public virtual DbSet<ApplicationRoles> ApplicationRoles { get; set; }
         public virtual DbSet<AspNetRoleClaims> AspNetRoleClaims { get; set; }
         public virtual DbSet<AspNetRoles> AspNetRoles { get; set; }
         public virtual DbSet<AspNetUserClaims> AspNetUserClaims { get; set; }
@@ -23,9 +25,14 @@ namespace Winter.API.Models
         public virtual DbSet<AspNetUsers> AspNetUsers { get; set; }
         public virtual DbSet<AspNetUserTokens> AspNetUserTokens { get; set; }
         public virtual DbSet<Brand> Brand { get; set; }
+        public virtual DbSet<Cart> Cart { get; set; }
         public virtual DbSet<Category> Category { get; set; }
         public virtual DbSet<Files> Files { get; set; }
+        public virtual DbSet<OrderRequest> OrderRequest { get; set; }
         public virtual DbSet<Product> Product { get; set; }
+        public virtual DbSet<SubCategory> SubCategory { get; set; }
+        public virtual DbSet<UserProfile> UserProfile { get; set; }
+        public virtual DbSet<Wish> Wish { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -51,6 +58,32 @@ namespace Winter.API.Models
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<AdditionalInfo>(entity =>
+            {
+                entity.Property(e => e.AdditionalPhoneNumber).HasMaxLength(50);
+
+                entity.Property(e => e.Address).HasMaxLength(100);
+
+                entity.Property(e => e.DateAdded).HasColumnType("datetime");
+
+                entity.Property(e => e.DateDeleted).HasColumnType("datetime");
+
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.AdditionalInfo)
+                    .HasForeignKey(d => d.UserId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__Additiona__UserI__540C7B00");
+            });
+
+            modelBuilder.Entity<ApplicationRoles>(entity =>
+            {
+                entity.Property(e => e.DateAdded).HasColumnType("datetime");
+
+                entity.Property(e => e.DateDeleted).HasColumnType("datetime");
+
+                entity.Property(e => e.Name).HasMaxLength(50);
+            });
+
             modelBuilder.Entity<AspNetRoleClaims>(entity =>
             {
                 entity.HasIndex(e => e.RoleId);
@@ -160,6 +193,25 @@ namespace Winter.API.Models
                     .HasMaxLength(50);
             });
 
+            modelBuilder.Entity<Cart>(entity =>
+            {
+                entity.Property(e => e.DateAdded).HasColumnType("datetime");
+
+                entity.Property(e => e.DateModified).HasColumnType("datetime");
+
+                entity.HasOne(d => d.Product)
+                    .WithMany(p => p.Cart)
+                    .HasForeignKey(d => d.ProductId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__Cart__ProductId__4E53A1AA");
+
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.Cart)
+                    .HasForeignKey(d => d.UserId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__Cart__UserId__4F47C5E3");
+            });
+
             modelBuilder.Entity<Files>(entity =>
             {
                 entity.HasIndex(e => e.ProductId)
@@ -169,6 +221,35 @@ namespace Winter.API.Models
                     .WithMany(p => p.Files)
                     .HasForeignKey(d => d.ProductId)
                     .HasConstraintName("FK_ProductFile_Product_ProductId");
+            });
+
+            modelBuilder.Entity<OrderRequest>(entity =>
+            {
+                entity.Property(e => e.DateAdded).HasColumnType("datetime");
+
+                entity.Property(e => e.DateApproved).HasColumnType("datetime");
+
+                entity.Property(e => e.DateCancelled).HasColumnType("datetime");
+
+                entity.Property(e => e.DateDeleted).HasColumnType("datetime");
+
+                entity.Property(e => e.Description).HasMaxLength(50);
+
+                entity.Property(e => e.Price).HasColumnType("decimal(18, 0)");
+
+                entity.Property(e => e.TotalAmount).HasColumnType("decimal(18, 0)");
+
+                entity.HasOne(d => d.AddedByNavigation)
+                    .WithMany(p => p.OrderRequest)
+                    .HasForeignKey(d => d.AddedBy)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__OrderRequ__Added__57DD0BE4");
+
+                entity.HasOne(d => d.Product)
+                    .WithMany(p => p.OrderRequest)
+                    .HasForeignKey(d => d.ProductId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__OrderRequ__Produ__58D1301D");
             });
 
             modelBuilder.Entity<Product>(entity =>
@@ -185,6 +266,55 @@ namespace Winter.API.Models
                 entity.HasOne(d => d.Category)
                     .WithMany(p => p.Product)
                     .HasForeignKey(d => d.CategoryId);
+            });
+
+            modelBuilder.Entity<SubCategory>(entity =>
+            {
+                entity.Property(e => e.DateAdded).HasColumnType("datetime");
+
+                entity.Property(e => e.Description).HasMaxLength(100);
+
+                entity.Property(e => e.Name)
+                    .IsRequired()
+                    .HasMaxLength(50);
+
+                entity.HasOne(d => d.Category)
+                    .WithMany(p => p.SubCategory)
+                    .HasForeignKey(d => d.CategoryId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__SubCatego__Categ__42E1EEFE");
+            });
+
+            modelBuilder.Entity<UserProfile>(entity =>
+            {
+                entity.Property(e => e.AspNetId).HasMaxLength(100);
+
+                entity.Property(e => e.DateAdded).HasColumnType("datetime");
+
+                entity.Property(e => e.Email).HasMaxLength(50);
+
+                entity.Property(e => e.FirstName).HasMaxLength(100);
+
+                entity.Property(e => e.LastName).HasMaxLength(100);
+
+                entity.Property(e => e.PhoneNumber).HasMaxLength(50);
+            });
+
+            modelBuilder.Entity<Wish>(entity =>
+            {
+                entity.Property(e => e.DateAdded).HasColumnType("datetime");
+
+                entity.HasOne(d => d.Product)
+                    .WithMany(p => p.Wish)
+                    .HasForeignKey(d => d.ProductId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__Wish__ProductId__47A6A41B");
+
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.Wish)
+                    .HasForeignKey(d => d.UserId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__Wish__UserId__489AC854");
             });
         }
     }
