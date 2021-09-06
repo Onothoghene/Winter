@@ -12,13 +12,13 @@ namespace Winter.Controllers
     public class ShopController : Controller
     {
         public readonly IProduct _product;
-        public readonly ICategory _category;
+        //public readonly ICategory _category;
         readonly HttpClientHelper _helper = new HttpClientHelper();
 
-        public ShopController(IProduct product, ICategory category)
+        public ShopController(IProduct product/*, ICategory category*/)
         {
             _product = product;
-            _category = category;
+            //_category = category;
         }
 
         public IActionResult Index()

@@ -70,13 +70,7 @@ namespace Winter
 
             services.AddTransient<WinterContext>();
             services.AddSingleton<ModelFactory, ModelFactory>();
-            services.AddScoped<IProduct, EFProduct>();
-            services.AddScoped<IOrder, EFOrder>();
-            services.AddScoped<ICategory, EFCategory>();
-            services.AddScoped<IUsers, EFUser>();
-            services.AddScoped<IWishList, EFWishList>();
-            services.AddScoped<IAdmin, EFAdmin>();
-            services.AddScoped<ICartItem, EFCartItem>();
+            
 
             services.AddSwaggerGen();
         }
@@ -113,15 +107,7 @@ namespace Winter
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
 
-            // Enable middleware to serve generated Swagger as a JSON endpoint.
-            app.UseSwagger();
-            // Enable middleware to serve swagger - ui(HTML, JS, CSS, etc.), specifying the Swagger JSON endpoint.
-            app.UseSwaggerUI(c =>
-            {
-                c.SwaggerEndpoint("../swagger/v1/swagger.json", "Winter API");
-                // c.RoutePrefix = string.Empty;
-            });
-
+           
         }
     }
 
