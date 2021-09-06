@@ -9,7 +9,7 @@
 //{
 //    [ApiController]
 //    [Route("api/Products")]
-//    public class ProductController : ControllerBase
+//    public class ProductController : BaseApiController
 //    {
 //        public readonly IProduct _products;
 

@@ -8,7 +8,7 @@
 //{
 //    [ApiController]
 //    [Route("api/Wish")]
-//    public class WishController : ControllerBase
+//    public class WishController : BaseApiController
 //    {
 //        public readonly IWishList _wishList;
 

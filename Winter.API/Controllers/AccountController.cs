@@ -9,7 +9,7 @@ namespace Winter.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AccountController : ControllerBase
+    public class AccountController : BaseApiController
     {
         readonly UserManager<ApplicationUser> UserManager;
         readonly SignInManager<ApplicationUser> SignInManager;
