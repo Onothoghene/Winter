@@ -2,10 +2,7 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Winter.Data;
 using Winter.Models;
 using AutoMapper;
 using Winter.ViewModels.Input_Models;
@@ -53,15 +50,15 @@ namespace Winter
                 options.AccessDeniedPath = $"/Identity/Account/AccessDenied";
             });
 
-            services.AddDbContext<ApplicationDbContext>(options =>
-                    options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            //services.AddDbContext<ApplicationDbContext>(options =>
+            //        options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
             //services.AddIdentityCore<ApplicationUser>(options => { });
             //services.AddScoped<IUserStore<ApplicationUser>, UserStore<ApplicationUser, IdentityRole, ApplicationDbContext>>();
             //services.AddScoped<IRoleStore<IdentityRole>, RoleStore<IdentityRole, ApplicationDbContext>>();
 
-            services.AddIdentity<ApplicationUser, IdentityRole>()
-                           .AddEntityFrameworkStores<ApplicationDbContext>();
+            //services.AddIdentity<ApplicationUser, IdentityRole>()
+            //               .AddEntityFrameworkStores<ApplicationDbContext>();
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 

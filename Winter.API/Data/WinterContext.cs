@@ -1,11 +1,15 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using System.IO;
-using Winter.Models;
+using System;
 
-namespace Winter.Data
+namespace Winter.API.Data
 {
+    public class ApplicationUser : IdentityUser
+    {
+    }
+
+
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public ApplicationDbContext()
@@ -16,15 +20,9 @@ namespace Winter.Data
         {
         }
 
-        //public DbSet<Category> Category { get; set; }
-        //public DbSet<Product> Product { get; set; }
-        //public DbSet<Files> Files { get; set; }
-        //public DbSet<OrderRequest> Order { get; set; }
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            // modelBuilder.Seed();
         }
 
         //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

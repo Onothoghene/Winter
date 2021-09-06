@@ -6,19 +6,19 @@ namespace Winter.Controllers
 {
     public class BaseController : Controller
     {
-        public readonly UserManager<ApplicationUser> UserManager;
-        public readonly SignInManager<ApplicationUser> SignInManager;
-       // readonly IUsers _users;
+       // public readonly UserManager<ApplicationUser> UserManager;
+       // public readonly SignInManager<ApplicationUser> SignInManager;
+       //// readonly IUsers _users;
 
-        public BaseController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
-        {
-            UserManager = userManager;
-            SignInManager = signInManager;
-            //_users = users;
+       // public BaseController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
+       // {
+       //     UserManager = userManager;
+       //     SignInManager = signInManager;
+       //     //_users = users;
 
-            //bool isAuthenticated = User.Identity.IsAuthenticated;
+       //     //bool isAuthenticated = User.Identity.IsAuthenticated;
             
-        }
+       // }
 
         
         //public async void SetUserIdCookie()
