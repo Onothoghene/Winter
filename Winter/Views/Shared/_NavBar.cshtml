@@ -2,14 +2,14 @@
     For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 *@
 
-@using Microsoft.AspNetCore.Identity
+@*@using Microsoft.AspNetCore.Identity
 @inject SignInManager<ApplicationUser> signInManager;
 @inject UserManager<ApplicationUser> UserManager;
 
 @{
     var user = await UserManager.GetUserAsync(User);
     var userId = Context.Session.GetInt32("UserId");
-}
+}*@
 <!--::header part start::-->
 <header class="main_menu home_menu">
     <div class="container-fluid">
@@ -60,7 +60,7 @@
 
                         <div class="nav navbar-nav navbar-right">
 
-                            @if (signInManager.IsSignedIn(User))
+                            @*@if (signInManager.IsSignedIn(User))
                             {
                                 <ul class="nav navbar-nav navbar-right">
                                     <li class="nav-item dropdown ">
@@ -93,22 +93,6 @@
                                         </div>
                                     </li>
                                 </ul>
-                                @*<li class="nav-item">
-                                           <a class="dropdown-toggle" href="#" id="navbarDropdown3" role="button"
-                                               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                <i class="ti-bag"></i>
-                                            </a>
-                                    </li>*@
-
-                                @*<div class="hearer_icon d-flex ">
-                                        <div class="dropdown cart">
-                                            <a class="dropdown-toggle" id="navbarDropdown3" role="button"
-                                               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
-                                               asp-action="ShoppingCart" asp-controller="Shop">
-                                                <i class="fas fa-shopping-cart"></i>
-                                            </a>
-                                        </div>
-                                    </div>*@
                             }
                             else
                             {
@@ -128,7 +112,7 @@
                                         </div>
                                     </li>
                                 </ul>
-                            }
+                            }*@
 
                         </div>
 
