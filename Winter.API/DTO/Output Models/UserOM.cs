@@ -1,14 +1,14 @@
 ﻿using System;
 
-namespace Winter.DTO.Input_Models
+namespace Winter.API.DTO.Output_Models
 {
-    public class UserIM
+    public class UserOM
     {
+        public long Id { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string PhoneNumber { get; set; }
-        public string AspNetId { get; set; }
         public string Email { get; set; }
-        public DateTime DateAdded { get; set; }
+        public string AspNetId { get; set; }
     }
 }

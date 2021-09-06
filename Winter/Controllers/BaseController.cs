@@ -24,20 +24,20 @@ namespace Winter.Controllers
         }
 
         
-        public async void SetUserIdCookie()
-        {
-            bool IsSignedIn = SignInManager.IsSignedIn(User);
-            bool isAuthenticated = User.Identity.IsAuthenticated;
+        //public async void SetUserIdCookie()
+        //{
+        //    bool IsSignedIn = SignInManager.IsSignedIn(User);
+        //    bool isAuthenticated = User.Identity.IsAuthenticated;
 
-            if (IsSignedIn && isAuthenticated)
-            {
-                var user = await Task.Run(() => UserManager.GetUserAsync(User));
-                loggedInUser =_users.GetUserId(user.Email);
-                 HttpContext.Session.SetInt32(UserId, loggedInUser);
-            }
+        //    if (IsSignedIn && isAuthenticated)
+        //    {
+        //        var user = await Task.Run(() => UserManager.GetUserAsync(User));
+        //        loggedInUser =_users.GetUserId(user.Email);
+        //         HttpContext.Session.SetInt32(UserId, loggedInUser);
+        //    }
 
-        }
-        public string UserId { get; set; } = "UserId";
-        public int loggedInUser { get; set; }
+        //}
+        //public string UserId { get; set; } = "UserId";
+        //public int loggedInUser { get; set; }
     }
 }

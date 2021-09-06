@@ -22,10 +22,10 @@ namespace Winter.API
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
-            //services.AddScoped<IProduct, EFProduct>();
-            //services.AddScoped<IOrder, EFOrder>();
+            services.AddScoped<IProduct, EFProduct>();
+            services.AddScoped<IOrder, EFOrder>();
             services.AddScoped<ICategory, EFCategory>();
-            //services.AddScoped<IUsers, EFUser>();
+            services.AddScoped<IUsers, EFUser>();
             services.AddScoped<IWishList, EFWishList>();
             services.AddScoped<IAdmin, EFAdmin>();
             services.AddScoped<ICartItem, EFCartItem>();

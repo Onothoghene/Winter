@@ -4,14 +4,11 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
-using Winter.Logic;
 using Microsoft.AspNetCore.Mvc;
-using Winter.Services;
 using Winter.Data;
 using Winter.Models;
 using AutoMapper;
 using Winter.ViewModels.Input_Models;
-using Winter.ILogic;
 using Microsoft.AspNetCore.Http;
 using System;
 
@@ -69,7 +66,7 @@ namespace Winter
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             services.AddTransient<WinterContext>();
-            services.AddSingleton<ModelFactory, ModelFactory>();
+            //services.AddSingleton<ModelFactory, ModelFactory>();
             
 
             services.AddSwaggerGen();

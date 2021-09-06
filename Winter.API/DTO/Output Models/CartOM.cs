@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Winter.DTO.Output_Models
+namespace Winter.API.DTO.Output_Models
 {
     public class CartOM
     {

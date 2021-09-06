@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Winter.DTO.Input_Models
+namespace Winter.API.DTO.Input_Models
 {
     public class CartIM
     {

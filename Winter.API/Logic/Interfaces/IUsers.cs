@@ -1,4 +1,4 @@
-﻿namespace Winter.Logic
+﻿namespace Winter.API.Logic.Interfaces
 {
     public interface IUsers
     {

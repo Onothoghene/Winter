@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Winter.DTO.Edit_Models
+namespace Winter.API.DTO.Edit_Models
 {
     public class UserEM
     {
