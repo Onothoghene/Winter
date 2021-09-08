@@ -6,8 +6,8 @@ using Winter.API.Logic.Interfaces;
 
 namespace Winter.API.Controllers
 {
-    [ApiController]
     [Route("api/[controller]")]
+    [ApiController]
     public class CartController : BaseApiController
     {
         public readonly ICartItem _cartItem;

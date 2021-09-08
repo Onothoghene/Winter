@@ -6,9 +6,8 @@ using Winter.API.Data;
 
 namespace Winter.API.Controllers
 {
-
-    [ApiController]
     [Route("api/[controller]")]
+    [ApiController]
     public class AccountController : BaseApiController
     {
         readonly UserManager<ApplicationUser> UserManager;
