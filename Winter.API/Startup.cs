@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Winter.API.Data;
 using Winter.API.Logic;
 using Winter.API.Logic.Interfaces;
+using Winter.API.Models;
 
 namespace Winter.API
 {
@@ -27,6 +28,7 @@ namespace Winter.API
             services.AddDbContext<ApplicationDbContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
+            services.AddTransient<WinterContext>();
             services.AddScoped<IProduct, EFProduct>();
             services.AddScoped<IOrder, EFOrder>();
             services.AddScoped<ICategory, EFCategory>();

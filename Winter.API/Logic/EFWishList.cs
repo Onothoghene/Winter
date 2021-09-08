@@ -1,153 +1,167 @@
-﻿using Winter.API.Logic.Interfaces;
+﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Transactions;
+using Winter.API.DTO.Input_Models;
+using Winter.API.DTO.Output_Models;
+using Winter.API.Logic.Interfaces;
+using Winter.API.Models;
 
 namespace Winter.API.Logic
 {
     public class EFWishList : IWishList
     {
-        //private readonly WinterContext _context;
+        private readonly WinterContext _context;
+        private readonly IMapper _mapper;
         //private readonly ModelFactory _modelFactory;
 
-        //public EFWishList(WinterContext context, ModelFactory modelFactory)
-        //{
-        //    _context = context;
-        //    _modelFactory = modelFactory;
-        //}
+        public EFWishList(WinterContext context, IMapper mapper)
+        {
+            _context = context;
+            _mapper = mapper;
+        }
 
-        //public bool AddToWishLIst(WishIM model)
-        //{
-        //    try
-        //    {
-        //        using (TransactionScope ts = new TransactionScope())
-        //        {
-        //            var wish = _modelFactory.Parse(model);
-        //            _context.Wish.Add(wish);
-        //            int bit = _context.SaveChanges();
-        //            ts.Complete();
+        public bool AddToWishLIst(WishIM model)
+        {
+            try
+            {
+                using (TransactionScope ts = new TransactionScope())
+                {
+                    var wish = _mapper.Map<Wish>(model);
+                    _context.Wish.Add(wish);
+                    int bit = _context.SaveChanges();
+                    ts.Complete();
 
-        //            if (bit > 0)
-        //                return true;
-        //            else
-        //                return false;
-        //        }
-        //    }
-        //    catch (Exception)
-        //    {
+                    if (bit > 0)
+                        return true;
+                    else
+                        return false;
+                }
+            }
+            catch (Exception)
+            {
 
-        //        throw;
-        //    }
-        //}
+                throw;
+            }
+        }
 
-        //public IEnumerable<WishOM> GetUserWishList(long userId)
-        //{
-        //    try
-        //    {
-        //        var wish = _context.Wish.Where(u => u.UserId == userId)
-        //                                                      .Include(p => p.User)
-        //                                                      .Include(x => x.Product)
-        //                                                      .ToList();
+        public IEnumerable<WishOM> GetUserWishList(long userId)
+        {
+            try
+            {
+                var wish = _context.Wish.Where(u => u.UserId == userId)
+                                                              .Include(p => p.User)
+                                                              .Include(x => x.Product)
+                                                              .ToList();
 
-        //        var resp = wish.Select(x => _modelFactory.Create(x));
+                //var resp = wish.Select(x => _modelFactory.Create(x));
 
-        //        return resp;
-        //    }
-        //    catch (Exception)
-        //    {
+                var resp = _mapper.Map<IEnumerable<WishOM>>(wish);
 
-        //        throw;
-        //    }
-        //}
+                 return resp;
+            }
+            catch (Exception)
+            {
 
-        //public bool RemoveItem(long wishId)
-        //{
-        //    try
-        //    {
-        //        using (TransactionScope ts = new TransactionScope())
-        //        {
-        //            var wish = _context.Wish.Where(x => x.Id == wishId).FirstOrDefault();
+                throw;
+            }
+        }
 
-        //            if (wish != null)
-        //            {
-        //                _context.Wish.Remove(wish);
-        //                _context.SaveChanges();
-        //                ts.Complete();
-        //                return true;
-        //            }
-        //            return false;
-        //        }
-        //    }
-        //    catch (Exception)
-        //    {
+        public bool RemoveItem(long wishId)
+        {
+            try
+            {
+                using (TransactionScope ts = new TransactionScope())
+                {
+                    var wish = _context.Wish.Where(x => x.Id == wishId).FirstOrDefault();
 
-        //        throw;
-        //    }
-        //}
+                    if (wish != null)
+                    {
+                        _context.Wish.Remove(wish);
+                        _context.SaveChanges();
+                        ts.Complete();
+                        return true;
+                    }
+                    return false;
+                }
+            }
+            catch (Exception)
+            {
 
-        //public WishOM GetWishDetail(long wishId)
-        //{
-        //    try
-        //    {
-        //        using (TransactionScope ts = new TransactionScope())
-        //        {
-        //            var wish = _context.Wish.Where(x => x.Id == wishId)
-        //                                                        .Include(i => i.User)
-        //                                                        .Include(e => e.Product)
-        //                                                        .FirstOrDefault();
+                throw;
+            }
+        }
 
-        //            if (wish != null)
-        //            {
-        //                var data = _modelFactory.Create(wish);
-        //            }
-        //            return null;
-        //        }
-        //    }
-        //    catch (Exception)
-        //    {
+        public WishOM GetWishDetail(long wishId)
+        {
+            try
+            {
+                using (TransactionScope ts = new TransactionScope())
+                {
+                    var wish = _context.Wish.Where(x => x.Id == wishId)
+                                                                .Include(i => i.User)
+                                                                .Include(e => e.Product)
+                                                                .FirstOrDefault();
 
-        //        throw;
-        //    }
-        //}
+                    if (wish != null)
+                    {
+                        // var data = _modelFactory.Create(wish);
+                        var data = _mapper.Map<WishOM>(wish);
+                        return data;
+                    }
+                    return null;
+                }
+            }
+            catch (Exception)
+            {
 
-        //public long GetUserWishListCount(long userId)
-        //{
-        //    try
-        //    {
-        //        var count = _context.Wish.Where(s => s.UserId == userId)
-        //                                                  .ToList()
-        //                                                  .Count();
+                throw;
+            }
+        }
 
-        //        return count;
-        //    }
-        //    catch (Exception)
-        //    {
+        public long GetUserWishListCount(long userId)
+        {
+            try
+            {
+                var count = _context.Wish.Where(s => s.UserId == userId)
+                                                          .ToList()
+                                                          .Count();
 
-        //        throw;
-        //    }
-        //}
+                return count;
+            }
+            catch (Exception)
+            {
 
-        //public bool RemoveWishListItems(long userId)
-        //{
-        //    try
-        //    {
-        //        using (TransactionScope ts = new TransactionScope())
-        //        {
-        //            var wishes = _context.Wish.Where(x => x.UserId == userId);
+                throw;
+            }
+        }
 
-        //            if (wishes != null)
-        //            {
-        //                _context.Wish.RemoveRange(wishes);
-        //                _context.SaveChanges();
-        //                ts.Complete();
-        //                return true;
-        //            }
-        //            return false;
-        //        }
-        //    }
-        //    catch (Exception)
-        //    {
+        public bool RemoveWishListItems(long userId)
+        {
+            try
+            {
+                using (TransactionScope ts = new TransactionScope())
+                {
+                    var wishes = _context.Wish.Where(x => x.UserId == userId);
 
-        //        throw;
-        //    }
-        //}
+                    if (wishes != null)
+                    {
+                        _context.Wish.RemoveRange(wishes);
+                        _context.SaveChanges();
+                        ts.Complete();
+                        return true;
+                    }
+                    return false;
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
 
     }
 }
