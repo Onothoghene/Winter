@@ -6,8 +6,8 @@ using Winter.API.Logic.Interfaces;
 
 namespace Winter.API.Controllers
 {
-    [ApiController]
     [Route("api/[controller]")]
+    [ApiController]
     public class WishController : BaseApiController
     {
         public readonly IWishList _wishList;
