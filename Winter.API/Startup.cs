@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Winter.API.Data;
+using Winter.API.Helpers;
 using Winter.API.Logic;
 using Winter.API.Logic.Interfaces;
 using Winter.API.Models;
@@ -36,6 +38,16 @@ namespace Winter.API
             services.AddScoped<IWishList, EFWishList>();
             services.AddScoped<IAdmin, EFAdmin>();
             services.AddScoped<ICartItem, EFCartItem>();
+
+            // Auto Mapper Configurations
+            var mapperConfig = new MapperConfiguration(mc =>
+            {
+                mc.AddProfile(new WishProfile());
+                mc.AddProfile(new CartProfile());
+            });
+
+            IMapper mapper = mapperConfig.CreateMapper();
+            services.AddSingleton(mapper);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
