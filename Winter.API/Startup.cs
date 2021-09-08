@@ -44,6 +44,7 @@ namespace Winter.API
             {
                 mc.AddProfile(new WishProfile());
                 mc.AddProfile(new CartProfile());
+                mc.AddProfile(new ProductProfile());
             });
 
             IMapper mapper = mapperConfig.CreateMapper();

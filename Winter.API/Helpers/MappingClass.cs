@@ -16,7 +16,7 @@ namespace Winter.API.Helpers
 
     public class WishProfile : Profile
     {
-        MappingClass mappingClass = new MappingClass();
+        readonly MappingClass mappingClass = new MappingClass();
         public WishProfile()
         {
             CreateMap<Wish, WishOM>()
@@ -33,33 +33,33 @@ namespace Winter.API.Helpers
 
     public class CartProfile : Profile
     {
-        MappingClass mappingClass = new MappingClass();
+        readonly MappingClass mappingClass = new MappingClass();
         public CartProfile()
         {
             CreateMap<Cart, CartOM>()
                 .ForMember(dest => dest.ProductName, opt => opt.MapFrom(src => src.Product.ProductName))
                 .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => mappingClass.Create(src.User.FirstName, src.User.LastName)));
 
-            CreateMap<CartOM, Cart>()
+            CreateMap<CartIM, Cart>()
                 .ForMember(dest => dest.DateAdded, opt => opt.MapFrom(src => DateTime.Now));
 
         }
 
     }
 
-    //public class CartProfile : Profile
-    //{
-    //    MappingClass mappingClass = new MappingClass();
-    //    public CartProfile()
-    //    {
-    //        CreateMap<Cart, CartOM>()
-    //            .ForMember(dest => dest.ProductName, opt => opt.MapFrom(src => src.Product.ProductName))
-    //            .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => mappingClass.Create(src.User.FirstName, src.User.LastName)));
+    public class ProductProfile : Profile
+    {
+        public ProductProfile()
+        {
+            CreateMap<Product, ProductOM>()
+                .ForMember(dest => dest.BrandName, opt => opt.MapFrom(src => src.Brand.Name))
+                .ForMember(dest => dest.Category, opt => opt.MapFrom(src => src.Category.CategoryName))
+                .ForMember(dest => dest.ProductFile, opt => opt.MapFrom(src => src.Files));
 
-    //        CreateMap<CartOM, Cart>()
-    //            .ForMember(dest => dest.DateAdded, opt => opt.MapFrom(src => DateTime.Now));
+            CreateMap<CartOM, Product>()
+                .ForMember(dest => dest.DateAdded, opt => opt.MapFrom(src => DateTime.Now));
 
-    //    }
+        }
 
-    //}
+    }
 }

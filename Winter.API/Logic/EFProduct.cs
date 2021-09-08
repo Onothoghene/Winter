@@ -1,44 +1,29 @@
-﻿using Winter.API.Logic.Interfaces;
+﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Transactions;
+using Winter.API.DTO.Edit_Models;
+using Winter.API.DTO.Input_Models;
+using Winter.API.DTO.Output_Models;
+using Winter.API.Logic.Interfaces;
+using Winter.API.Models;
 
 namespace Winter.API.Logic
 {
     public class EFProduct : IProduct
     {
-        //private readonly WinterContext _context;
+        private readonly WinterContext _context;
+        readonly IMapper _mapper;
         //readonly ModelFactory _modelFactory = new ModelFactory();
         //ProductFileInputViewModel filemodel = new ProductFileInputViewModel();
 
-        //public EFProduct(WinterContext context)
-        //{
-        //    _context = context;
-        //}
-
-        //public int AddProduct(Product model, List<ProductFileInputViewModel> productFiles)
-        //{
-        //    try
-        //    {
-        //        model.DateAdded = DateTime.UtcNow;
-        //        _context.Add(model);
-
-        //        var res = _context.SaveChanges();
-
-        //        if (res > 0)
-        //        {
-        //            if (productFiles.Count > 0)
-        //            {
-        //                var regFiles = productFiles.Select(x => _modelFactory.Parse(x, model.Id));
-
-        //                _context.AddRange(regFiles);
-        //            }
-        //        }
-        //        _context.SaveChanges();
-        //        return res;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        throw;
-        //    }
-        //}
+        public EFProduct(WinterContext context, IMapper mapper)
+        {
+            _context = context;
+            _mapper = mapper;
+        }
 
         //public bool AddProduct(ProductIM model)
         //{
@@ -57,206 +42,242 @@ namespace Winter.API.Logic
         //                return false;
         //        }
         //    }
-        //    catch(Exception ex)
+        //    catch (Exception ex)
         //    {
         //        throw;
         //    }
         //}
 
-        ////public bool AddProductFile(ProductIM model)
-        ////{
-        ////    try
-        ////    {
-        ////        using (TransactionScope ts = new TransactionScope())
-        ////        {
-        ////            var prodct = _modelFactory.Parse(model);
-        ////            _context.ProductFile.Add(prodct);
-        ////            int bit = _context.SaveChanges();
-        ////            ts.Complete();
+        public bool AddProduct(ProductIM model)
+        {
+            try
+            {
+                using (TransactionScope ts = new TransactionScope())
+                {
+                    //var product = _modelFactory.Parse(model);
+                    var product = _mapper.Map<Product>(model);
+                    _context.Product.Add(product);
+                    int bit = _context.SaveChanges();
+                    ts.Complete();
 
-        ////            if (bit > 0)
-        ////                return true;
-        ////            else
-        ////                return false;
-        ////        }
-        ////    }
-        ////    catch (Exception ex)
-        ////    {
-        ////        throw;
-        ////    }
-        ////}
+                    if (bit > 0)
+                        return true;
+                    else
+                        return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
 
-        //public IEnumerable<ProductOM> GetProducts()
-        //{
-        //    try
-        //    {
-        //        var product = _context.Product.Include(x => x.Category)
-        //                                                           .Include(x => x.Files)
-        //                                                           .ToList();
-        //        var resp = product.Select(x => _modelFactory.Create2(x));
-
-        //        return resp;
-        //    }
-        //    catch (Exception)
-        //    {
-
-        //        throw;
-        //    }
-        //}
-
-        //public ProductOM GetProductById(int Id)
-        //{
-        //    try
-        //    {
-        //        var product = _context.Product.Where(a => a.Id == Id)
-        //                                                                .Include(x => x.Category)
-        //                                                               .Include(x => x.Files)
-        //                                                               .FirstOrDefault();
-
-        //        var resp = _modelFactory.Create2(product);
-
-        //        return resp;
-        //    }
-        //    catch (Exception)
-        //    {
-
-        //        throw;
-        //    }
-        //}
-
-        //public bool UpdateProduct(ProductEM model)
+        //public bool AddProductFile(ProductIM model)
         //{
         //    try
         //    {
         //        using (TransactionScope ts = new TransactionScope())
         //        {
-        //            var product = _context.Product.Find(model.ProductId);
+        //            var product = _modelFactory.Parse(model);
+        //            _context.ProductFile.Add(prodct);
+        //            int bit = _context.SaveChanges();
+        //            ts.Complete();
 
-        //            if (product != null)
-        //            {
-        //                product.ProductName = model.ProductName;
-        //                product.Id = model.ProductId;
-        //                product.Description = model.Description;
-        //                product.UnitPrice = model.UnitPrice;
-        //                product.CategoryId = model.CategoryId;
-        //                product.DateModified = DateTime.Now;
-
-        //                _context.SaveChanges();
-        //                ts.Complete();
+        //            if (bit > 0)
         //                return true;
-        //            }
-        //            return false;
+        //            else
+        //                return false;
         //        }
         //    }
-        //    catch (Exception)
+        //    catch (Exception ex)
         //    {
-
         //        throw;
         //    }
         //}
 
-        //public bool DeleteProduct(int Id)
-        //{
-        //    try
-        //    {
-        //        using (TransactionScope ts = new TransactionScope())
-        //        {
-        //            var product = _context.Product.Find(Id);
-        //            if (product != null)
-        //            {
-        //                _context.Product.Remove(product);
-        //                _context.SaveChanges();
-        //                ts.Complete();
-        //                return true;
-                        
-        //            }
-        //            return false;
-        //        }
-        //    }
-        //    catch (Exception)
-        //    {
+        public IEnumerable<ProductOM> GetProducts()
+        {
+            try
+            {
+                var product = _context.Product.Include(x => x.Category)
+                                                                   .Include(x => x.Files)
+                                                                   .ToList();
+                //var resp = product.Select(x => _modelFactory.Create2(x));
+                var resp = _mapper.Map<IEnumerable<ProductOM>>(product);
 
-        //        throw;
-        //    }
-        //}
+                return resp;
+            }
+            catch (Exception)
+            {
 
-        //public long CountProduct()
-        //{
-        //    try
-        //    {
-        //        var count = _context.Product.ToList().Count();
-        //        return count;
-        //    }
-        //    catch (Exception)
-        //    {
+                throw;
+            }
+        }
 
-        //        throw;
-        //    }
-        //}
+        public ProductOM GetProductById(int Id)
+        {
+            try
+            {
+                var product = _context.Product.Where(a => a.Id == Id)
+                                                                        .Include(x => x.Category)
+                                                                       .Include(x => x.Files)
+                                                                       .FirstOrDefault();
 
-        //public IEnumerable<ProductOM> GetNewArrivals()
-        //{
-        //    try
-        //    {
-        //        var products = _context.Product.OrderByDescending(b => b.DateAdded)
-        //                                                            .Take(6)
-        //                                                           .Include(x => x.Category)
-        //                                                           .Include(x => x.Files)
-        //                                                           .ToList();
-        //        var resp = products.Select(x => _modelFactory.Create2(x));
+                //var resp = _modelFactory.Create2(product);
+                var resp = _mapper.Map<ProductOM>(product);
 
-        //        return resp;
-        //    }
-        //    catch (Exception)
-        //    {
+                return resp;
+            }
+            catch (Exception)
+            {
 
-        //        throw;
-        //    }
-        //}
+                throw;
+            }
+        }
 
-        //public IEnumerable<ProductOM> GetRandomProducts()
-        //{
-        //    try
-        //    {
-        //        var rand = new Random();
-        //        var products = _context.Product.Include(d => d.Brand).Include(t => t.Files).ToList();
+        public bool UpdateProduct(ProductEM model)
+        {
+            try
+            {
+                using (TransactionScope ts = new TransactionScope())
+                {
+                    var product = _context.Product.Find(model.ProductId);
 
-        //        var chosenItems = new List<Product>();
-        //        var productstoGet = 5;
+                    if (product != null)
+                    {
+                        if (!string.IsNullOrEmpty(model.ProductName))
+                            product.ProductName = model.ProductName;
 
-        //        for (int i = 0; i < productstoGet; i++)
-        //        {
-        //            int index = rand.Next(products.Count());
-        //            chosenItems.Add(products[i]);
-        //        }
+                        if (!string.IsNullOrEmpty(model.ProductName))
+                            product.Description = model.Description;
 
-        //        var resp = chosenItems.Select(x => _modelFactory.Create2(x));
+                        if (model.UnitPrice > 0)
+                            product.UnitPrice = model.UnitPrice;
 
-        //        return resp;
-        //    }
-        //    catch (Exception)
-        //    {
+                        if (model.CategoryId > 0)
+                            product.CategoryId = model.CategoryId;
 
-        //        throw;
-        //    }
-        //}
+                        product.DateModified = DateTime.Now;
 
-        //public static string GetFileExtensionFromFileName(string fileName)
-        //{
-        //    string fileExtension = "";
-        //    try
-        //    {
-        //        if (!string.IsNullOrEmpty(fileName) && fileName.Contains('.'))
-        //        {
-        //            var splittedFileArray = fileName.Split('.');
-        //            fileExtension = splittedFileArray[splittedFileArray.Length - 1];
-        //        }
-        //    }
-        //    catch (Exception)
-        //    {
-        //    }
-        //    return fileExtension;
-        //}
+                        _context.SaveChanges();
+                        ts.Complete();
+                        return true;
+                    }
+                    return false;
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public bool DeleteProduct(int Id)
+        {
+            try
+            {
+                using (TransactionScope ts = new TransactionScope())
+                {
+                    var product = _context.Product.Find(Id);
+                    if (product != null)
+                    {
+                        _context.Product.Remove(product);
+                        _context.SaveChanges();
+                        ts.Complete();
+                        return true;
+
+                    }
+                    return false;
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public int CountProduct()
+        {
+            try
+            {
+                var count = _context.Product.ToList().Count();
+                return count;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public IEnumerable<ProductOM> GetNewArrivals()
+        {
+            try
+            {
+                var products = _context.Product.OrderByDescending(b => b.DateAdded)
+                                                                    .Take(6)
+                                                                   .Include(x => x.Category)
+                                                                   .Include(x => x.Files)
+                                                                   .ToList();
+                //var resp = products.Select(x => _modelFactory.Create2(x));
+                var resp = _mapper.Map<IEnumerable<ProductOM>>(products);
+
+                return resp;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+
+        public IEnumerable<ProductOM> GetRandomProducts()
+        {
+            try
+            {
+                var rand = new Random();
+                var products = _context.Product.Include(d => d.Brand).Include(t => t.Files).ToList();
+
+                var chosenItems = new List<Product>();
+                var productstoGet = 5;
+
+                for (int i = 0; i < productstoGet; i++)
+                {
+                    int index = rand.Next(products.Count());
+                    chosenItems.Add(products[i]);
+                }
+
+                //var resp = chosenItems.Select(x => _modelFactory.Create2(x));
+                var resp = _mapper.Map<IEnumerable<ProductOM>>(chosenItems);
+
+                return resp;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public static string GetFileExtensionFromFileName(string fileName)
+        {
+            string fileExtension = "";
+            try
+            {
+                if (!string.IsNullOrEmpty(fileName) && fileName.Contains('.'))
+                {
+                    var splittedFileArray = fileName.Split('.');
+                    fileExtension = splittedFileArray[splittedFileArray.Length - 1];
+                }
+            }
+            catch (Exception)
+            {
+            }
+            return fileExtension;
+        }
 
         //public void ConfigureInputViewModelForDropDown(ProductInputViewModel model)
         //{
@@ -288,60 +309,60 @@ namespace Winter.API.Logic
         //    }
         //}
 
-        ////public async Task<IActionResult> Upload(ProductInputViewModel model)
-        ////{
-        ////    try
-        ////    {
-        ////        var fileInput = new Product();
+        //public async Task<IActionResult> Upload(ProductInputViewModel model)
+        //{
+        //    try
+        //    {
+        //        var fileInput = new Product();
 
-        ////        if (ModelState.IsValid)
-        ////        {
-        ////            List<Product> products = new List<Product>();
+        //        if (ModelState.IsValid)
+        //        {
+        //            List<Product> products = new List<Product>();
 
-        ////            var path = CreateFolder();
-        ////            if (model.Files != null)
-        ////            {
-        ////                if (model.Files.Count() > 0)
-        ////                {
-        ////                    foreach (var file in model.Files)
-        ////                    {
-        ////                        fileInput = new Product();
-        ////                        if (file != null && file.Length > 0)
-        ////                        {
-        ////                            var fileExt = GetFileExtensionFromFileName(file.FileName);
-        ////                            var filename = Guid.NewGuid().ToString().Replace("-", "") + Path.GetExtension(file.FileName);
-        ////                            var uploadPathWithfileName = Path.Combine(path, filename);
+        //            var path = CreateFolder();
+        //            if (model.Files != null)
+        //            {
+        //                if (model.Files.Count() > 0)
+        //                {
+        //                    foreach (var file in model.Files)
+        //                    {
+        //                        fileInput = new Product();
+        //                        if (file != null && file.Length > 0)
+        //                        {
+        //                            var fileExt = GetFileExtensionFromFileName(file.FileName);
+        //                            var filename = Guid.NewGuid().ToString().Replace("-", "") + Path.GetExtension(file.FileName);
+        //                            var uploadPathWithfileName = Path.Combine(path, filename);
 
-        ////                            using (var fileStream = new FileStream(uploadPathWithfileName, FileMode.Create))
-        ////                            {
-        ////                                await file.CopyToAsync(fileStream);
-        ////                                fileInput.ProductName = filename;
-        ////                                fileInput.Url = path;
-        ////                                fileInput.Ext = fileExt;
-        ////                            }
-        ////                            products.Add(fileInput);
-        ////                        }
-        ////                    }
-        ////                    _context.Product.AddRange(products);
-        ////                    _context.SaveChanges();
+        //                            using (var fileStream = new FileStream(uploadPathWithfileName, FileMode.Create))
+        //                            {
+        //                                await file.CopyToAsync(fileStream);
+        //                                fileInput.ProductName = filename;
+        //                                fileInput.Url = path;
+        //                                fileInput.Ext = fileExt;
+        //                            }
+        //                            products.Add(fileInput);
+        //                        }
+        //                    }
+        //                    _context.Product.AddRange(products);
+        //                    _context.SaveChanges();
 
-        ////                    TempData["Message"] = "Record Inserted";
-        ////                    TempData["Color"] = "green";
+        //                    TempData["Message"] = "Record Inserted";
+        //                    TempData["Color"] = "green";
 
-        ////                    return RedirectToAction("");
-        ////                }
-        ////            }
-        ////        }
-        ////    }
-        ////    catch (Exception)
-        ////    {
-        ////        TempData["Message"] = "Record not Inserted";
-        ////        TempData["Color"] = "red";
-        ////        throw;
-        ////    }
+        //                    return RedirectToAction("");
+        //                }
+        //            }
+        //        }
+        //    }
+        //    catch (Exception)
+        //    {
+        //        TempData["Message"] = "Record not Inserted";
+        //        TempData["Color"] = "red";
+        //        throw;
+        //    }
 
-        ////    return View(model);
-        ////}
+        //    return View(model);
+        //}
 
     }
 }
