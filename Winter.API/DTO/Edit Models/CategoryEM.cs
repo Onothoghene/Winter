@@ -1,13 +1,12 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace Winter.ViewModels.Edit_Models
+namespace Winter.API.DTO.Edit_Models
 {
-    public class CategoryEditViewModel
+    public class CategoryEM
     {
         public int CategoryId { get; set; }
         public string CategoryName { get; set; }
         public string Description { get; set; }
-        public DateTime DateModified { get; set; }
     }
 }

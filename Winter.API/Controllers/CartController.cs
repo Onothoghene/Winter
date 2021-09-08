@@ -134,7 +134,7 @@ namespace Winter.API.Controllers
         }
 
         [HttpGet]
-        [Route("{UserId}/CartCount")]
+        [Route("{UserId}/Count")]
         public async Task<IActionResult> UserCartCount(long UserId)
         {
             try
