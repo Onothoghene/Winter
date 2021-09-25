@@ -56,10 +56,25 @@ namespace Winter.API.Helpers
                 .ForMember(dest => dest.Category, opt => opt.MapFrom(src => src.Category.CategoryName))
                 .ForMember(dest => dest.ProductFile, opt => opt.MapFrom(src => src.Files));
 
-            CreateMap<CartOM, Product>()
+            CreateMap<ProductIM, Product>()
                 .ForMember(dest => dest.DateAdded, opt => opt.MapFrom(src => DateTime.Now));
 
         }
 
     }
+
+    public class SubCategoryProfile : Profile
+    {
+        public SubCategoryProfile()
+        {
+            CreateMap<SubCategory, SubCategoryOM>()
+                .ForMember(dest => dest.Category, opt => opt.MapFrom(src => src.Category.CategoryName));
+
+            CreateMap<SubCategoryIM, SubCategory>()
+                .ForMember(dest => dest.DateAdded, opt => opt.MapFrom(src => DateTime.Now));
+
+        }
+
+    }
+
 }

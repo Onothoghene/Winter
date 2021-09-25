@@ -38,6 +38,7 @@ namespace Winter.API
             services.AddScoped<IWishList, EFWishList>();
             services.AddScoped<IAdmin, EFAdmin>();
             services.AddScoped<ICartItem, EFCartItem>();
+            services.AddScoped<ISubCategory, EFSubCategory>();
 
             // Auto Mapper Configurations
             var mapperConfig = new MapperConfiguration(mc =>
@@ -45,6 +46,7 @@ namespace Winter.API
                 mc.AddProfile(new WishProfile());
                 mc.AddProfile(new CartProfile());
                 mc.AddProfile(new ProductProfile());
+                mc.AddProfile(new SubCategoryProfile());
             });
 
             IMapper mapper = mapperConfig.CreateMapper();
