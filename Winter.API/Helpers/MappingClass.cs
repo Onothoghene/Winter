@@ -77,4 +77,17 @@ namespace Winter.API.Helpers
 
     }
 
+    public class CategoryProfile : Profile
+    {
+        public CategoryProfile()
+        {
+            CreateMap<Category, CategoryOM>();
+
+            CreateMap<CategoryIM, Category>()
+                .ForMember(dest => dest.DateAdded, opt => opt.MapFrom(src => DateTime.Now));
+
+        }
+
+    }
+
 }

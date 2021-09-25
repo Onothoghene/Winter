@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
+using Winter.API.DTO.Edit_Models;
 using Winter.API.DTO.Input_Models;
 using Winter.API.Logic.Interfaces;
 
@@ -119,6 +120,32 @@ namespace Winter.API.Controllers
                 return StatusCode(500, ex);
             }
 
+        }
+
+        [HttpPut]
+        [Route("")]
+        public async Task<IActionResult> UpdateCategory([FromBody] CategoryEM model)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    var response = await Task.Run(() => _category.UpdateCategory(model));
+                    if (response == true)
+                    {
+                        return Ok(true);
+                    }
+                    return BadRequest("Unable to Update!!");
+                }
+                else
+                {
+                    return StatusCode(500, "error occurred");
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex);
+            }
         }
     }
 }
