@@ -39,6 +39,7 @@ namespace Winter.API
             services.AddScoped<IAdmin, EFAdmin>();
             services.AddScoped<ICartItem, EFCartItem>();
             services.AddScoped<ISubCategory, EFSubCategory>();
+            services.AddScoped<IBrand, EFBrand>();
 
             // Auto Mapper Configurations
             var mapperConfig = new MapperConfiguration(mc =>
