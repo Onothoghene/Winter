@@ -1,120 +1,156 @@
-﻿using Winter.API.Logic.Interfaces;
+﻿using AutoMapper;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Transactions;
+using Winter.API.DTO.Edit_Models;
+using Winter.API.DTO.Input_Models;
+using Winter.API.DTO.Output_Models;
+using Winter.API.Logic.Interfaces;
+using Winter.API.Models;
 
 namespace Winter.API.Logic
 {
     public class EFSubCategory : ISubCategory
     {
-        //private readonly WinterContext _context;
+        private readonly WinterContext _context;
+        readonly IMapper _mapper;
         //ModelFactory _modelFactory = new ModelFactory();
 
-        //public EFSubCategory(WinterContext context)
-        //{
-        //    _context = context;
-        //}
+        public EFSubCategory(WinterContext context, IMapper mapper)
+        {
+            _context = context;
+            _mapper = mapper;
+        }
 
-        //public bool AddSubCategory(CategoryInputViewModel model)
-        //{
-        //    try
-        //    {
-        //        var category = _modelFactory.Parse(model);
-        //        _context.Category.Add(category);
-        //        int bit = _context.SaveChanges();
+        public bool AddSubCategory(SubCategoryIM model)
+        {
+            try
+            {
+                using (TransactionScope ts = new TransactionScope())
+                {
+                    //var category = _modelFactory.Parse(model);
+                    var subCategory = _mapper.Map<SubCategory>(model);
+                    _context.SubCategory.Add(subCategory);
+                    int bit = _context.SaveChanges();
+                    ts.Complete();
+                    if (bit > 0)
+                        return true;
+                    else
+                        return false;
+                }
+            }
+            catch (Exception)
+            {
 
-        //        if (bit > 0)
-        //            return true;
-        //        else
-        //            return false;
-        //    }
-        //    catch (Exception)
-        //    {
+                throw;
+            }
+        }
 
-        //        throw;
-        //    }
-        //}
+        public IEnumerable<SubCategoryOM> GetSubCategory()
+        {
+            try
+            {
+                var subCategory = _context.SubCategory.ToList();
+                //var resp = category.Select(x => _modelFactory.Create(x));
 
-        //public IEnumerable<CategoryOutputViewModel> GetSubCategory()
-        //{
+                var resp = _mapper.Map<List<SubCategoryOM>>(subCategory);
 
-        //    var category = _context.Category.ToList();
-        //    var resp = category.Select(x => _modelFactory.Create(x));
+                return resp;
+            }
+            catch (Exception)
+            {
 
-        //    return resp;
-        //}
+                throw;
+            }
+        }
 
-        //public CategoryOutputViewModel GetSubCategoryById(int Id)
-        //{
-        //    var category = _context.Category.Find(Id);
-        //    var resp = _modelFactory.Create(category);
+        public SubCategoryOM GetSubCategoryById(int Id)
+        {
+            try
+            {
+                var subCategory = _context.SubCategory.Where(w => w.Id == Id);
+                //var resp = _modelFactory.Create(category);
 
-        //    return resp;
-        //}
+                var resp = _mapper.Map<SubCategoryOM>(subCategory);
 
-        //public bool DeleteSubCategory(int Id)
-        //{
-        //    try
-        //    {
-        //        var data = _context.SubCategory.Find(Id);
-        //        if (data != null)
-        //        {
-        //            _context.SubCategory.Remove(data);
-        //            _context.SaveChanges();
+                return resp;
+            }
+            catch (Exception)
+            {
 
-        //            return true;
-        //        }
-        //        return false;
+                throw;
+            }
+        }
 
-        //    }
-        //    catch (Exception)
-        //    {
+        public bool DeleteSubCategory(int Id)
+        {
+            try
+            {
+                using (TransactionScope ts = new TransactionScope())
+                {
+                    var data = _context.SubCategory.Find(Id);
+                    if (data != null)
+                    {
+                        _context.SubCategory.Remove(data);
+                        _context.SaveChanges();
+                        ts.Complete();
+                        return true;
+                    }
+                    return false;
+                }
 
-        //        throw;
-        //    }
-        //}
+            }
+            catch (Exception)
+            {
 
-        //public bool UpdateSubCategory(CategoryEditViewModel model)
-        //{
-        //    try
-        //    {
-        //        using (TransactionScope ts = new TransactionScope())
-        //        {
-        //            var category = _context.Category.Find(model.CategoryId);
+                throw;
+            }
+        }
 
-        //            if (category != null)
-        //            {
-        //                category.CategoryName = model.CategoryName;
-        //                category.Id = model.CategoryId;
-        //                category.Description = model.Description;
-        //                category.DateModified = DateTime.Now;
-        //                _context.SaveChanges();
+        public bool UpdateSubCategory(SubCategoryEM model)
+        {
+            try
+            {
+                using (TransactionScope ts = new TransactionScope())
+                {
+                    var subcategory = _context.SubCategory.Where(w => w.Id == model.Id).FirstOrDefault();
 
-        //                ts.Complete();
-        //                return true;
-        //            }
+                    if (subcategory != null)
+                    {
+                        subcategory.Name = model.Name;
+                        subcategory.CategoryId = model.CategoryId;
+                        subcategory.Description = model.Description;
+                        _context.SaveChanges();
 
-        //            return false;
-        //        }
-        //    }
-        //    catch (Exception)
-        //    {
+                        ts.Complete();
+                        return true;
+                    }
 
-        //        throw;
-        //    }
-        //}
+                    return false;
+                }
+            }
+            catch (Exception)
+            {
 
-        //public long CountSubCategory()
-        //{
-        //    try
-        //    {
-        //        var count = _context.SubCategory.ToList().Count();
-        //        return count;
-        //    }
-        //    catch (Exception)
-        //    {
+                throw;
+            }
+        }
 
-        //        throw;
-        //    }
+        public long CountSubCategory()
+        {
+            try
+            {
+                var count = _context.SubCategory.ToList().Count();
+                return count;
+            }
+            catch (Exception)
+            {
 
-        //}
+                throw;
+            }
+
+        }
 
     }
 }
