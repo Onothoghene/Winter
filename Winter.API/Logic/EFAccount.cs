@@ -105,5 +105,73 @@ namespace Winter.API.Logic
             }
         }
 
+        //public async Task<bool> ResetPassword()
+        //{
+        //    try
+        //    {
+
+        //    }
+        //    catch (Exception)
+        //    {
+
+        //        throw;
+        //    }
+        //}
+
+        public async Task<string> ChangePassword(ChangePasswordModel model)
+        {
+            try
+            {
+                var user = await _userManager.FindByEmailAsync(model.Email);
+
+                if (user != null)
+                {
+                    var resp = await _userManager.CheckPasswordAsync(user, model.CurrentPassword);
+
+                    if (resp == false)
+                    {
+                        return "Invalid current password!";
+                    }
+                    var res = await _userManager.ChangePasswordAsync(user, model.CurrentPassword, model.NewPassword);
+                    return "Successful";
+                }
+                else
+                {
+                    return "User Not Found";
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        //public async Task<bool> ForgotPassword()
+        //{
+        //    try
+        //    {
+
+        //    }
+        //    catch (Exception)
+        //    {
+
+        //        throw;
+        //    }
+        //}
+
+        //public async Task<bool> Logout()
+        //{
+        //    try
+        //    {
+
+        //    }
+        //    catch (Exception)
+        //    {
+
+        //        throw;
+        //    }
+        //}
+
     }
 }

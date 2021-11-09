@@ -16,8 +16,10 @@ namespace Winter.API.DTO
         public bool RememberMe { get; set; }
     }
 
-    public class ChangePasswordViewModel
+    public class ChangePasswordModel
     {
+        public string Email { get; set; }
+
         [Required]
         [DataType(DataType.Password)]
         [Display(Name = "Current Pasword")]
