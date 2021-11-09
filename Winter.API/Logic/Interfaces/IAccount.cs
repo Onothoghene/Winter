@@ -9,5 +9,6 @@ namespace Winter.API.Logic.Interfaces
         Task<bool> RegisterUser(RegistrationModel model);
         Task<UserOM> LoginUser(LoginModel model);
         Task<string> ChangePassword(ChangePasswordModel model);
+        Task<bool> Logout(string Email);
     }
 }

@@ -82,48 +82,28 @@ namespace Winter.API.Controllers
 
 
 
-        //[AllowAnonymous]
-        //[HttpGet]
-        //[Route("{email}/logout")]
-        //public async Task<IActionResult> Logout(string email)
-        //{
-        //    try
-        //    {
-        //        var user = await _userManager.FindByNameAsync(email);
-        //        await _userManager.UpdateSecurityStampAsync(user);
-
-
-        //        var resp = await Task.Run(() => _firmService.LogOutUser(email));
-        //        var userId = _userService.GetFirmUserIdByEmail(email);
-
-
-        //        if (resp == Domain.InteractionStatus.RequestStatus.Success)
-        //        {
-        //            FirmActivityLogModel log = new FirmActivityLogModel
-        //            {
-        //                ActionTypeId = (int)ActionTypeEnum.View,
-        //                ActivityTypeId = (int)PermissionEntityEnum.Login,
-        //                CreatedBy = LoggedInUserId,
-        //                Description = "Logged out of {1}",
-        //                // MatterId = model.MatterId,
-        //                ResourceId = userId
-        //            };
-
-        //            SaveLog(log);
-        //            return Ok(true);
-        //        }
-        //        else
-        //        {
-        //            return BadRequest("Error occured loggin user out");
-        //        }
-
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        _proLogger.Error(ex);
-        //        return StatusCode(500, "Error Occurred!");
-        //    }
-        //}
+        [AllowAnonymous]
+        [HttpGet]
+        [Route("{email}/logout")]
+        public async Task<IActionResult> Logout(string email)
+        {
+            try
+            {
+                var response =await  _account.Logout(email);
+                if (response == true)
+                {
+                    return Ok(true);
+                }
+                else
+                {
+                    return BadRequest();
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Error Occurred!");
+            }
+        }
 
 
         [Route("change-password")]

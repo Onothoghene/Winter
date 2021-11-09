@@ -82,16 +82,16 @@ namespace Winter.API.Logic
             try
             {
                 UserOM response = new UserOM();
-                var user = Task.Run(() =>_userManager.FindByEmailAsync(model.Email));
+                var user = Task.Run(() => _userManager.FindByEmailAsync(model.Email));
                 if (user == null)
                     return null;
-                    
-                var result =  await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, false);
+
+                var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, false);
                 if (result.Succeeded)
                 {
                     var userdetails = _users.GetUserByEmail(model.Email);
-                    response =  _mapper.Map<UserOM>(userdetails);
-                     return response;
+                    response = _mapper.Map<UserOM>(userdetails);
+                    return response;
                 }
                 else
                 {
@@ -160,18 +160,24 @@ namespace Winter.API.Logic
         //    }
         //}
 
-        //public async Task<bool> Logout()
-        //{
-        //    try
-        //    {
+        public async Task<bool> Logout(string Email)
+        {
+            try
+            {
+                var user = await _userManager.FindByNameAsync(Email);
+                var res = await _userManager.UpdateSecurityStampAsync(user);
+                // = await _signInManager.SignOutAsync();
+                if (res.Succeeded)
+                    return true;
+                else
+                    return false;
+            }
+            catch (Exception)
+            {
 
-        //    }
-        //    catch (Exception)
-        //    {
-
-        //        throw;
-        //    }
-        //}
+                throw;
+            }
+        }
 
     }
 }
