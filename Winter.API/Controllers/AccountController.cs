@@ -80,8 +80,6 @@ namespace Winter.API.Controllers
             }
         }
 
-
-
         [AllowAnonymous]
         [HttpGet]
         [Route("{email}/logout")]
@@ -104,7 +102,6 @@ namespace Winter.API.Controllers
                 return StatusCode(500, "Error Occurred!");
             }
         }
-
 
         [Route("change-password")]
         [HttpPost]

@@ -40,7 +40,9 @@ namespace Winter.API.Logic
                         UserName = model.Email,
                         Email = model.Email,
                     };
-                    //var 
+                    var existingEmail = await _userManager.FindByEmailAsync(model.Email);
+                    if (existingEmail != null) return false;
+
                     var result = await _userManager.CreateAsync(user, model.Password);
                     if (result.Succeeded)
                     {
