@@ -1,5 +1,4 @@
-﻿using Winter.Models;
-using System;
+﻿using System;
 
 namespace Winter.ViewModels.Output_Models
 {
@@ -16,7 +15,7 @@ namespace Winter.ViewModels.Output_Models
         public string Address { get; set; }
         public DateTime? DeliveryDate { get; set; }
         
-        public Product Products { get; set; }
-        public Category Category { get; set; }
+        //public Product Products { get; set; }
+        //public Category Category { get; set; }
     }
 }

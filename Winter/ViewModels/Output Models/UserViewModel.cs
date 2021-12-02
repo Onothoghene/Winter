@@ -1,11 +1,4 @@
-﻿using Winter.Models;
-using Microsoft.AspNetCore.Http;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using Winter.ViewModels.Input_Models;
-
-namespace Winter.ViewModels.Output_Models
+﻿namespace Winter.ViewModels.Output_Models
 {
     public class UserViewModel
     {

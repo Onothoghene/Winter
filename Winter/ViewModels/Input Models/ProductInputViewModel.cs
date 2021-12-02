@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using Winter.Models;
 
 namespace Winter.ViewModels.Input_Models
 {
@@ -24,7 +23,7 @@ namespace Winter.ViewModels.Input_Models
         public List<ProductFileInputViewModel> ProductFile { get; set; }
         public List<IFormFile> Files { get; set; }
        
-        public virtual Category Category { get; set; }
+        //public virtual Category Category { get; set; }
         public SelectList Categories { get; set; }
 
 

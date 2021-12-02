@@ -1,7 +1,4 @@
-﻿using Winter.Models;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System;
 
 namespace Winter.ViewModels.Output_Models
 {
@@ -12,7 +9,7 @@ namespace Winter.ViewModels.Output_Models
         public string Description { get; set; }
         public DateTime? DateAdded { get; set; }
         public DateTime? DateModified { get; set; }
-        public ICollection<Product> Product { get; set; }
+        //public ICollection<Product> Product { get; set; }
 
         public int CategoryCount { get; set; }
     }

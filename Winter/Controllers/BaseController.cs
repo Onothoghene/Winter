@@ -1,26 +1,25 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-using Winter.Models;
+﻿using Microsoft.AspNetCore.Mvc;
 
 namespace Winter.Controllers
 {
     public class BaseController : Controller
     {
+        
        // public readonly UserManager<ApplicationUser> UserManager;
        // public readonly SignInManager<ApplicationUser> SignInManager;
        //// readonly IUsers _users;
 
-       // public BaseController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
-       // {
-       //     UserManager = userManager;
-       //     SignInManager = signInManager;
-       //     //_users = users;
+        // public BaseController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
+        // {
+        //     UserManager = userManager;
+        //     SignInManager = signInManager;
+        //     //_users = users;
 
-       //     //bool isAuthenticated = User.Identity.IsAuthenticated;
-            
-       // }
+        //     //bool isAuthenticated = User.Identity.IsAuthenticated;
 
-        
+        // }
+
+
         //public async void SetUserIdCookie()
         //{
         //    bool IsSignedIn = SignInManager.IsSignedIn(User);

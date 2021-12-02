@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using Winter.Models;
 using Winter.ViewModels.Output_Models;
 
 namespace Winter.ViewModels

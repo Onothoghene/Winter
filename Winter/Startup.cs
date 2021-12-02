@@ -3,9 +3,6 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Mvc;
-using Winter.Models;
-using AutoMapper;
-using Winter.ViewModels.Input_Models;
 using Microsoft.AspNetCore.Http;
 using System;
 
@@ -62,7 +59,7 @@ namespace Winter
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
-            services.AddTransient<WinterContext>();
+            //services.AddTransient<WinterContext>();
             //services.AddSingleton<ModelFactory, ModelFactory>();
             
 
@@ -84,14 +81,14 @@ namespace Winter
             app.UseStaticFiles();
             app.UseAuthentication();
 
-            Mapper.Initialize(cfg =>
-            {
+            //Mapper.Initialize(cfg =>
+            //{
 
-                cfg.CreateMap<ProductInputViewModel, Product>();
+            //    cfg.CreateMap<ProductInputViewModel, Product>();
 
-                cfg.CreateMap<ProductFileInputViewModel, Files>();
+            //    cfg.CreateMap<ProductFileInputViewModel, Files>();
 
-            });
+            //});
 
             
             app.UseMvc(routes =>
