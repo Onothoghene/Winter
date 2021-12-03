@@ -10,7 +10,7 @@ namespace Winter.Helpers
         {
             var client = new HttpClient
             {
-                BaseAddress = new Uri("https://localhost:44347/")
+                BaseAddress = new Uri("https://localhost:44364/")
             };
             client.DefaultRequestHeaders.Clear();
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/Json"));

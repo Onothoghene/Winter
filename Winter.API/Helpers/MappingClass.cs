@@ -90,4 +90,16 @@ namespace Winter.API.Helpers
 
     }
 
+    public class ProductFileProfile : Profile
+    {
+        public ProductFileProfile()
+        {
+            CreateMap<Files, ProductFileOM>()
+                .ForMember(dest => dest.ProductFileId, opt => opt.MapFrom(src => src.Id));
+                //.ForMember(dest => dest.ProductFileId, opt => opt.MapFrom(src => src.Id));
+
+        }
+
+    }
+
 }

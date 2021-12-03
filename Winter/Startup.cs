@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
 using System;
+using AutoMapper;
 
 namespace Winter
 {
@@ -59,11 +60,22 @@ namespace Winter
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
-            //services.AddTransient<WinterContext>();
-            //services.AddSingleton<ModelFactory, ModelFactory>();
-            
 
-            
+            // Auto Mapper Configurations
+            //var mapperConfig = new MapperConfiguration(mc =>
+            //{
+            //    //mc.AddProfile(new WishProfile());
+            //    //mc.AddProfile(new CartProfile());
+            //    mc.AddProfile(new ProductProfile());
+            //    //mc.AddProfile(new SubCategoryProfile());
+            //    //mc.AddProfile(new CategoryProfile());
+            //    mc.AddProfile(new ProductFileProfile());
+            //});
+
+            //IMapper mapper = mapperConfig.CreateMapper();
+            //services.AddSingleton(mapper);
+
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

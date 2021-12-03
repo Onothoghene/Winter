@@ -49,12 +49,18 @@ namespace Winter.API
                 mc.AddProfile(new ProductProfile());
                 mc.AddProfile(new SubCategoryProfile());
                 mc.AddProfile(new CategoryProfile());
+                mc.AddProfile(new ProductFileProfile());
             });
 
             IMapper mapper = mapperConfig.CreateMapper();
             services.AddSingleton(mapper);
-
             services.AddSwaggerGen();
+            //services.AddSwaggerGen(c =>
+            //{
+            //    c.SwaggerDoc("v1", new Info { Title = "Winter API", Version = "v1" });
+
+            //});
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -72,12 +78,12 @@ namespace Winter.API
             //app.UseHttpsRedirection();
 
 
-            // Enable middleware to serve generated Swagger as a JSON endpoint.
+            //Enable middleware to serve generated Swagger as a JSON endpoint.
             app.UseSwagger();
-            // Enable middleware to serve swagger - ui(HTML, JS, CSS, etc.), specifying the Swagger JSON endpoint.
-            app.UseSwaggerUI(c =>
-            {
-                c.SwaggerEndpoint("../swagger/v1/swagger.json", "Winter API ");
+            //Enable middleware to serve swagger - ui(HTML, JS, CSS, etc.), specifying the Swagger JSON endpoint.
+           app.UseSwaggerUI(c =>
+           {
+               c.SwaggerEndpoint("../swagger/v1/swagger.json", "Winter API ");
                 // c.RoutePrefix = string.Empty;
             });
 

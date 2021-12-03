@@ -26,7 +26,7 @@ namespace Winter.Helpers
 
         Task<T> GetById<T>(T entity, string Urlendpoint);
         Task<T> GetById<T>(string Urlendpoint);
-        Task<IEnumerable<T>> GetList<T>(T entity, string Urlendpoint);
+        Task<IEnumerable<T>> GetList<T>(string Urlendpoint);
 
         Task<T> Update<T>(T entity, string Urlendpoint);
         Task<T> UpdateRange<T>(IEnumerable<T> entity, string Urlendpoint);

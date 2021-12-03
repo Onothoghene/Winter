@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using Winter.Helpers;
+using Winter.ViewModels.Output_Models;
 
 namespace Winter.Controllers
 {
@@ -52,6 +53,13 @@ namespace Winter.Controllers
 
         #region Methods
 
+        //public async Task<ProductOutputViewModel> GetWishListCount(int UserId)
+        //{
+        //    string endpoint = $"api/Wish/{UserId}WishList/Count";
+        //    var product = await _httpClientLogic.GetById<ProductOutputViewModel>(endpoint);
+        //    return product;
+        //}
+        
         public async Task<int> GetWishListCount(int UserId)
         {
             string endpoint = $"api/Wish/{UserId}WishList/Count";

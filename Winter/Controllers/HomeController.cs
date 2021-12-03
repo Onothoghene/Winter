@@ -8,13 +8,7 @@ namespace Winter.Controllers
 {
     public class HomeController : Controller
     {
-        public readonly IHttpClientLogic _httpClientLogic;
-        //readonly HttpClientHelper _helper = new HttpClientHelper();
-
-        //public HomeController(IHttpClientLogic httpClientLogic)
-        //{
-        //    _httpClientLogic = httpClientLogic;
-        //}
+        readonly HttpClientLogic _httpClientLogic = new HttpClientLogic();
 
         public IActionResult Index()
         {
@@ -55,9 +49,11 @@ namespace Winter.Controllers
 
         public async Task<List<ProductOutputViewModel>> GetNewArrivals()
         {
-            string endpoint = $"api/Products/RandomProducts";
-            List<ProductOutputViewModel> products = await _httpClientLogic.GetById<List<ProductOutputViewModel>>(endpoint);
+            string endpoint = $"api/Products/NewArrivals";
+            var products = await _httpClientLogic.GetById<List<ProductOutputViewModel>>(endpoint);
             return products;
+            //return await _httpClientLogic.GetList<ProductOutputViewModel>(endpoint)
+                
         }
 
         //public List<ProductOutputViewModel> GetRandomProducts()
