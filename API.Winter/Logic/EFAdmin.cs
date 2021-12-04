@@ -1,6 +1,6 @@
 ﻿using API.Winter.Logic.Interfaces;
 
-namespace Winter.API.Logic
+namespace API.Winter.Logic
 {
     public class EFAdmin : IAdmin
     {

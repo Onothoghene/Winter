@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Transactions;
 
-namespace Winter.API.Logic
+namespace API.Winter.Logic
 {
     public class EFCategory : ICategory
     {

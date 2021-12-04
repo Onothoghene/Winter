@@ -53,7 +53,8 @@ namespace Winter.API.Helpers
             CreateMap<Product, ProductOM>()
                 .ForMember(dest => dest.BrandName, opt => opt.MapFrom(src => src.Brand.Name))
                 .ForMember(dest => dest.Category, opt => opt.MapFrom(src => src.Category.CategoryName))
-                .ForMember(dest => dest.ProductFile, opt => opt.MapFrom(src => src.Files));
+                .ForMember(dest => dest.ProductFile, opt => opt.MapFrom(src => src.Files))
+                .ForMember(dest => dest.ProductId, opt => opt.MapFrom(src => src.Id));
 
             CreateMap<ProductIM, Product>()
                 .ForMember(dest => dest.DateAdded, opt => opt.MapFrom(src => DateTime.Now));

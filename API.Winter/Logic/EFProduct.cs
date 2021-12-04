@@ -66,7 +66,7 @@ namespace API.Winter.Logic
                         return false;
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 throw;
             }

@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using API.Winter.Data;
+using API.Winter.Logic.Interfaces;
+using API.Winter.Logic;
 
 namespace API.Winter
 {
@@ -39,6 +41,17 @@ namespace API.Winter
             // dependency injections
             services.AddSingleton(Configuration);
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
+            services.AddScoped<IAccount, EFAccount>();
+            services.AddScoped<IAdmin, EFAdmin>();
+            services.AddScoped<IBrand, EFBrand>();
+            services.AddScoped<ICartItem, EFCartItem>();
+            services.AddScoped<ICategory, EFCategory>();
+            services.AddScoped<IOrder, EFOrder>();
+            services.AddScoped<IProduct, EFProduct>();
+            services.AddScoped<ISubCategory, EFSubCategory>();
+            services.AddScoped<IUsers, EFUser>();
+            services.AddScoped<IWishList, EFWishList>();
 
             services.AddSwaggerGen(c =>
             {
