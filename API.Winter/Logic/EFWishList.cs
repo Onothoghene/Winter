@@ -1,15 +1,15 @@
-﻿using AutoMapper;
+﻿using API.Winter.DTO.Input_Models;
+using API.Winter.DTO.Output_Models;
+using API.Winter.Logic.Interfaces;
+using API.Winter.Models;
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Transactions;
-using Winter.API.DTO.Input_Models;
-using Winter.API.DTO.Output_Models;
-using Winter.API.Logic.Interfaces;
-using Winter.API.Models;
 
-namespace Winter.API.Logic
+namespace API.Winter.Logic
 {
     public class EFWishList : IWishList
     {
@@ -60,7 +60,7 @@ namespace Winter.API.Logic
 
                 var resp = _mapper.Map<IEnumerable<WishOM>>(wish);
 
-                 return resp;
+                return resp;
             }
             catch (Exception)
             {

@@ -1,15 +1,15 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using API.Winter.Data;
+using API.Winter.DTO;
+using API.Winter.Logic.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
-using Winter.API.Data;
-using Winter.API.DTO;
-using Winter.API.Logic.Interfaces;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
-namespace Winter.API.Controllers
+namespace API.Winter.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

@@ -1,4 +1,4 @@
-﻿namespace Winter.API.Logic.Interfaces
+﻿namespace API.Winter.Logic.Interfaces
 {
     public interface IAdmin
     {

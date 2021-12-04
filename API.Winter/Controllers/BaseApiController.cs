@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace Winter.API.Controllers
+namespace API.Winter.Controllers
 {
     [ApiController]
     public class BaseApiController : ControllerBase

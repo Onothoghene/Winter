@@ -1,8 +1,8 @@
-﻿using System.Threading.Tasks;
-using Winter.API.DTO;
-using Winter.API.DTO.Output_Models;
+﻿using API.Winter.DTO;
+using API.Winter.DTO.Output_Models;
+using System.Threading.Tasks;
 
-namespace Winter.API.Logic.Interfaces
+namespace API.Winter.Logic.Interfaces
 {
     public interface IAccount
     {

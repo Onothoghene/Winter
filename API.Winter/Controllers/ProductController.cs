@@ -1,9 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using API.Winter.Logic.Interfaces;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
-using Winter.API.Logic.Interfaces;
 
-namespace Winter.API.Controllers
+namespace API.Winter.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

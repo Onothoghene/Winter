@@ -1,15 +1,15 @@
-﻿using AutoMapper;
+﻿using APi.Winter.DTO.Edit_Models;
+using API.Winter.DTO.Input_Models;
+using API.Winter.DTO.Output_Models;
+using API.Winter.Logic.Interfaces;
+using API.Winter.Models;
+using AutoMapper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Transactions;
-using Winter.API.DTO.Edit_Models;
-using Winter.API.DTO.Input_Models;
-using Winter.API.DTO.Output_Models;
-using Winter.API.Logic.Interfaces;
-using Winter.API.Models;
 
-namespace Winter.API.Logic
+namespace API.Winter.Logic
 {
     public class EFBrand : IBrand
     {
@@ -102,31 +102,6 @@ namespace Winter.API.Logic
                 throw;
             }
         }
-
-        //public bool DeleteBrand(int Id)
-        //{
-        //    try
-        //    {
-        //        using (TransactionScope ts = new TransactionScope())
-        //        {
-        //            var data = _context.Brand.Find(Id);
-        //            if (data != null)
-        //            {
-        //                _context.Brand.Remove(data);
-        //                _context.SaveChanges();
-        //                ts.Complete();
-        //                return true;
-        //            }
-        //            return false;
-        //        }
-
-        //    }
-        //    catch (Exception)
-        //    {
-
-        //        throw;
-        //    }
-        //}
 
         public bool UpdateBrand(BrandEM model)
         {

@@ -1,9 +1,9 @@
-﻿using System.Collections.Generic;
-using Winter.API.DTO.Edit_Models;
-using Winter.API.DTO.Input_Models;
-using Winter.API.DTO.Output_Models;
+﻿using APi.Winter.DTO.Edit_Models;
+using API.Winter.DTO.Input_Models;
+using API.Winter.DTO.Output_Models;
+using System.Collections.Generic;
 
-namespace Winter.API.Logic.Interfaces
+namespace API.Winter.Logic.Interfaces
 {
     public interface IUsers
     {

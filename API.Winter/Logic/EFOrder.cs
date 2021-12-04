@@ -1,6 +1,6 @@
-﻿using Winter.API.Logic.Interfaces;
+﻿using API.Winter.Logic.Interfaces;
 
-namespace Winter.API.Logic
+namespace API.Winter.Logic
 {
     public class EFOrder : IOrder
     {

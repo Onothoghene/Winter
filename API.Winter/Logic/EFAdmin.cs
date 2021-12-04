@@ -1,4 +1,4 @@
-﻿using Winter.API.Logic.Interfaces;
+﻿using API.Winter.Logic.Interfaces;
 
 namespace Winter.API.Logic
 {
