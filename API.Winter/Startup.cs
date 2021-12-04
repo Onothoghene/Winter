@@ -7,6 +7,7 @@ using System.IO;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using API.Winter.Data;
 
 namespace API.Winter
 {
@@ -15,7 +16,7 @@ namespace API.Winter
         // This method gets called by the runtime. Use this method to add services to the container.
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
 
-       public Startup()
+        public Startup()
         {
             var builder = new ConfigurationBuilder()
                            .SetBasePath(Directory.GetCurrentDirectory())
@@ -29,21 +30,19 @@ namespace API.Winter
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
-            //services.AddDbContext<ApplicationDbContext>(option => option.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"), sql => sql.MigrationsAssembly("Medixab.Api")));
-           // services.AddSingleton<IJwtFactory, JwtFactory>();
+            services.AddDbContext<ApplicationDbContext>(option => option.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"), sql => sql.MigrationsAssembly("API.Winter")));
 
+            services.AddIdentityCore<ApplicationUser>(options => { });
+            // services.AddScoped<IUserStore<ApplicationUser>, UserStore<ApplicationUser, IdentityRole, ApplicationDbContext>>();
+            // services.AddScoped<IRoleStore<IdentityRole>, RoleStore<IdentityRole, ApplicationDbContext>>();
 
-            //services.AddIdentityCore<ApplicationUser>(options => { });
-           // services.AddScoped<IUserStore<ApplicationUser>, UserStore<ApplicationUser, IdentityRole, ApplicationDbContext>>();
-           // services.AddScoped<IRoleStore<IdentityRole>, RoleStore<IdentityRole, ApplicationDbContext>>();
             // dependency injections
             services.AddSingleton(Configuration);
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-            //services.AddSwaggerGen();
 
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title ="Winter API", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Winter API", Version = "v1" });
 
             });
         }
