@@ -49,7 +49,7 @@ namespace Winter.Controllers
 
         public async Task<List<ProductOutputViewModel>> GetNewArrivals()
         {
-            string endpoint = $"api/Products/NewArrivals";
+            string endpoint = $"api/Product/new-arrivals";
             var products = await _httpClientLogic.GetById<List<ProductOutputViewModel>>(endpoint);
             return products;
             //return await _httpClientLogic.GetList<ProductOutputViewModel>(endpoint)

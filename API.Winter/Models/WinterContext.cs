@@ -1,6 +1,6 @@
-﻿using System.IO;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using System.IO;
 
 namespace API.Winter.Models
 {
@@ -15,8 +15,6 @@ namespace API.Winter.Models
         {
         }
 
-        public virtual DbSet<AdditionalInfo> AdditionalInfo { get; set; }
-        public virtual DbSet<ApplicationRoles> ApplicationRoles { get; set; }
         public virtual DbSet<AspNetRoleClaims> AspNetRoleClaims { get; set; }
         public virtual DbSet<AspNetRoles> AspNetRoles { get; set; }
         public virtual DbSet<AspNetUserClaims> AspNetUserClaims { get; set; }
@@ -36,13 +34,10 @@ namespace API.Winter.Models
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            //            if (!optionsBuilder.IsConfigured)
-            //            {
-            //#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-            //                optionsBuilder.UseSqlServer("Data Source=.;Initial Catalog=Winter;Integrated Security=True");
-            //            }
             if (!optionsBuilder.IsConfigured)
             {
+                //#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
+                //                optionsBuilder.UseSqlServer("Data Source=.;Initial Catalog=Winter;Integrated Security=True");
                 var builder = new ConfigurationBuilder()
                                .SetBasePath(Directory.GetCurrentDirectory())
                                .AddJsonFile("appsettings.json");
@@ -56,32 +51,6 @@ namespace API.Winter.Models
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.HasAnnotation("ProductVersion", "2.2.6-servicing-10079");
-
-            modelBuilder.Entity<AdditionalInfo>(entity =>
-            {
-                entity.Property(e => e.AdditionalPhoneNumber).HasMaxLength(50);
-
-                entity.Property(e => e.Address).HasMaxLength(100);
-
-                entity.Property(e => e.DateAdded).HasColumnType("datetime");
-
-                entity.Property(e => e.DateDeleted).HasColumnType("datetime");
-
-                entity.HasOne(d => d.User)
-                    .WithMany(p => p.AdditionalInfo)
-                    .HasForeignKey(d => d.UserId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Additiona__UserI__540C7B00");
-            });
-
-            modelBuilder.Entity<ApplicationRoles>(entity =>
-            {
-                entity.Property(e => e.DateAdded).HasColumnType("datetime");
-
-                entity.Property(e => e.DateDeleted).HasColumnType("datetime");
-
-                entity.Property(e => e.Name).HasMaxLength(50);
-            });
 
             modelBuilder.Entity<AspNetRoleClaims>(entity =>
             {

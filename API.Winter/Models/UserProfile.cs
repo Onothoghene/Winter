@@ -7,7 +7,6 @@ namespace API.Winter.Models
     {
         public UserProfile()
         {
-            AdditionalInfo = new HashSet<AdditionalInfo>();
             Cart = new HashSet<Cart>();
             OrderRequest = new HashSet<OrderRequest>();
             Wish = new HashSet<Wish>();
@@ -21,7 +20,6 @@ namespace API.Winter.Models
         public DateTime? DateAdded { get; set; }
         public string AspNetId { get; set; }
 
-        public virtual ICollection<AdditionalInfo> AdditionalInfo { get; set; }
         public virtual ICollection<Cart> Cart { get; set; }
         public virtual ICollection<OrderRequest> OrderRequest { get; set; }
         public virtual ICollection<Wish> Wish { get; set; }

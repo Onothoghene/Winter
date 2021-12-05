@@ -4,7 +4,7 @@ using API.Winter.Models;
 using AutoMapper;
 using System;
 
-namespace Winter.API.Helpers
+namespace API.Winter.Helpers
 {
     public class MappingClass
     {

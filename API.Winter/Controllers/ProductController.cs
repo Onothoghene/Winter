@@ -33,7 +33,7 @@ namespace API.Winter.Controllers
         }
 
         [HttpGet]
-        [Route("NewArrivals")]
+        [Route("new-arrivals")]
         public async Task<IActionResult> NewArrivals()
         {
             try

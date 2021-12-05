@@ -14,14 +14,15 @@ namespace API.Winter.Logic
 {
     public class EFProduct : IProduct
     {
-        private readonly WinterContext _context;
+        //private readonly WinterContext _context;
+        readonly WinterContext _context = new WinterContext();
         readonly IMapper _mapper;
         //readonly ModelFactory _modelFactory = new ModelFactory();
         //ProductFileInputViewModel filemodel = new ProductFileInputViewModel();
 
-        public EFProduct(WinterContext context, IMapper mapper)
+        public EFProduct(/*WinterContext context,*/ IMapper mapper)
         {
-            _context = context;
+            //_context = context;
             _mapper = mapper;
         }
 
@@ -242,7 +243,7 @@ namespace API.Winter.Logic
                 var products = _context.Product.Include(d => d.Brand).Include(t => t.Files).ToList();
 
                 var chosenItems = new List<Product>();
-                var productstoGet = 5;
+                var productstoGet = 2;
 
                 for (int i = 0; i < productstoGet; i++)
                 {

@@ -9,7 +9,7 @@ function GetNewArrivals() {
             data.forEach(
                 res => {
                     const appendData = `<div class="single_arrivel_item weidth_3  mix shoes">
-                        <img src="/Admin/DownloadDocument?Filename=${res.productFile[0].fileUniqueName}" height = "450" width = "45" />
+                        <img src="/File/DownloadDocument?Filename=${res.productFile[0].fileUniqueName}" height = "450" width = "45" />
                             <div class="hover_text">
                                 <p>${res.category}</p>
                             <a href="/Shop/ProductDetails?ProductId=${res.productId}">
@@ -48,7 +48,7 @@ function GetRandomProducts() {
                     console.log(res.id)
                     const appendData =
                         ` <div class="single_instgram_photo">
-                        <imgsrc="/Admin/DownloadDocument?Filename=${res.productFile[0].fileUniqueName}" alt="">
+                        <imgsrc="/File/DownloadDocument?Filename=${res.productFile[0].fileUniqueName}" alt="">
                         <a  href="/Shop/ProductDetails?ProductId=${res.productId}"><i class="ti-instagram"></i></a>
                     </div>`;
                     $('#RandomProducts').append(appendData);

@@ -10,6 +10,8 @@ using Microsoft.OpenApi.Models;
 using API.Winter.Data;
 using API.Winter.Logic.Interfaces;
 using API.Winter.Logic;
+using AutoMapper;
+using API.Winter.Helpers;
 
 namespace API.Winter
 {
@@ -58,6 +60,22 @@ namespace API.Winter
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Winter API", Version = "v1" });
 
             });
+
+            //Auto Mapper Configurations
+           var mapperConfig = new MapperConfiguration(mc =>
+           {
+               mc.AddProfile(new WishProfile());
+               mc.AddProfile(new CartProfile());
+               mc.AddProfile(new ProductProfile());
+               mc.AddProfile(new SubCategoryProfile());
+               mc.AddProfile(new CategoryProfile());
+               mc.AddProfile(new ProductFileProfile());
+           });
+
+            IMapper mapper = mapperConfig.CreateMapper();
+            services.AddSingleton(mapper);
+
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
