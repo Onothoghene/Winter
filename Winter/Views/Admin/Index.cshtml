@@ -6,8 +6,6 @@
 }
 
 @model Winter.ViewModels.GeneralViewModel;
-
-
 <!--Page Title-->
 <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
 <div class="pageheader">
@@ -33,7 +31,6 @@
         </div>
 
         <div class="col-lg-3 col-md-3 col-sm-6 col-xm-12">
-            @*Avaliable Category*@
             <div class="panel media pad-all">
                 <div class="media-left">
                     <span class="icon-wrap icon-wrap-sm icon-circle bg-mint">
@@ -52,7 +49,6 @@
         </div>
 
         <div class="col-lg-3 col-md-3 col-sm-6 col-xm-12">
-            @*Avaliable Product*@
             <div class="panel media pad-all">
                 <div class="media-left">
                     <span class="icon-wrap icon-wrap-sm icon-circle bg-warning">
@@ -92,21 +88,22 @@
                 <div class="panel-body">
                     <!--Hover Rows-->
                     <!--===================================================-->
-                    <table class="table table-hover table-vcenter">
-                        <thead>
-                            <tr>
-                                <th class="hidden-xs">Category Name</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @if (Model.CategoryOutputViewModel != null)
-                            {
-                                @foreach (var item in Model.CategoryOutputViewModel)
+                    @if (Model.Categories != null && Model.Categories.Count() > 0)
+                    {
+                        <table class="table table-hover table-vcenter">
+                            <thead>
+                                <tr>
+                                    <th class="hidden-xs">Category Name</th>
+                                    <th class="hidden-xs">Description</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.Categories)
                                 {
                                     <tr>
                                         <td class="hidden-xs">@Html.DisplayFor(modelItem => item.CategoryName)</td>
-                                        @*<td>@Html.DisplayFor(modelItem => item.Description)</td>*@
+                                        <td>@Html.DisplayFor(modelItem => item.Description)</td>
                                         <td>
                                             <form method="post" asp-action="DeleteCategory" asp-controller="Admin" asp-route-id="@item.CategoryId">
                                                 <a asp-action="CategoryDetails" asp-controller="Admin" asp-route-id="@item.CategoryId"
@@ -118,9 +115,9 @@
                                         </td>
                                     </tr>
                                 }
-                            }
-                        </tbody>
-                    </table>
+                            </tbody>
+                        </table>
+                    }
                     <!--===================================================-->
                     <!--End Hover Rows-->
                 </div>
@@ -135,18 +132,19 @@
                 <div class="panel-body">
                     <!--Hover Rows-->
                     <!--===================================================-->
-                    <table class="table table-hover table-vcenter">
-                        <thead>
-                            <tr>
-                                <th>Profile</th>
-                                <th class="hidden-xs">Email Address</th>
-                                @*<th>Status</th>*@
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @*@if (Model.ApplicationUser != null)
-                            {
-                                @foreach (var item in Model.ApplicationUser)
+                    @if (Model.Users != null && Model.Users.Count() > 0)
+                    {
+                        <table class="table table-hover table-vcenter">
+                            <thead>
+                                <tr>
+                                    <th>Profile</th>
+                                    <th class="hidden-xs">Email Address</th>
+                                    @*<th>Status</th>*@
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                @foreach (var item in Model.Users)
                                 {
                                     <tr>
                                         <td>
@@ -159,10 +157,14 @@
                                         </td>
                                     </tr>
                                 }
-                            }*@
 
-                        </tbody>
-                    </table>
+
+                            </tbody>
+                        </table>
+                    }
+                    @*@else{
+                    <h2 class="h3 mb-0 text-gray-800">No User Found</h2>
+                    }*@
                     <!--===================================================-->
                     <!--End Hover Rows-->
                 </div>
@@ -178,24 +180,23 @@
                     <h3 class="panel-title">Products</h3>
                 </div>
                 <div class="panel-body">
-                    <!--Hover Rows-->
-                    <!--===================================================-->
-                    <table class="table table-hover table-vcenter">
-                        <thead>
-                            <tr>
-                                <th>Image</th>
-                                <th class="hidden-xs">Product Name</th>
-                                @*<th>Status</th>*@
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @if (Model.ProductOutputViewModel != null)
-                            {
-                                @foreach (var product in Model.ProductOutputViewModel)
+                    @if (Model.Products != null && Model.Products.Count() > 0)
+                    {
+                        <table class="table table-hover table-vcenter">
+                            <thead>
+                                <tr>
+                                    <th>Image</th>
+                                    <th class="hidden-xs">Product Name</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                @foreach (var product in Model.Products)
                                 {
                                     <tr>
                                         <td>
-                                            <img src='@Url.Action("DownloadDocument", "Admin", new { Filename = product.ProductFile.FirstOrDefault().FileUniqueName}) ' height="60" width="60" />
+                                            <img src='@Url.Action("DownloadDocument", "Admin", new { Filename = product.ProductFile.FirstOrDefault()?.FileUniqueName }) ' height="60" width="60" />
                                         </td>
                                         <td class="hidden-xs">@Html.DisplayFor(modelItem => product.ProductName)</td>
                                         <td>
@@ -209,13 +210,11 @@
                                         </td>
                                     </tr>
                                 }
-                            }
 
-                        </tbody>
-                    </table>
-                    <!--===================================================-->
-                    <!--End Hover Rows-->
-                </div>
+                            </tbody>
+                        </table>
+                    }
+                    </div>
             </div>
         </div>
     </div>

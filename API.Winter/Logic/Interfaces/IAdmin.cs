@@ -1,8 +1,9 @@
-﻿namespace API.Winter.Logic.Interfaces
+﻿using API.Winter.DTO.Output_Models;
+
+namespace API.Winter.Logic.Interfaces
 {
     public interface IAdmin
     {
-        //IEnumerable<MemberOutputViewModel> GetUsers();
-        //IEnumerable<MemberOutputViewModel> GetOrders();
+        OverViewOM OverView();
     }
 }

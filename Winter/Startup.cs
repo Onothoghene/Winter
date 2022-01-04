@@ -107,7 +107,7 @@ namespace Winter
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
+                    template: "{controller=Admin}/{action=Index}/{id?}");
             });
 
            

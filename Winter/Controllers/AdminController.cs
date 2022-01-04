@@ -1,47 +1,26 @@
-﻿using Winter.ViewModels.Edit_Models;
-using Winter.ViewModels.Input_Models;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using System;
 using System.IO;
 using System.Threading.Tasks;
-using System.Collections.Generic;
-using AutoMapper;
+using Winter.Helpers;
+using Winter.ViewModels;
 
 namespace Winter.Controllers
 {
     public class AdminController : Controller
     {
-        //public readonly IProduct _product;
-        //public readonly ICategory _category;
-        //public readonly IOrder _order;
-        //public readonly IUsers _users;
+        public readonly HttpClientLogic _httpClientLogic;
 
-        //public AdminController(IProduct product, ICategory category, IOrder order, IUsers users/*, WinterContext winterContext*/)
-        //{
-        //    _product = product;
-        //    _category = category;
-        //    _order = order;
-        //    _users = users;
-        //    //  _context = winterContext;
-        //}
+        public AdminController()
+        {
+            _httpClientLogic = new HttpClientLogic() ;
+        }
 
-        ////public IActionResult Index()
-        ////{
-        ////    GeneralViewModel viewModel = new GeneralViewModel
-        ////    {
-        ////        CategoryCount = _category.CountCategory(),
-        ////        UserCount = _users.CountUser(),
-        ////        ProductCount = _product.CountProduct(),
-        ////        OrderCount = _order.CountOrders(),
-        ////        CategoryOutputViewModel = _category.GetCategory(),
-        ////        ProductOutputViewModel = _product.GetProducts(),
-        ////        OrderOutputViewModel = _order.GetOrders(),
-        ////        ApplicationUser = _users.GetUsers(),
-        ////    };
-
-
-        ////    return View(viewModel);
-        ////}
+        public async Task<IActionResult> Index()
+        {
+            var response = await GetOverView();
+            return View(response);
+        }
 
         ////public IActionResult CategoryCount()
         ////{
@@ -450,6 +429,13 @@ namespace Winter.Controllers
         //    }
         //    return fileExtension;
         //}
+
+        public async Task<GeneralViewModel> GetOverView()
+        {
+            string endpoint = $"api/Admin/overview";
+            GeneralViewModel response = await _httpClientLogic.GetById<GeneralViewModel>(endpoint);
+            return response;
+        }
 
     }
 }
