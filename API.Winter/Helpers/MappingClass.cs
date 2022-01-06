@@ -103,4 +103,16 @@ namespace API.Winter.Helpers
 
     }
 
+    public class CategoryTypeProfile : Profile
+    {
+        public CategoryTypeProfile()
+        {
+            CreateMap<CategoryType, CategoryTypeOM>();
+
+            CreateMap<CategoryTypeIM, CategoryType>();
+
+        }
+
+    }
+
 }

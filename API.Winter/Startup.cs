@@ -54,6 +54,7 @@ namespace API.Winter
             services.AddScoped<ISubCategory, EFSubCategory>();
             services.AddScoped<IUsers, EFUser>();
             services.AddScoped<IWishList, EFWishList>();
+            services.AddScoped<ICategoryType, EFCategoryType>();
 
             services.AddSwaggerGen(c =>
             {
@@ -70,6 +71,7 @@ namespace API.Winter
                mc.AddProfile(new SubCategoryProfile());
                mc.AddProfile(new CategoryProfile());
                mc.AddProfile(new ProductFileProfile());
+               mc.AddProfile(new CategoryTypeProfile());
            });
 
             IMapper mapper = mapperConfig.CreateMapper();
