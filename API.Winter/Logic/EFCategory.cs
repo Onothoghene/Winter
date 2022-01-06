@@ -15,11 +15,10 @@ namespace API.Winter.Logic
     {
         private readonly WinterContext _context;
         readonly IMapper _mapper;
-        //readonly ModelFactory _modelFactory = new ModelFactory();
 
-        public EFCategory(WinterContext context, IMapper mapper)
+        public EFCategory(IMapper mapper)
         {
-            _context = context;
+            _context = new WinterContext() ;
             _mapper = mapper;
         }
 

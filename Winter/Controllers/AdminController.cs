@@ -4,6 +4,7 @@ using System.IO;
 using System.Threading.Tasks;
 using Winter.Helpers;
 using Winter.ViewModels;
+using Winter.ViewModels.Output_Models;
 
 namespace Winter.Controllers
 {
@@ -13,7 +14,7 @@ namespace Winter.Controllers
 
         public AdminController()
         {
-            _httpClientLogic = new HttpClientLogic() ;
+            _httpClientLogic = new HttpClientLogic();
         }
 
         public async Task<IActionResult> Index()
@@ -22,12 +23,25 @@ namespace Winter.Controllers
             return View(response);
         }
 
-        ////public IActionResult CategoryCount()
-        ////{
-        ////    CategoryOutputViewModel viewModel = new CategoryOutputViewModel();
-        ////    viewModel.CategoryCount = _category.CountCategory();
-        ////    return PartialView(viewModel);
-        ////}
+        [Route("category/{categoryId}")]
+        public async Task<IActionResult> CategoryDetails(int categoryId)
+        {
+            if (categoryId > 0)
+            {
+                var response = await GetCategoryById(categoryId);
+                return View(response);
+            }
+            return RedirectToAction("Index");
+        }
+
+        //[HttpPost]
+        //public IActionResult DeleteCategory(int Id)
+        //{
+        //    _category.DeleteCategory(Id);
+
+        //    TempData["Message"] = "Deleted Successfully";
+        //    return RedirectToAction("Index");
+        //}
 
         //public IActionResult Add_Category()
         //{
@@ -63,16 +77,7 @@ namespace Winter.Controllers
         //    return View(viewModel);
         //}
 
-        //public IActionResult CategoryDetails(int Id)
-        //{
-        //    if (Id == null)
-        //    {
-        //        return RedirectToAction("Index");
-        //    }
-        //    var categorydetails = _category.GetCategoryById(Id);
 
-        //    return View(categorydetails);
-        //}
 
         //public IActionResult Edit_Category(int Id)
         //{
@@ -100,26 +105,6 @@ namespace Winter.Controllers
         //    }
         //    TempData["Message"] = "Not Updated";
         //    return View(categoryEdit);
-        //}
-
-        //public IActionResult Delete_Category(int? Id)
-        //{
-        //    if (Id == null)
-        //    {
-        //        return RedirectToAction("Index");
-        //    }
-        //    var deleteCategory = _category.GetCategoryById(Id);
-
-        //    return View(deleteCategory);
-        //}
-
-        //[HttpPost]
-        //public IActionResult DeleteCategory(int Id)
-        //{
-        //    _category.DeleteCategory(Id);
-
-        //    TempData["Message"] = "Deleted Successfully";
-        //    return RedirectToAction("Index");
         //}
 
         //public IActionResult AddProduct()
@@ -434,6 +419,20 @@ namespace Winter.Controllers
         {
             string endpoint = $"api/Admin/overview";
             GeneralViewModel response = await _httpClientLogic.GetById<GeneralViewModel>(endpoint);
+            return response;
+        }
+
+        public async Task<CategoryOutputViewModel> GetCategoryById(int categoryId)
+        {
+            string endpoint = $"api/Category/{categoryId}";
+            var response = await _httpClientLogic.GetById<CategoryOutputViewModel>(endpoint);
+            return response;
+        }
+        
+        public async Task<bool> DeleteCategory(int categoryId)
+        {
+            string endpoint = $"api/Category/{categoryId}";
+            var response = await _httpClientLogic.Delete<bool>(endpoint);
             return response;
         }
 

@@ -34,6 +34,7 @@
 
                 <div class="col-sm-12">
                     <a class="btn btn-mint btn-rounded" asp-action="Index" asp-controller="Admin">Back</a>
+                    <button method="delete"  class="btn btn-danger btn-rounded" asp-action="DeleteCategory" asp-controller="Admin" asp-route-categoryId="@Model.CategoryId">Delete</button>
                 </div>
             </div>
         </div>

@@ -55,11 +55,11 @@ namespace API.Winter.Controllers
                     var wish = await Task.Run(() => _category.GetCategoryById(categoryId));
                     return Ok(wish);
                 }
-                return NotFound();
+                return NotFound("The Category requested for could not be found.");
             }
             catch (Exception)
             {
-                return NotFound("The Category requested for could not be found.");
+                return StatusCode(500, "error occurred");
             }
         }
 
@@ -74,14 +74,14 @@ namespace API.Winter.Controllers
             }
             catch (Exception ex)
             {
-
-                return StatusCode(500, ex);
+                //return StatusCode(500, ex);
+                return StatusCode(500, "error occurred");
             }
 
         }
 
         [HttpDelete]
-        [Route("{categoryId}/Delete")]
+        [Route("{categoryId}")]
         public async Task<IActionResult> RemoveCategory(int categoryId)
         {
             try
