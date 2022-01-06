@@ -1,400 +1,281 @@
-﻿//using Winter.ViewModels;
-//using Microsoft.AspNetCore.Identity;
-//using Microsoft.AspNetCore.Mvc;
-//using System.Threading.Tasks;
-//using Winter.Models;
-//using System;
-//using Winter.Logic;
-//using Microsoft.AspNetCore.Http;
-////using Winter.DTO.Edit_Models;
-////using Winter.DTO.Input_Models;
-//using AutoMapper;
-//using Winter.ViewModels.Output_Models;
+﻿using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using System;
+using System.Net.Http;
+using System.Text;
+using System.Threading.Tasks;
+using Winter.Helpers;
+using Winter.ViewModels;
+using Winter.ViewModels.Output_Models;
 
-//namespace Winter.Controllers
-//{
-//    public class AccountController : BaseController
-//    {
-//        public new readonly UserManager<ApplicationUser> UserManager;
-//        public new readonly SignInManager<ApplicationUser> SignInManager;
-//        readonly IUsers _users;
+namespace Winter.Controllers
+{
+    public class AccountController : BaseController
+    {
+        public readonly HttpClientLogic _httpClientLogic;
+        HttpClientHelper _httpClientHelper = new HttpClientHelper();
 
-//        public AccountController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, IUsers users) : base(userManager, signInManager, users)
-//        {
-//            UserManager = userManager;
-//            SignInManager = signInManager;
-//            _users = users;
-//        }
+        public AccountController()
+        {
+            _httpClientLogic = new HttpClientLogic();
+        }
 
-//        [Route("user/index")]
-//        public async Task<IActionResult> Index(int userId)
-//        {
-//            var user = await Task.Run(() => _users.GetUserDetail(userId));
-//            //var user = await Task.Run(() => _users.GetUserDetail(loggedInUser));
+        [Route("user/index")]
+        public async Task<IActionResult> Index(int Id)
+        {
+            if (Id == 0)
+            {
+                ViewBag.ErrorMessage = "User not Found";
+                return RedirectToAction("Index", "Home");
+            }
+            var user = await GetUserById(Id);
+            return View(user);
+        }
 
-//            if (user == null)
-//            {
-//                ViewBag.ErrorMessage = "User not Found";
-//                return RedirectToAction("Index", "Home");
-//            }
+        [Route("register")]
+        public IActionResult Register()
+        {
+            return View();
+        }
 
-//            //var model = new EditUserViewModel
-//            //{
-//            //    //Id = user.Id,
-//            //    Email = user.Email,
-//            //    //FullName = user.FullName,
-//            //    LastName = user.LastName,
-//            //    FirstName = user.FirstName,
-//            //};
+        [HttpPost]
+        public async Task<IActionResult> Register(RegisterViewModel model)
+        {
+            string Urlendpoint = "api/Account/Register";
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    HttpClient client = _httpClientHelper.Initial();
+                    string stringData = JsonConvert.SerializeObject(model);
+                    var contentData = new StringContent(stringData, Encoding.UTF8, "application/json");
+                    HttpResponseMessage response = client.PostAsync(Urlendpoint, contentData).Result;
+                    if (response.IsSuccessStatusCode)
+                    {
+                        string stringJWT = await response.Content.ReadAsStringAsync();
+                        var jwt = JsonConvert.DeserializeObject<bool>(stringJWT);
+                        return RedirectToAction("Login", "Account");
+                    }
+                    else
+                    {
+                        string stringJWT = response.Content.ReadAsStringAsync().Result;
+                        var jwt = JsonConvert.DeserializeObject<string>(stringJWT);
+                        return View(model);
+                    }
+                }
+                else
+                {
+                    ViewBag.ErrorMessage = "Error Occurred";
+                    return View(model);
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
 
-//            var response = Mapper.Map<UserViewModel>(user);
+        [Route("login")]
+        public IActionResult Login()
+        {
+            return View();
+        }
 
-//            return View(response);
-//        }
+        [HttpPost]
+        public async Task<IActionResult> Login(LoginViewModel model)
+        {
+            string Urlendpoint = "api/Account/Login";
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    HttpClient client = _httpClientHelper.Initial();
+                    string stringData = JsonConvert.SerializeObject(model);
+                    var contentData = new StringContent(stringData, Encoding.UTF8, "application/json");
+                    HttpResponseMessage response = client.PostAsync(Urlendpoint, contentData).Result;
+                    if (response.IsSuccessStatusCode)
+                    {
+                        string stringJWT = await response.Content.ReadAsStringAsync();
+                        var jwt = JsonConvert.DeserializeObject<bool>(stringJWT);
+                        return RedirectToAction("Login", "Account");
+                    }
+                    else
+                    {
+                        string stringJWT = response.Content.ReadAsStringAsync().Result;
+                        var jwt = JsonConvert.DeserializeObject<string>(stringJWT);
+                        return View(model);
+                    }
+                }
+                return View(model);
+            }
+            catch (Exception)
+            {
 
-//        [Route("register")]
-//        public IActionResult Register()
-//        {
-//            return View();
-//        }
+                throw;
+            }
+        }
 
-//        //[HttpPost]
-//        //public async Task<IActionResult> Register(RegisterViewModel model)
-//        //{
-//        //    try
-//        //    {
-//        //        if (ModelState.IsValid)
-//        //        {
-//        //            var user = new ApplicationUser
-//        //            {
-//        //                UserName = model.Email,
-//        //                Email = model.Email,
-//        //                FirstName = model.FirstName,
-//        //                LastName = model.LastName,
-//        //                FullName = model.FirstName + " " + model.LastName,
-//        //            };
-//        //            var result = await UserManager.CreateAsync(user, model.Password);
-//        //            if (result.Succeeded)
-//        //            {
-//        //                var newuser = new UserIM
-//        //                {
+        //[HttpPost]
+        //public async Task<IActionResult> Logout()
+        //{
+        //    try
+        //    {
+        //        await SignInManager.SignOutAsync();
+        //        HttpContext.Session.Remove(UserId);
+        //        return RedirectToAction("Index", "home");
+        //    }
+        //    catch (Exception)
+        //    {
 
-//        //                };
-//        //                await SignInManager.SignInAsync(user, isPersistent: false);
-//        //                return RedirectToAction("Index", "Home");
-//        //            };
-//        //            foreach (var error in result.Errors)
-//        //            {
-//        //                ModelState.AddModelError("", error.Description);
-//        //            }
-//        //        }
-//        //        return View(model);
-//        //    }
-//        //    catch (Exception)
-//        //    {
+        //        throw;
+        //    }
+        //}
 
-//        //        throw;
-//        //    }
+        //public async Task<IActionResult> EditProfile(string id)
+        //{
+        //    try
+        //    {
+        //        var user = await UserManager.FindByIdAsync(id);
+        //        if (user == null)
+        //        {
+        //            ViewBag.ErrorMessage = "User not Found";
+        //            return RedirectToAction("Index", "Account");
+        //        }
+        //        //var userClaims = await UserManager.GetClaimsAsync(user);
+        //        //var userRoles = await UserManager.GetRolesAsync(user);
 
-//        //}
+        //        var model = new EditUserViewModel
+        //        {
+        //            Id = user.Id,
+        //            Email = user.Email,
+        //            FirstName = user.FirstName,
+        //            LastName = user.LastName,
+        //            //Claims = userClaims.Select(c => c.Value).ToList(),
+        //            //Roles = userRoles
+        //        };
+        //        return View(model);
+        //    }
+        //    catch (Exception)
+        //    {
 
-//        [HttpPost]
-//        public async Task<IActionResult> RegisterOrUpdateUser(RegisterViewModel model)
-//        {
-//            try
-//            {
-//                if (model.UserId > 0)
-//                {
-//                    var user = await UserManager.FindByIdAsync(model.Id);
-//                    if (user == null)
-//                    {
-//                        ViewBag.ErrorMessage = "User not Found";
-//                        return RedirectToAction("Index", "Home");
-//                    }
-//                    else
-//                    {
-//                        user.FirstName = model.FirstName;
-//                        user.LastName = model.LastName;
-//                        //user.FullName = model.FirstName + " " + model.LastName;
+        //        throw;
+        //    }
+        //}
 
-//                        var result = await UserManager.UpdateAsync(user);
-//                        if (result.Succeeded)
-//                        {
-//                            var userdetail = new UserEM
-//                            {
-//                                Id = model.UserId,
-//                                LastName = model.LastName,
-//                                FirstName = model.FirstName,
-//                                PhoneNumber = model.PhoneNumber,
-//                            };
-//                            var response = _users.EditUser(userdetail);
-//                            if (response != true)
-//                            {
-//                                return View("EditProfile", model);
-//                            }
-//                            else
-//                            {
-//                                return View("Index");
-//                            }
-//                        };
-//                        foreach (var error in result.Errors)
-//                        {
-//                            ModelState.AddModelError("", error.Description);
-//                        }
-//                    }
-//                    return View("EditProfile", model);
-//                }
-//                else
-//                {
-//                    if (ModelState.IsValid)
-//                    {
-//                        int newUserId;
-//                        var user = new ApplicationUser
-//                        {
-//                            UserName = model.Email,
-//                            Email = model.Email,
-//                            FirstName = model.FirstName,
-//                            LastName = model.LastName,
-//                            //FullName = model.FirstName + " " + model.LastName,
-//                        };
-//                        var result = await UserManager.CreateAsync(user, model.Password);
-//                        if (!result.Succeeded)
-//                        {
-//                            foreach (var error in result.Errors)
-//                            {
-//                                ModelState.AddModelError("", error.Description);
-//                            }
-//                            return View("Register", model);
-//                        }
+        //[HttpPost]
+        //public async Task<IActionResult> EditProfile(EditUserViewModel model)
+        //{
+        //    try
+        //    {
+        //        var user = await UserManager.FindByIdAsync(model.Id);
+        //        if (user == null)
+        //        {
+        //            ViewBag.ErrorMessage = "User not Found";
+        //            return RedirectToAction("Index", "Home");
+        //        }
+        //        else
+        //        {
+        //            user.Email = model.Email;
+        //            user.FirstName = model.FirstName;
+        //            user.LastName = model.LastName;
+        //            user.FullName = model.FirstName + " " + model.LastName;
+        //            user.UserName = model.Email;
 
-//                        var newuser = new UserIM
-//                        {
-//                            AspNetId = user.Id,
-//                            FirstName = model.FirstName,
-//                            LastName = model.LastName,
-//                            PhoneNumber = model.PhoneNumber,
-//                            Email = model.Email,
-//                        };
+        //            var result = await UserManager.UpdateAsync(user);
+        //            if (result.Succeeded)
+        //            {
+        //                return RedirectToAction("Index", "Account", new { model.Id });
+        //            };
+        //            foreach (var error in result.Errors)
+        //            {
+        //                ModelState.AddModelError("", error.Description);
+        //            }
+        //        }
+        //        return View(model);
+        //    }
+        //    catch (Exception)
+        //    {
+        //        throw;
+        //    }
+        //}
 
-//                        if (_users.AddUser(newuser, out newUserId) == true)
-//                        {
-//                            await SignInManager.SignInAsync(user, isPersistent: false);
-//                            // HttpContext.Session.SetInt32(UserId, newUserId);
-//                            SetUserIdCookie();
-//                            return RedirectToAction("Index", "Home");
-//                        }
-//                        else
-//                        {
-//                            return View("Register");
-//                        }
-//                    }
-//                    return View("Register", model);
-//                }
-//            }
-//            catch (Exception)
-//            {
+        [HttpPost]
+        public async Task<IActionResult> DeleteAccount(int id)
+        {
+            try
+            {
+                if (id > 0)
+                {
 
-//                throw;
-//            }
-//        }
+                }
+                ViewBag.ErrorMessage = "Invalid User";
+                return View("Index");
+            }
+            catch (Exception)
+            {
 
-//        [Route("login")]
-//        public IActionResult Login()
-//        {
-//            return View();
-//        }
+                throw;
+            }
 
-//        [HttpPost]
-//        public async Task<IActionResult> Login(LoginViewModel model)
-//        {
-//            try
-//            {
-//                if (ModelState.IsValid)
-//                {
-//                    var user = await UserManager.FindByNameAsync(model.Email);
-//                    if (user == null)
-//                    {
-//                        ModelState.AddModelError(string.Empty, "User not found");
-//                        return View();
-//                    }
-//                    var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, false);
-//                    if (result.Succeeded)
-//                    {
-//                        var userId = _users.GetUserId(model.Email);
-//                        HttpContext.Session.SetInt32(UserId, (int)userId);
-//                        //SetUserIdCookie();
-//                        return RedirectToAction("Index", "Home");
-//                    };
-//                    ModelState.AddModelError(string.Empty, "Invalid Login Attempt");
-//                }
-//                return View(model);
-//            }
-//            catch (Exception)
-//            {
+        }
 
-//                throw;
-//            }
-//        }
+        [Route("user/change-password")]
+        public IActionResult ChangePassword()
+        {
+            return View();
+        }
 
-//        [HttpPost]
-//        public async Task<IActionResult> Logout()
-//        {
-//            try
-//            {
-//                await SignInManager.SignOutAsync();
-//                HttpContext.Session.Remove(UserId);
-//                return RedirectToAction("Index", "home");
-//            }
-//            catch (Exception)
-//            {
+        //[HttpPost]
+        //public async Task<IActionResult> ChangePassword(ChangePasswordViewModel model)
+        //{
+        //    try
+        //    {
+        //        if (ModelState.IsValid)
+        //        {
+        //            var user = await UserManager.GetUserAsync(User);
 
-//                throw;
-//            }
-//        }
+        //            if (user == null)
+        //            {
+        //                return RedirectToAction("Login", "Account");
+        //            }
+        //            var result = await UserManager.ChangePasswordAsync(user, model.CurrentPassword, model.NewPassword);
+        //            if (!result.Succeeded)
+        //            {
+        //                foreach (var error in result.Errors)
+        //                {
+        //                    ModelState.AddModelError(string.Empty, error.Description);
+        //                }
+        //                return View();
+        //            }
+        //            await SignInManager.RefreshSignInAsync(user);
+        //            return RedirectToAction("Index", "Account", new { user.Id });
+        //        }
+        //        return View(model);
+        //    }
+        //    catch (Exception)
+        //    {
 
-//        public async Task<IActionResult> EditProfile(string id)
-//        {
-//            try
-//            {
-//                var user = await UserManager.FindByIdAsync(id);
-//                if (user == null)
-//                {
-//                    ViewBag.ErrorMessage = "User not Found";
-//                    return RedirectToAction("Index", "Account");
-//                }
-//                //var userClaims = await UserManager.GetClaimsAsync(user);
-//                //var userRoles = await UserManager.GetRolesAsync(user);
+        //        throw;
+        //    }
+        //}
 
-//                var model = new EditUserViewModel
-//                {
-//                    Id = user.Id,
-//                    Email = user.Email,
-//                    FirstName = user.FirstName,
-//                    LastName = user.LastName,
-//                    //Claims = userClaims.Select(c => c.Value).ToList(),
-//                    //Roles = userRoles
-//                };
-//                return View(model);
-//            }
-//            catch (Exception)
-//            {
+        #region Methods
 
-//                throw;
-//            }
-//        }
+        public async Task<UserViewModel> GetUserById(int Id)
+        {
+            string endpoint = $"api/User/{Id}";
+            var response = await _httpClientLogic.GetById<UserViewModel>(endpoint);
+            return response;
+        }
+        
+        public async Task<bool> DeleteUserAccount(int Id)
+        {
+            string endpoint = $"api/User/{Id}";
+            var response = await _httpClientLogic.GetById<bool>(endpoint);
+            return response;
+        }
 
-//        [HttpPost]
-//        public async Task<IActionResult> EditProfile(EditUserViewModel model)
-//        {
-//            try
-//            {
-//                var user = await UserManager.FindByIdAsync(model.Id);
-//                if (user == null)
-//                {
-//                    ViewBag.ErrorMessage = "User not Found";
-//                    return RedirectToAction("Index", "Home");
-//                }
-//                else
-//                {
-//                    user.Email = model.Email;
-//                    user.FirstName = model.FirstName;
-//                    user.LastName = model.LastName;
-//                    user.FullName = model.FirstName + " " + model.LastName;
-//                    user.UserName = model.Email;
+        #endregion
 
-//                    var result = await UserManager.UpdateAsync(user);
-//                    if (result.Succeeded)
-//                    {
-//                        return RedirectToAction("Index", "Account", new { model.Id });
-//                    };
-//                    foreach (var error in result.Errors)
-//                    {
-//                        ModelState.AddModelError("", error.Description);
-//                    }
-//                }
-//                return View(model);
-//            }
-//            catch (Exception)
-//            {
-//                throw;
-//            }
-//        }
-
-//        [HttpPost]
-//        public async Task<IActionResult> DeleteAccount(string id)
-//        {
-//            try
-//            {
-//                var user = await UserManager.FindByIdAsync(id);
-
-//                if (user == null)
-//                {
-//                    ViewBag.ErrorMessage = "User cannot be found";
-//                    return View();
-//                }
-//                else
-//                {
-
-//                    var result = await UserManager.DeleteAsync(user);
-
-//                    if (result.Succeeded)
-//                    {
-//                        return RedirectToAction("Index", "Home");
-//                    };
-//                    foreach (var error in result.Errors)
-//                    {
-//                        ModelState.AddModelError("", error.Description);
-//                    }
-//                    return RedirectToAction("Index", "Home");
-//                }
-//            }
-//            catch (Exception)
-//            {
-
-//                throw;
-//            }
-
-//        }
-
-//        [Route("user/change-password")]
-//        public IActionResult ChangePassword()
-//        {
-//            return View();
-//        }
-
-//        [HttpPost]
-//        public async Task<IActionResult> ChangePassword(ChangePasswordViewModel model)
-//        {
-//            try
-//            {
-//                if (ModelState.IsValid)
-//                {
-//                    var user = await UserManager.GetUserAsync(User);
-
-//                    if (user == null)
-//                    {
-//                        return RedirectToAction("Login", "Account");
-//                    }
-//                    var result = await UserManager.ChangePasswordAsync(user, model.CurrentPassword, model.NewPassword);
-//                    if (!result.Succeeded)
-//                    {
-//                        foreach (var error in result.Errors)
-//                        {
-//                            ModelState.AddModelError(string.Empty, error.Description);
-//                        }
-//                        return View();
-//                    }
-//                    await SignInManager.RefreshSignInAsync(user);
-//                    return RedirectToAction("Index", "Account", new { user.Id });
-//                }
-//                return View(model);
-//            }
-//            catch (Exception)
-//            {
-
-//                throw;
-//            }
-//        }
-
-//    }
-//}
+    }
+}
