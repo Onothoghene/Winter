@@ -16,7 +16,9 @@ namespace API.Winter.Models
         public string Description { get; set; }
         public DateTime? DateAdded { get; set; }
         public DateTime? DateModified { get; set; }
+        public int? CategoryTypeId { get; set; }
 
+        public virtual CategoryType CategoryType { get; set; }
         public virtual ICollection<Product> Product { get; set; }
         public virtual ICollection<SubCategory> SubCategory { get; set; }
     }

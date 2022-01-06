@@ -25,6 +25,7 @@ namespace API.Winter.Models
         public virtual DbSet<Brand> Brand { get; set; }
         public virtual DbSet<Cart> Cart { get; set; }
         public virtual DbSet<Category> Category { get; set; }
+        public virtual DbSet<CategoryType> CategoryType { get; set; }
         public virtual DbSet<Files> Files { get; set; }
         public virtual DbSet<OrderRequest> OrderRequest { get; set; }
         public virtual DbSet<Product> Product { get; set; }
@@ -178,6 +179,21 @@ namespace API.Winter.Models
                     .HasForeignKey(d => d.UserId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK__Cart__UserId__4F47C5E3");
+            });
+
+            modelBuilder.Entity<Category>(entity =>
+            {
+                entity.HasOne(d => d.CategoryType)
+                    .WithMany(p => p.Category)
+                    .HasForeignKey(d => d.CategoryTypeId)
+                    .HasConstraintName("FK__Category__Catego__09746778");
+            });
+
+            modelBuilder.Entity<CategoryType>(entity =>
+            {
+                entity.Property(e => e.Name)
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
             });
 
             modelBuilder.Entity<Files>(entity =>

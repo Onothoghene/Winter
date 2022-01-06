@@ -6,44 +6,44 @@ namespace Winter.Controllers
 {
     public class CategoriesController : Controller
     {
-        public CategoriesController(ICategory category)
-        {
-            _category = category;
-        }
+        //public CategoriesController(ICategory category)
+        //{
+        //    _category = category;
+        //}
 
-        [Route("category/index")]
-        public async Task<IActionResult> Index()
-        {
-            try
-            {
-                var data = await Task.Run(() => _category.GetCategory());
-                return View(data);
-            }
-            catch (Exception)
-            {
+        //[Route("category/index")]
+        //public async Task<IActionResult> Index()
+        //{
+        //    try
+        //    {
+        //        var data = await Task.Run(() => _category.GetCategory());
+        //        return View(data);
+        //    }
+        //    catch (Exception)
+        //    {
 
-                throw;
-            }
-        }
+        //        throw;
+        //    }
+        //}
 
-        [Route("category/detail")]
-        public async Task<IActionResult> Details(int categoryId)
-        {
-            try
-            {
-                if (categoryId > 0)
-                {
-                    var category = await Task.Run(() => _category.GetCategoryById(categoryId));
-                    return View(category);
-                }
-                return NotFound();
-            }
-            catch (Exception)
-            {
+        //[Route("category/detail")]
+        //public async Task<IActionResult> Details(int categoryId)
+        //{
+        //    try
+        //    {
+        //        if (categoryId > 0)
+        //        {
+        //            var category = await Task.Run(() => _category.GetCategoryById(categoryId));
+        //            return View(category);
+        //        }
+        //        return NotFound();
+        //    }
+        //    catch (Exception)
+        //    {
 
-                throw;
-            }
-        }
+        //        throw;
+        //    }
+        //}
 
         public IActionResult Create()
         {
