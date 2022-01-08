@@ -11,6 +11,57 @@
 <div class="pageheader">
     <h3><i class="fa fa-home"></i> Homepage </h3>
 </div>
+@if (TempData["Successful"] != null)
+{
+    <div class="container Alert-Container">
+        <div class="panel-alert" style="background-color:whitesmoke;">
+            <div class="alert-wrap in">
+                <div class="alert alert-success" role="alert">
+                    <button class="close" type="button">
+                        <i class="fa fa-times-circle"></i>
+                    </button>
+                    <div class="media">
+                        <div class="media-left">
+                            <span class="icon-wrap icon-wrap-xs icon-circle alert-icon">
+                                <i class="fa fa-thumbs-up fa-lg"></i>
+                            </span>
+                        </div>
+                        <div class="media-body">
+                            <h4 class="alert-title">Success Message</h4>
+                            <h4 class="alert-message"> <strong>@TempData["Successful"]</strong></h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@if (ViewBag.Failed != null)
+{
+    <div class="container Alert-Container">
+        <div class="panel-alert" style="background-color:whitesmoke;">
+            <div class="alert-wrap in">
+                <div class="alert alert-danger" role="alert">
+                    <button class="close" type="button">
+                        <i class="fa fa-times-circle"></i>
+                    </button>
+                    <div class="media">
+                        <div class="media-left">
+                            <span class="icon-wrap icon-wrap-xs icon-circle alert-icon">
+                                <i class="fa fa-thumbs-down fa-lg"></i>
+                            </span>
+                        </div>
+                        <div class="media-body">
+                            <h4 class="alert-title">Error Message</h4>
+                            <h4 class="alert-message"><strong>@ViewBag.Failed</strong></h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
 <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
 <!--End page title-->
 <div id="page-content">
@@ -90,7 +141,7 @@
                     <!--===================================================-->
                     @if (Model.Categories != null && Model.Categories.Count() > 0)
                     {
-                        <table class="table table-hover table-vcenter">
+                        <table id="demo-dt-basic" class="table table-hover table-vcenter">
                             <thead>
                                 <tr>
                                     <th class="hidden-xs">Category Name</th>
@@ -105,13 +156,13 @@
                                         <td class="hidden-xs">@Html.DisplayFor(modelItem => item.CategoryName)</td>
                                         <td>@Html.DisplayFor(modelItem => item.Description)</td>
                                         <td>
-                                            <form method="post" asp-action="DeleteCategory" asp-controller="Admin" asp-route-id="@item.CategoryId">
-                                                <a asp-action="CategoryDetails" asp-controller="Admin" asp-route-categoryId="@item.CategoryId"
+                                            <form method="post" asp-action="DeleteCategory" asp-controller="Admin" asp-route-id="@item.Id">
+                                                <a asp-action="CategoryDetails" asp-controller="Admin" asp-route-categoryId="@item.Id"
                                                    class="btn btn-warning btn-icon btn-circle icon-lg fa fa-info"></a>
-                                                
+
                                                 @*<a data-toggle="modal" data-target="#CategoryDetailsModal" class="btn btn-warning btn-icon btn-circle icon-lg fa fa-info"></a>*@
 
-                                                <a asp-action="Edit_Category" asp-controller="Admin" asp-route-id="@item.CategoryId"
+                                                <a asp-action="Edit_Category" asp-controller="Admin" asp-route-id="@item.Id"
                                                    class="btn btn-mint btn-icon btn-circle icon-lg fa fa-edit"></a>
                                                 <button type="submit" class="btn btn-danger btn-icon btn-circle icon-lg fa fa-trash"></button>
                                             </form>
@@ -119,24 +170,24 @@
                                     </tr>
                                     <!-- Modal -->
                                     @*<div class="modal fade" id="CategoryDetailsModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                        <div class="modal-dialog" role="document">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                        <span aria-hidden="true">&times;</span>
-                                                    </button>
-                                                </div>
-                                                <div class="modal-body">
-                                                    ...
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                    <button type="button" class="btn btn-primary">Edit</button>
+                                            <div class="modal-dialog" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        ...
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                        <button type="button" class="btn btn-primary">Edit</button>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </div>*@
+                                        </div>*@
                                 }
                             </tbody>
                         </table>
@@ -157,7 +208,7 @@
                     <!--===================================================-->
                     @if (Model.Users != null && Model.Users.Count() > 0)
                     {
-                        <table class="table table-hover table-vcenter">
+                        <table id="demo-dt-basic" class="table table-hover table-vcenter">
                             <thead>
                                 <tr>
                                     <th>Profile</th>
@@ -205,7 +256,7 @@
                 <div class="panel-body">
                     @if (Model.Products != null && Model.Products.Count() > 0)
                     {
-                        <table class="table table-hover table-vcenter">
+                        <table id="demo-dt-basic" class="table table-hover table-vcenter">
                             <thead>
                                 <tr>
                                     <th>Image</th>
@@ -244,3 +295,10 @@
 
 </div>
 
+<script type="text/javascript">
+    window.setTimeout(function () {
+        $(".alert").fadeTo(500, 0).slideUp(500, function () {
+            $(this).remove();
+        });
+    }, 4000);
+</script>

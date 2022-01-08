@@ -5,7 +5,7 @@ namespace API.Winter.DTO.Output_Models
 
     public class CategoryOM
     {
-        public int CategoryId { get; set; }
+        public int Id { get; set; }
         public string CategoryName { get; set; }
         public string Description { get; set; }
         public DateTime? DateAdded { get; set; }
@@ -15,7 +15,7 @@ namespace API.Winter.DTO.Output_Models
 
     public class CategoryOMLite
     {
-        public int CategoryId { get; set; }
+        public int Id { get; set; }
         public string CategoryName { get; set; }
     }
 }

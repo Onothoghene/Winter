@@ -168,10 +168,23 @@ namespace Winter.Helpers
            //client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", HttpContext.Session.GetString("Token"));
 
             HttpResponseMessage response = client.DeleteAsync(Urlendpoint).Result;
-            response.EnsureSuccessStatusCode();
-            string data = await response.Content.ReadAsStringAsync();
-            var result = JsonConvert.DeserializeObject<T>(data);
-            return result;
+            //response.EnsureSuccessStatusCode();
+            //string data = await response.Content.ReadAsStringAsync();
+            //var result = JsonConvert.DeserializeObject<T>(data);
+            //return result;
+
+            if (response.IsSuccessStatusCode)
+            {
+                string stringJWT = await response.Content.ReadAsStringAsync();
+                var jwt = JsonConvert.DeserializeObject<T>(stringJWT);
+                return jwt;
+            }
+            else
+            {
+                string stringJWT = response.Content.ReadAsStringAsync().Result;
+                var jwt = JsonConvert.DeserializeObject<T>(stringJWT);
+                return jwt;
+            }
         }
 
         public async Task<T> Delete<T>(T entity, string Urlendpoint)

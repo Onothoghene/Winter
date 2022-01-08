@@ -2,7 +2,7 @@
 {
     public class CategoryEM
     {
-        public int CategoryId { get; set; }
+        public int Id { get; set; }
         public string CategoryName { get; set; }
         public string Description { get; set; }
     }

@@ -123,12 +123,12 @@ namespace API.Winter.Logic
             {
                 using (TransactionScope ts = new TransactionScope())
                 {
-                    var category = _context.Category.Find(model.CategoryId);
+                    var category = _context.Category.Find(model.Id);
 
                     if (category != null)
                     {
                         category.CategoryName = model.CategoryName;
-                        category.Id = model.CategoryId;
+                        //category.Id = model.Id;
                         category.Description = model.Description;
                         category.DateModified = DateTime.Now;
                         _context.SaveChanges();

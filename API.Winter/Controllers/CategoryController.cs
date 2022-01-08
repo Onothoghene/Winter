@@ -91,15 +91,18 @@ namespace API.Winter.Controllers
                     var response = await Task.Run(() => _category.DeleteCategory(categoryId));
                     if (response == true)
                     {
-                        return Ok(response);
+                        //return Ok(true);
+                        return Ok("True");
                     }
-                    return BadRequest(false);
+                    else
+                    {
+                        return BadRequest("Unable to delete");
+                    }
                 }
-                return NotFound("Not Found");
+                return BadRequest("Error Occurred");
             }
             catch (Exception ex)
             {
-
                 return StatusCode(500, ex);
             }
 
