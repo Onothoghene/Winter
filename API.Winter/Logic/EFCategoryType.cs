@@ -16,9 +16,10 @@ namespace API.Winter.Logic
         private readonly WinterContext _context;
         readonly IMapper _mapper;
 
-        public EFCategoryType(WinterContext context, IMapper mapper)
+        public EFCategoryType(IMapper mapper)
         {
-            _context = context;
+            //_context = context;
+            _context = new WinterContext();
             _mapper = mapper;
         }
 

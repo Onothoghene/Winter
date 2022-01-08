@@ -139,7 +139,7 @@ namespace Winter.Controllers
         {
             var model = new CategoryTypeInputViewModel()
             {
-                Category = await GetCategoryTypeList(),
+                CategoryType = await GetCategoryTypeList(),
             };
 
             if (Id == 0)
@@ -147,7 +147,7 @@ namespace Winter.Controllers
             else
             {
                 model = await GetCategoryTypeById(Id);
-                model.Category = await GetCategoryTypeList();
+                model.CategoryType = await GetCategoryTypeList();
                 return View(model);
             }
         }
@@ -155,54 +155,87 @@ namespace Winter.Controllers
         [HttpPost]
         public async Task<IActionResult> CategoryTypeDelete(int Id)
         {
-            var response = await DeleteCategoryType(Id);
-            return View(response);
+            try
+            {
+                HttpClient client = _httpClientHelper.Initial();
+                HttpResponseMessage response = client.DeleteAsync($"api/CategoryType/{Id}").Result;
+
+                if (response.IsSuccessStatusCode)
+                {
+                    string stringJWT = await response.Content.ReadAsStringAsync();
+                    var jwt = JsonConvert.DeserializeObject<string>(stringJWT);
+                    TempData["Successful"] = "Deleted Successfully";
+                    return RedirectToAction("CategoryTypes", "Admin");
+                }
+                else
+                {
+                    string stringJWT = await response.Content.ReadAsStringAsync();
+                    var jwt = JsonConvert.DeserializeObject<string>(stringJWT);
+                    ViewBag.Failed = "An Error Occurred, try again sometime";
+                    return RedirectToAction("CategoryTypes", "Admin");
+                }
+            }
+            catch (Exception)
+            {
+                ViewBag.Failed = "Try again sometime";
+                return RedirectToAction("Index", "Admin");
+                throw;
+            }
         }
 
         [HttpPost]
         public async Task<IActionResult> AddOrEditCategoryType(CategoryTypeInputViewModel model)
         {
-            HttpClient client = _httpClientHelper.Initial();
-            string stringData = JsonConvert.SerializeObject(model);
-            var contentData = new StringContent(stringData, Encoding.UTF8, "application/json");
-            //client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", HttpContext.Session.GetString("Token"));
-
-            if (model.Id == 0)
+            try
             {
-                HttpResponseMessage response = client.PostAsync("api/CategoryType", contentData).Result;
+                HttpClient client = _httpClientHelper.Initial();
+                string stringData = JsonConvert.SerializeObject(model);
+                var contentData = new StringContent(stringData, Encoding.UTF8, "application/json");
+                //client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", HttpContext.Session.GetString("Token"));
 
-                if (response.IsSuccessStatusCode)
+                if (model.Id == 0)
                 {
-                    string stringJWT = response.Content.ReadAsStringAsync().Result;
-                    var jwt = JsonConvert.DeserializeObject<CategoryTypeInputViewModel>(stringJWT);
-                    ViewBag.Message = jwt;
-                    TempData["Successful"] = "Successfully Added";
-                    return RedirectToAction("CategoryType", new { model });
+                    HttpResponseMessage response = client.PostAsync("api/CategoryType", contentData).Result;
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        string stringJWT = response.Content.ReadAsStringAsync().Result;
+                        var jwt = JsonConvert.DeserializeObject<bool>(stringJWT);
+                        ViewBag.Message = jwt;
+                        TempData["Successful"] = "Successfully Added";
+                        return RedirectToAction("CategoryTypes", new { model });
+                    }
+                    else
+                    {
+                        string stringJWT = response.Content.ReadAsStringAsync().Result;
+                        var jwt = JsonConvert.DeserializeObject<bool>(stringJWT);
+                        ViewBag.Failed = "Couldn't Create";
+                        return RedirectToAction("CategoryTypes", new { model });
+                    }
                 }
                 else
                 {
-                    string stringJWT = response.Content.ReadAsStringAsync().Result;
-                    var jwt = JsonConvert.DeserializeObject<string>(stringJWT);
-                    ViewBag.Failed = jwt;
-                    return RedirectToAction("CategoryType", new { model });
+                    HttpResponseMessage response = client.PutAsync("api/CategoryType", contentData).Result;
+                    if (response.IsSuccessStatusCode)
+                    {
+                        var data = response.Content.ReadAsStringAsync().Result;
+                        var result = JsonConvert.DeserializeObject<bool>(data);
+                        TempData["Successful"] = "Updated Successfully";
+                        return RedirectToAction("CategoryTypes", new { model });
+                    }
+                    else
+                    {
+                        ViewBag.Failed = ViewBag.Failed = "Couldn't Update"; ;
+                        model = await GetCategoryTypeById(model.Id);
+                        return RedirectToAction("CategoryTypes", new { model });
+                    }
                 }
             }
-            else
+            catch (Exception)
             {
-                HttpResponseMessage response = client.PutAsync("api/ CategoryType", contentData).Result;
-                if (response.IsSuccessStatusCode)
-                {
-                    var data = response.Content.ReadAsStringAsync().Result;
-                    var result = JsonConvert.DeserializeObject<string>(data);
-                    TempData["Successful"] = result;
-                    return RedirectToAction("CategoryType", new { model });
-                }
-                else
-                {
-                    ViewBag.Failed = response.Content.ReadAsStringAsync().Result;
-                    model = await GetCategoryTypeById(model.Id);
-                    return RedirectToAction("CategoryType", new { model });
-                }
+                ViewBag.Failed = "An Error Occurred";
+                return RedirectToAction("CategoryTypes", new { model });
+                throw;
             }
         }
 
