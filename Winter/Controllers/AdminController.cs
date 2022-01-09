@@ -29,110 +29,7 @@ namespace Winter.Controllers
             return View(response);
         }
 
-        [Route("category")]
-        public async Task<IActionResult> Category(int Id)
-        {
-            var model = new CategoryInputViewModel()
-            {
-                Category = await GetCategoryList(),
-            };
-
-            if (Id == 0)
-                return View(model);
-            else
-            {
-                model = await GetCategoryById(Id);
-                model.Category = await GetCategoryList();
-                return View(model);
-            }
-        }
-
-        [HttpPost]
-        public IActionResult CategoryDelete(int Id)
-        {
-            try
-            {
-                HttpClient client = _httpClientHelper.Initial();
-                HttpResponseMessage response = client.DeleteAsync($"api/Category/{Id}").Result;
-
-                if (response.IsSuccessStatusCode)
-                {
-                    string stringJWT = response.Content.ReadAsStringAsync().Result;
-                    var jwt = JsonConvert.DeserializeObject<string>(stringJWT);
-                    TempData["Successful"] = "Deleted Successfully";
-                    return RedirectToAction("Category", "Admin");
-                }
-                else
-                {
-                    string stringJWT = response.Content.ReadAsStringAsync().Result;
-                    var jwt = JsonConvert.DeserializeObject<string>(stringJWT);
-                    ViewBag.Failed = "An Error Occurred, try again sometime";
-                    return RedirectToAction("Category", "Admin");
-                }
-            }
-            catch (Exception)
-            {
-                ViewBag.Failed = "Try again sometime";
-                return RedirectToAction("Index", "Admin");
-                throw;
-            }
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> AddOrEditCategory(CategoryInputViewModel model)
-        {
-            try
-            {
-                HttpClient client = _httpClientHelper.Initial();
-                string stringData = JsonConvert.SerializeObject(model);
-                var contentData = new StringContent(stringData, Encoding.UTF8, "application/json");
-                //client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", HttpContext.Session.GetString("Token"));
-
-                if (model.Id == 0)
-                {
-                    HttpResponseMessage response = client.PostAsync("api/Category", contentData).Result;
-
-                    if (response.IsSuccessStatusCode)
-                    {
-                        string stringJWT = response.Content.ReadAsStringAsync().Result;
-                        var jwt = JsonConvert.DeserializeObject<bool>(stringJWT);
-                        ViewBag.Message = jwt;
-                        TempData["Successful"] = "Successfully Added";
-                        return RedirectToAction("Category", new { model });
-                    }
-                    else
-                    {
-                        string stringJWT = response.Content.ReadAsStringAsync().Result;
-                        var jwt = JsonConvert.DeserializeObject<bool>(stringJWT);
-                        ViewBag.Failed = "Couldn't Create";
-                        return RedirectToAction("Category", new { model });
-                    }
-                }
-                else
-                {
-                    HttpResponseMessage response = client.PutAsync("api/Category", contentData).Result;
-                    if (response.IsSuccessStatusCode)
-                    {
-                        var data = response.Content.ReadAsStringAsync().Result;
-                        var result = JsonConvert.DeserializeObject<bool>(data);
-                        TempData["Successful"] = "Updated Successfully";
-                        return RedirectToAction("Category", new { model });
-                    }
-                    else
-                    {
-                        ViewBag.Failed = ViewBag.Failed = "Couldn't Update"; ;
-                        model = await GetCategoryById(model.Id);
-                        return RedirectToAction("Category", new { model });
-                    }
-                }
-            }
-            catch (Exception)
-            {
-                ViewBag.Failed = "An Error Occurred";
-                return RedirectToAction("Category", new { model });
-                throw;
-            }
-        }
+        #region Category Type
 
         [Route("category/types")]
         public async Task<IActionResult> CategoryTypes(int Id)
@@ -239,12 +136,125 @@ namespace Winter.Controllers
             }
         }
 
+        #endregion
+
+        #region Category
+
+        [Route("category")]
+        public async Task<IActionResult> Category(int Id)
+        {
+            var model = new CategoryInputViewModel()
+            {
+                Category = await GetCategoryList(),
+            };
+
+            if (Id == 0)
+                return View(model);
+            else
+            {
+                model = await GetCategoryById(Id);
+                model.Category = await GetCategoryList();
+                return View(model);
+            }
+        }
+
+        [HttpPost]
+        public IActionResult CategoryDelete(int Id)
+        {
+            try
+            {
+                HttpClient client = _httpClientHelper.Initial();
+                HttpResponseMessage response = client.DeleteAsync($"api/Category/{Id}").Result;
+
+                if (response.IsSuccessStatusCode)
+                {
+                    string stringJWT = response.Content.ReadAsStringAsync().Result;
+                    var jwt = JsonConvert.DeserializeObject<string>(stringJWT);
+                    TempData["Successful"] = "Deleted Successfully";
+                    return RedirectToAction("Category", "Admin");
+                }
+                else
+                {
+                    string stringJWT = response.Content.ReadAsStringAsync().Result;
+                    var jwt = JsonConvert.DeserializeObject<string>(stringJWT);
+                    ViewBag.Failed = "An Error Occurred, try again sometime";
+                    return RedirectToAction("Category", "Admin");
+                }
+            }
+            catch (Exception)
+            {
+                ViewBag.Failed = "Try again sometime";
+                return RedirectToAction("Index", "Admin");
+                throw;
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddOrEditCategory(CategoryInputViewModel model)
+        {
+            try
+            {
+                HttpClient client = _httpClientHelper.Initial();
+                string stringData = JsonConvert.SerializeObject(model);
+                var contentData = new StringContent(stringData, Encoding.UTF8, "application/json");
+                //client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", HttpContext.Session.GetString("Token"));
+
+                if (model.Id == 0)
+                {
+                    HttpResponseMessage response = client.PostAsync("api/Category", contentData).Result;
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        string stringJWT = response.Content.ReadAsStringAsync().Result;
+                        var jwt = JsonConvert.DeserializeObject<bool>(stringJWT);
+                        ViewBag.Message = jwt;
+                        TempData["Successful"] = "Successfully Added";
+                        return RedirectToAction("Category", new { model });
+                    }
+                    else
+                    {
+                        string stringJWT = response.Content.ReadAsStringAsync().Result;
+                        var jwt = JsonConvert.DeserializeObject<bool>(stringJWT);
+                        ViewBag.Failed = "Couldn't Create";
+                        return RedirectToAction("Category", new { model });
+                    }
+                }
+                else
+                {
+                    HttpResponseMessage response = client.PutAsync("api/Category", contentData).Result;
+                    if (response.IsSuccessStatusCode)
+                    {
+                        var data = response.Content.ReadAsStringAsync().Result;
+                        var result = JsonConvert.DeserializeObject<bool>(data);
+                        TempData["Successful"] = "Updated Successfully";
+                        return RedirectToAction("Category", new { model });
+                    }
+                    else
+                    {
+                        ViewBag.Failed = ViewBag.Failed = "Couldn't Update"; ;
+                        model = await GetCategoryById(model.Id);
+                        return RedirectToAction("Category", new { model });
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                ViewBag.Failed = "An Error Occurred";
+                return RedirectToAction("Category", new { model });
+                throw;
+            }
+        }
+
+        #endregion
+
+        #region Sub-Category
+
         [Route("sub-category")]
         public async Task<IActionResult> SubCategory(int Id)
         {
             var model = new SubCategoryInputViewModel()
             {
-                Category = await GetSubCategoryList(),
+                SubCategory = await GetSubCategoryList(),
             };
 
             if (Id == 0)
@@ -252,64 +262,99 @@ namespace Winter.Controllers
             else
             {
                 model = await GetSubCategoryById(Id);
-                model.Category = await GetSubCategoryList();
+                model.SubCategory = await GetSubCategoryList();
                 return View(model);
             }
         }
 
         [HttpPost]
-        public async Task<IActionResult> SubCategoryDelete(int Id)
+        public async Task<IActionResult> AddOrEditSubCategory(SubCategoryInputViewModel model)
         {
-            var response = await DeleteSubCategory(Id);
-            return View(response);
+            try
+            {
+                HttpClient client = _httpClientHelper.Initial();
+                string stringData = JsonConvert.SerializeObject(model);
+                var contentData = new StringContent(stringData, Encoding.UTF8, "application/json");
+                //client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", HttpContext.Session.GetString("Token"));
+
+                if (model.Id == 0)
+                {
+                    HttpResponseMessage response = client.PostAsync("api/SubCategory", contentData).Result;
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        string stringJWT = response.Content.ReadAsStringAsync().Result;
+                        var jwt = JsonConvert.DeserializeObject<bool>(stringJWT);
+                        ViewBag.Message = jwt;
+                        TempData["Successful"] = "Successfully Added";
+                        return RedirectToAction("SubCategory", new { model });
+                    }
+                    else
+                    {
+                        string stringJWT = response.Content.ReadAsStringAsync().Result;
+                        var jwt = JsonConvert.DeserializeObject<bool>(stringJWT);
+                        ViewBag.Failed = "Couldn't Create";
+                        return RedirectToAction("SubCategory", new { model });
+                    }
+                }
+                else
+                {
+                    HttpResponseMessage response = client.PutAsync("api/SubCategory", contentData).Result;
+                    if (response.IsSuccessStatusCode)
+                    {
+                        var data = response.Content.ReadAsStringAsync().Result;
+                        var result = JsonConvert.DeserializeObject<bool>(data);
+                        TempData["Successful"] = "Updated Successfully";
+                        return RedirectToAction("SubCategory", new { model });
+                    }
+                    else
+                    {
+                        ViewBag.Failed = ViewBag.Failed = "Couldn't Update"; ;
+                        model = await GetSubCategoryById(model.Id);
+                        return RedirectToAction("SubCategory", new { model });
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                ViewBag.Failed = "An Error Occurred";
+                return RedirectToAction("SubCategory", new { model });
+                throw;
+            }
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddOrEditSubCategory(SubCategoryInputViewModel model)
+        public IActionResult SubCategoryDelete(int Id)
         {
-            HttpClient client = _httpClientHelper.Initial();
-            string stringData = JsonConvert.SerializeObject(model);
-            var contentData = new StringContent(stringData, Encoding.UTF8, "application/json");
-            //client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", HttpContext.Session.GetString("Token"));
-
-            if (model.Id == 0)
+            try
             {
-                HttpResponseMessage response = client.PostAsync("api/SubCategory", contentData).Result;
+                HttpClient client = _httpClientHelper.Initial();
+                HttpResponseMessage response = client.DeleteAsync($"api/SubCategory/{Id}").Result;
 
                 if (response.IsSuccessStatusCode)
                 {
                     string stringJWT = response.Content.ReadAsStringAsync().Result;
-                    var jwt = JsonConvert.DeserializeObject<SubCategoryInputViewModel>(stringJWT);
-                    ViewBag.Message = jwt;
-                    TempData["Successful"] = "Successfully Added";
-                    return RedirectToAction("SubCategory", new { model });
+                    var jwt = JsonConvert.DeserializeObject<string>(stringJWT);
+                    TempData["Successful"] = "Deleted Successfully";
+                    return RedirectToAction("SubCategory", "Admin");
                 }
                 else
                 {
                     string stringJWT = response.Content.ReadAsStringAsync().Result;
                     var jwt = JsonConvert.DeserializeObject<string>(stringJWT);
-                    ViewBag.Failed = jwt;
-                    return RedirectToAction("SubCategory", new { model });
+                    ViewBag.Failed = "An Error Occurred, try again sometime";
+                    return RedirectToAction("SubCategory", "Admin");
                 }
             }
-            else
+            catch (Exception)
             {
-                HttpResponseMessage response = client.PutAsync("api/ SubCategory", contentData).Result;
-                if (response.IsSuccessStatusCode)
-                {
-                    var data = response.Content.ReadAsStringAsync().Result;
-                    var result = JsonConvert.DeserializeObject<string>(data);
-                    TempData["Successful"] = result;
-                    return RedirectToAction("SubCategory", new { model });
-                }
-                else
-                {
-                    ViewBag.Failed = response.Content.ReadAsStringAsync().Result;
-                    model = await GetSubCategoryById(model.Id);
-                    return RedirectToAction("SubCategory", new { model });
-                }
+                ViewBag.Failed = "Try again sometime";
+                return RedirectToAction("Index", "Admin");
+                throw;
             }
         }
+
+        #endregion
 
         [HttpPost]
         public async Task<IActionResult> UserDelete(int Id)
@@ -657,31 +702,17 @@ namespace Winter.Controllers
             return response;
         }
 
-        public async Task<string> DeleteCategoryType(int Id)
-        {
-            string endpoint = $"api/CategoryType/{Id}";
-            var response = await _httpClientLogic.Delete<string>(endpoint);
-            return response;
-        }
-
         public async Task<SubCategoryInputViewModel> GetSubCategoryById(int Id)
         {
-            string endpoint = $"api/Category/{Id}";
+            string endpoint = $"api/SubCategory/{Id}";
             var response = await _httpClientLogic.GetById<SubCategoryInputViewModel>(endpoint);
             return response;
         }
 
         public async Task<IEnumerable<SubCategoryOutputViewModel>> GetSubCategoryList()
         {
-            string endpoint = $"api/Category";
+            string endpoint = $"api/SubCategory";
             var response = await _httpClientLogic.GetList<SubCategoryOutputViewModel>(endpoint);
-            return response;
-        }
-
-        public async Task<string> DeleteSubCategory(int Id)
-        {
-            string endpoint = $"api/Category/{Id}";
-            var response = await _httpClientLogic.Delete<string>(endpoint);
             return response;
         }
 

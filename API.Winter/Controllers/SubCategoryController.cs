@@ -52,14 +52,17 @@ namespace API.Winter.Controllers
             {
                 if (subcategoryId > 0)
                 {
-                    var wish = await Task.Run(() => _subcategory.GetSubCategoryById(subcategoryId));
-                    return Ok(wish);
+                    var data = await Task.Run(() => _subcategory.GetSubCategoryById(subcategoryId));
+                    return Ok(data);
                 }
-                return NotFound();
+                else
+                {
+                    return NotFound("The info requested for could not be found.");
+                }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return NotFound("The info requested for could not be found.");
+                return BadRequest("Internal Server Error");
             }
         }
 
@@ -81,7 +84,7 @@ namespace API.Winter.Controllers
         }
 
         [HttpDelete]
-        [Route("{subcategoryId}/Delete")]
+        [Route("{subcategoryId}")]
         public async Task<IActionResult> RemoveSubCategory(int subcategoryId)
         {
             try

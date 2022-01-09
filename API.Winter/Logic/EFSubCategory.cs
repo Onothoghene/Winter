@@ -15,11 +15,10 @@ namespace API.Winter.Logic
     {
         private readonly WinterContext _context;
         readonly IMapper _mapper;
-        //ModelFactory _modelFactory = new ModelFactory();
 
-        public EFSubCategory(WinterContext context, IMapper mapper)
+        public EFSubCategory(IMapper mapper)
         {
-            _context = context;
+            _context = new WinterContext();
             _mapper = mapper;
         }
 
@@ -29,7 +28,6 @@ namespace API.Winter.Logic
             {
                 using (TransactionScope ts = new TransactionScope())
                 {
-                    //var category = _modelFactory.Parse(model);
                     var subCategory = _mapper.Map<SubCategory>(model);
                     _context.SubCategory.Add(subCategory);
                     int bit = _context.SaveChanges();
@@ -42,7 +40,6 @@ namespace API.Winter.Logic
             }
             catch (Exception)
             {
-
                 throw;
             }
         }
@@ -52,15 +49,11 @@ namespace API.Winter.Logic
             try
             {
                 var subCategory = _context.SubCategory.ToList();
-                //var resp = category.Select(x => _modelFactory.Create(x));
-
                 var resp = _mapper.Map<List<SubCategoryOM>>(subCategory);
-
                 return resp;
             }
             catch (Exception)
             {
-
                 throw;
             }
         }
@@ -69,16 +62,12 @@ namespace API.Winter.Logic
         {
             try
             {
-                var subCategory = _context.SubCategory.Where(w => w.Id == Id);
-                //var resp = _modelFactory.Create(category);
-
+                var subCategory = _context.SubCategory.Find(Id);
                 var resp = _mapper.Map<SubCategoryOM>(subCategory);
-
                 return resp;
             }
             catch (Exception)
             {
-
                 throw;
             }
         }
@@ -99,11 +88,9 @@ namespace API.Winter.Logic
                     }
                     return false;
                 }
-
             }
             catch (Exception)
             {
-
                 throw;
             }
         }
@@ -114,8 +101,7 @@ namespace API.Winter.Logic
             {
                 using (TransactionScope ts = new TransactionScope())
                 {
-                    var subcategory = _context.SubCategory.Where(w => w.Id == model.Id).FirstOrDefault();
-
+                    var subcategory = _context.SubCategory.Find(model.Id);
                     if (subcategory != null)
                     {
                         subcategory.Name = model.Name;
@@ -126,13 +112,11 @@ namespace API.Winter.Logic
                         ts.Complete();
                         return true;
                     }
-
                     return false;
                 }
             }
             catch (Exception)
             {
-
                 throw;
             }
         }
@@ -146,10 +130,8 @@ namespace API.Winter.Logic
             }
             catch (Exception)
             {
-
                 throw;
             }
-
         }
 
     }
