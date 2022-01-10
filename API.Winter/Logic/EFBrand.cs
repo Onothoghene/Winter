@@ -16,9 +16,9 @@ namespace API.Winter.Logic
         private readonly WinterContext _context;
         readonly IMapper _mapper;
 
-        public EFBrand(WinterContext context, IMapper mapper)
+        public EFBrand(IMapper mapper)
         {
-            _context = context;
+            _context = new WinterContext();
             _mapper = mapper;
         }
 
@@ -50,9 +50,7 @@ namespace API.Winter.Logic
             try
             {
                 var brands = _context.Brand.ToList();
-
                 var resp = _mapper.Map<List<BrandOM>>(brands);
-
                 return resp;
             }
             catch (Exception)
@@ -66,9 +64,8 @@ namespace API.Winter.Logic
         {
             try
             {
-                var brand = _context.Brand.Where(w => w.Id == Id).FirstOrDefault();
-                var resp = _mapper.Map<BrandOM>(brand);
-
+                var data = _context.Brand.Find(Id);
+                var resp = _mapper.Map<BrandOM>(data);
                 return resp;
             }
             catch (Exception)
@@ -109,13 +106,13 @@ namespace API.Winter.Logic
             {
                 using (TransactionScope ts = new TransactionScope())
                 {
-                    var brand = _context.Brand.Where(w => w.Id == model.Id).FirstOrDefault();
+                    var data = _context.Brand.Find(model.Id);
 
-                    if (brand != null)
+                    if (data != null)
                     {
-                        brand.Name = model.Name;
-                        brand.Description = model.Description;
-                        brand.DateModified = DateTime.Now;
+                        data.Name = model.Name;
+                        data.Description = model.Description;
+                        data.DateModified = DateTime.Now;
                         _context.SaveChanges();
 
                         ts.Complete();

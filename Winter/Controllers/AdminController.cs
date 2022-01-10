@@ -356,6 +356,115 @@ namespace Winter.Controllers
 
         #endregion
 
+        #region Brand
+
+        [Route("brand")]
+        public async Task<IActionResult> Brand(int Id)
+        {
+            var model = new BrandInputViewModel()
+            {
+                Brand = await GetBrandList(),
+            };
+
+            if (Id == 0)
+                return View(model);
+            else
+            {
+                model = await GetBrandById(Id);
+                model.Brand = await GetBrandList();
+                return View(model);
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddOrEditBrand(BrandInputViewModel model)
+        {
+            try
+            {
+                HttpClient client = _httpClientHelper.Initial();
+                string stringData = JsonConvert.SerializeObject(model);
+                var contentData = new StringContent(stringData, Encoding.UTF8, "application/json");
+                //client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", HttpContext.Session.GetString("Token"));
+
+                if (model.Id == 0)
+                {
+                    HttpResponseMessage response = client.PostAsync("api/Brand", contentData).Result;
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        string stringJWT = response.Content.ReadAsStringAsync().Result;
+                        var jwt = JsonConvert.DeserializeObject<bool>(stringJWT);
+                        ViewBag.Message = jwt;
+                        TempData["Successful"] = "Successfully Added";
+                        return RedirectToAction("Brand", new { model });
+                    }
+                    else
+                    {
+                        string stringJWT = response.Content.ReadAsStringAsync().Result;
+                        var jwt = JsonConvert.DeserializeObject<bool>(stringJWT);
+                        ViewBag.Failed = "Couldn't Create";
+                        return RedirectToAction("Brand", new { model });
+                    }
+                }
+                else
+                {
+                    HttpResponseMessage response = client.PutAsync("api/Brand", contentData).Result;
+                    if (response.IsSuccessStatusCode)
+                    {
+                        var data = response.Content.ReadAsStringAsync().Result;
+                        var result = JsonConvert.DeserializeObject<bool>(data);
+                        TempData["Successful"] = "Updated Successfully";
+                        return RedirectToAction("Brand", new { model });
+                    }
+                    else
+                    {
+                        ViewBag.Failed = ViewBag.Failed = "Couldn't Update"; ;
+                        model = await GetBrandById(model.Id);
+                        return RedirectToAction("Brand", new { model });
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                ViewBag.Failed = "An Error Occurred";
+                return RedirectToAction("Brand", new { model });
+                throw;
+            }
+        }
+
+        [HttpPost]
+        public IActionResult BrandDelete(int Id)
+        {
+            try
+            {
+                HttpClient client = _httpClientHelper.Initial();
+                HttpResponseMessage response = client.DeleteAsync($"api/Brand/{Id}").Result;
+
+                if (response.IsSuccessStatusCode)
+                {
+                    string stringJWT = response.Content.ReadAsStringAsync().Result;
+                    var jwt = JsonConvert.DeserializeObject<string>(stringJWT);
+                    TempData["Successful"] = "Deleted Successfully";
+                    return RedirectToAction("Brand", "Admin");
+                }
+                else
+                {
+                    string stringJWT = response.Content.ReadAsStringAsync().Result;
+                    var jwt = JsonConvert.DeserializeObject<string>(stringJWT);
+                    ViewBag.Failed = "An Error Occurred, try again sometime";
+                    return RedirectToAction("Brand", "Admin");
+                }
+            }
+            catch (Exception)
+            {
+                ViewBag.Failed = "Try again sometime";
+                return RedirectToAction("Index", "Admin");
+                throw;
+            }
+        }
+
+        #endregion
+
         [HttpPost]
         public async Task<IActionResult> UserDelete(int Id)
         {
@@ -720,6 +829,20 @@ namespace Winter.Controllers
         {
             string endpoint = $"api/User/{Id}";
             var response = await _httpClientLogic.Delete<bool>(endpoint);
+            return response;
+        }
+
+        public async Task<BrandInputViewModel> GetBrandById(int Id)
+        {
+            string endpoint = $"api/Brand/{Id}";
+            var response = await _httpClientLogic.GetById<BrandInputViewModel>(endpoint);
+            return response;
+        }
+
+        public async Task<IEnumerable<BrandOutputViewModel>> GetBrandList()
+        {
+            string endpoint = $"api/Brand";
+            var response = await _httpClientLogic.GetList<BrandOutputViewModel>(endpoint);
             return response;
         }
 

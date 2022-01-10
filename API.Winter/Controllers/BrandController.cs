@@ -46,7 +46,7 @@ namespace Winter.API.Controllers
         }
 
         [HttpGet]
-        [Route("{brandId}/")]
+        [Route("{brandId}")]
         public async Task<IActionResult> BrandById(int brandId)
         {
             try
@@ -56,7 +56,7 @@ namespace Winter.API.Controllers
                     var data = await Task.Run(() => _brand.GetById(brandId));
                     return Ok(data);
                 }
-                return NotFound();
+                return NotFound("The data requested for could not be found.");
             }
             catch (Exception)
             {
@@ -75,7 +75,6 @@ namespace Winter.API.Controllers
             }
             catch (Exception ex)
             {
-
                 return StatusCode(500, ex);
             }
 
@@ -96,11 +95,13 @@ namespace Winter.API.Controllers
                     }
                     return BadRequest(false);
                 }
-                return NotFound("Not Found");
+                else
+                {
+                    return NotFound("The data requested for could not be found.");
+                }
             }
             catch (Exception ex)
             {
-
                 return StatusCode(500, ex);
             }
 
@@ -117,7 +118,6 @@ namespace Winter.API.Controllers
             }
             catch (Exception ex)
             {
-
                 return StatusCode(500, ex);
             }
 

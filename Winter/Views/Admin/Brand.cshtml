@@ -1,0 +1,207 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout_Admin.cshtml";
+}
+
+@model BrandInputViewModel
+<!-- Begin Page Content -->
+<div class="container-fluid">
+
+    <div class="pageheader">
+        <h3><i class="fa fa-calendar"></i> Brands </h3>
+    </div>
+
+    @if (TempData["Successful"] != null)
+    {
+        <div class="container Alert-Container">
+            <div class="panel-alert" style="background-color:whitesmoke;">
+                <div class="alert-wrap in">
+                    <div class="alert alert-success" role="alert">
+                        <button class="close" type="button">
+                            <i class="fa fa-times-circle"></i>
+                        </button>
+                        <div class="media">
+                            <div class="media-left">
+                                <span class="icon-wrap icon-wrap-xs icon-circle alert-icon">
+                                    <i class="fa fa-thumbs-up fa-lg"></i>
+                                </span>
+                            </div>
+                            <div class="media-body">
+                                <h4 class="alert-title">Success Message</h4>
+                                <h4 class="alert-message"> <strong>@TempData["Successful"]</strong></h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+
+    @if (ViewBag.Failed != null)
+    {
+        <div class="container Alert-Container">
+            <div class="panel-alert" style="background-color:whitesmoke;">
+                <div class="alert-wrap in">
+                    <div class="alert alert-danger" role="alert">
+                        <button class="close" type="button">
+                            <i class="fa fa-times-circle"></i>
+                        </button>
+                        <div class="media">
+                            <div class="media-left">
+                                <span class="icon-wrap icon-wrap-xs icon-circle alert-icon">
+                                    <i class="fa fa-thumbs-down fa-lg"></i>
+                                </span>
+                            </div>
+                            <div class="media-body">
+                                <h4 class="alert-title">Error Message</h4>
+                                <h4 class="alert-message"><strong>@ViewBag.Failed</strong></h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+
+    <div class="row">
+        <div class="col-sm-6 eq-box-sm">
+            <div class="panel">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Brand</h3>
+                </div>
+                <!--Block Styled Form -->
+                <!--===================================================-->
+                <form asp-action="AddOrEditBrand" asp-controller="Admin" method="post">
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="control-label" asp-for="Name">Name</label>
+                                    <input type="text" class="form-control " asp-for="Name" placeholder="Name">
+                                    <span asp-validation-for="Name" class="text-danger"></span>
+                                    <input asp-for="Id" type="hidden">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="control-label" asp-for="Description">Description</label>
+                                    <textarea type="text" class="form-control " asp-for="Description" placeholder="Description" rows="7"></textarea>
+                                    <span asp-validation-for="Description" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-footer text-right">
+                        <button class="btn btn-info" type="submit">Save</button>
+                    </div>
+                </form>
+                <!--===================================================-->
+                <!--End Block Styled Form -->
+            </div>
+        </div>
+
+        <div class="col-sm-6 eq-box-sm">
+
+            <div class="panel">
+                <div class="panel-heading">
+                    <h3 class="panel-title">@Model.Brand.Count() Avaliable Brand</h3>
+                </div>
+                <div class="panel-body">
+                    <table id="demo-dt-basic" class="table table-striped table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model.Brand != null)
+                            {
+                                @foreach (var item in Model.Brand)
+                                {
+                                    <tr>
+                                        <td>@item.Name</td>
+                                        <td>
+                                            
+                                            <form method="post" asp-action="BrandDelete" asp-controller="Admin" asp-route-Id="@item.Id">
+                                                <a asp-action="Brand" asp-controller="Admin" asp-route-Id="@item.Id" class="btn btn-warning btn-labeled fa fa-edit" role="button">Edit</a>
+                                                <button class="btn btn-danger Deletebutton" type="submit">Delete</button>
+                                            </form>
+                                            @*<button class="btn btn-danger btn-labeled fa fa-times ModalDeletebutton" name="ModalDeletebutton" data-toggle="modal" data-target="#DeleteModal" value="@item.Id">Delete</button>*@
+
+                                        </td>
+                                    </tr>
+
+                                    <div class="modal fade" id="DeleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    Are you sure you wanna delete this???
+                                                </div>
+                                                <div class="modal-footer">
+                                                    @*<form method="post" asp-action="CategoryDelete" asp-controller="Admin" asp-route-Id="@item.Id">
+                                                            <button class="btn btn-danger Deletebutton" type="submit">Delete</button>
+                                                        </form>*@
+                                                    <button class="btn btn-danger Deletebutton" type="submit">Delete</button>
+                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<!-- /.container-fluid -->
+
+<script src="~/SmartAdmin/js/jquery-2.1.1.min.js"></script>
+<script type="text/javascript">
+    window.setTimeout(function () {
+        $(".alert").fadeTo(500, 0).slideUp(500, function () {
+            $(this).remove();
+        });
+    }, 4000);
+</script>
+
+<script type="text/javascript">
+    $('.ModalDeletebutton').on('click', function (e) {
+        var categoryId = e?.target?.value
+        //    console.log(categoryId)
+        $('.Deletebutton').on('click', function (e) {
+            console.log("clicked Deletebutton")
+            //     console.log(categoryId)
+            $.ajax({
+                type: "POST",
+                url: "/Admin/BrandDelete",
+                data: { Id: categoryId },
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    console.log(data);
+                    // $('#salesID').text(data);
+                    // document.getElementById('salesID').textContent = data;
+                }, //End of AJAX Success function
+                failure: function (data) {
+                    console.log(data)
+                }, //End of AJAX failure function
+                error: function (data) {
+                    console.log(data)
+                } //End of AJAX error function
+            });
+        });
+    });
+</script>
