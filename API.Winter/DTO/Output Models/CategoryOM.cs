@@ -11,6 +11,7 @@ namespace API.Winter.DTO.Output_Models
         public string Description { get; set; }
         public DateTime? DateAdded { get; set; }
         public DateTime? DateModified { get; set; }
+        public int CategoryTypeId { get; set; }
 
     }
 
@@ -18,15 +19,18 @@ namespace API.Winter.DTO.Output_Models
     {
         public int Id { get; set; }
         public string CategoryName { get; set; }
-        public IEnumerable<SubCategoryOMLite> Category { get; set; }
+        public IEnumerable<SubCategoryOMLite> SubCategory { get; set; }
     }
     
-    public class CategoryTypeOMLite
+    public class CategoryOMLite2
     {
         public int Id { get; set; }
         public string CategoryName { get; set; }
-
+    }
+    
+    public class FullCategoryOM
+    {
+        public IEnumerable<CategoryTypeOMLite> CategoryType { get; set; }
         public IEnumerable<BrandOMLite> Brands { get; set; }
-        public IEnumerable<CategoryOMLite> Category { get; set; }
     }
 }

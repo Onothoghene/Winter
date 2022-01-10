@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Collections.Generic;
 using Winter.ViewModels.Output_Models;
 
 namespace Winter.ViewModels.Input_Models
@@ -8,6 +9,8 @@ namespace Winter.ViewModels.Input_Models
         public int Id { get; set; }
         public string CategoryName { get; set; }
         public string Description { get; set; }
+        public int CategoryTypeId { get; set; }
+        public SelectList CategoryTypes { get; set; }
         public IEnumerable<CategoryOutputViewModel> Category { get; set; }
         //public ICollection<Product> Product { get; set; }
     }
@@ -25,6 +28,7 @@ namespace Winter.ViewModels.Input_Models
         public string Name { get; set; }
         public string Description { get; set; }
         public int CategoryId { get; set; }
+        public SelectList Categories { get; set; }
         public IEnumerable<SubCategoryOutputViewModel> SubCategory { get; set; }
     }
 }

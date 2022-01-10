@@ -19,7 +19,7 @@ namespace API.Winter.Logic
 
         public EFCategory(IMapper mapper)
         {
-            _context = new WinterContext() ;
+            _context = new WinterContext();
             _mapper = mapper;
         }
 
@@ -131,6 +131,7 @@ namespace API.Winter.Logic
                         category.CategoryName = model.CategoryName;
                         //category.Id = model.Id;
                         category.Description = model.Description;
+                        category.CategoryTypeId = model.CategoryTypeId;
                         category.DateModified = DateTime.Now;
                         _context.SaveChanges();
 
@@ -163,27 +164,44 @@ namespace API.Winter.Logic
 
         }
 
-        //public IEnumerable<CategoryTypeOMLite> GetCategoryList()
-        //{
-        //    try
-        //    {
-        //        var brands = _context.Brand.ToList();
+        public IEnumerable<FullCategoryOM> GetFullCategoryList()
+        {
+            try
+            {
+                IEnumerable<FullCategoryOM> response;
+                var fullCategories = new List<FullCategoryOM>();
+                var brands = _context.Brand.ToList();
+                var categories = _context.CategoryType.Include(x => x.Category).ThenInclude(x => x.SubCategory).ToList();
 
-        //        var response = new CategoryTypeOMLite
-        //        {
-        //            Brands = _mapper.Map<IEnumerable<BrandOMLite>>(brands),
-        //        };
-        //        var data = _context.CategoryType.Include(x => x.Category).ThenInclude(x => x.SubCategory).ToList();
-        //        response = _mapper.Map<IEnumerable<CategoryTypeOMLite>>(data);
+                var data = new FullCategoryOM
+                {
+                    Brands = _mapper.Map<IEnumerable<BrandOMLite>>(brands),
+                    CategoryType = _mapper.Map<IEnumerable<CategoryTypeOMLite>>(categories),
+                };
+                fullCategories.Add(data);
+                response = fullCategories;
+                return response;
+            }
+            catch (Exception)
+            {
 
-        //        return response;
-        //    }
-        //    catch (Exception)
-        //    {
+                throw;
+            }
+        }
 
-        //        throw;
-        //    }
-        //}
+        public IEnumerable<CategoryOMLite2> GetCategoryLite2()
+        {
+            try
+            {
+                var category = _context.Category.ToList();
+                var resp = _mapper.Map<IEnumerable<CategoryOMLite2>>(category);
+                return resp;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
 
     }
 }

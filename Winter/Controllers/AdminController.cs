@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -146,7 +147,8 @@ namespace Winter.Controllers
             var model = new CategoryInputViewModel()
             {
                 Category = await GetCategoryList(),
-            };
+                CategoryTypes = new SelectList(await GetCategoryTypeList(), "Id", "Name"),
+        };
 
             if (Id == 0)
                 return View(model);
@@ -154,6 +156,7 @@ namespace Winter.Controllers
             {
                 model = await GetCategoryById(Id);
                 model.Category = await GetCategoryList();
+                model.CategoryTypes = new SelectList(await GetCategoryTypeList(), "Id", "Name");
                 return View(model);
             }
         }
@@ -255,6 +258,7 @@ namespace Winter.Controllers
             var model = new SubCategoryInputViewModel()
             {
                 SubCategory = await GetSubCategoryList(),
+                Categories = new SelectList(await GetCategoryList(), "Id", "CategoryName"),
             };
 
             if (Id == 0)
@@ -263,6 +267,7 @@ namespace Winter.Controllers
             {
                 model = await GetSubCategoryById(Id);
                 model.SubCategory = await GetSubCategoryList();
+                model.Categories = new SelectList(await GetCategoryList(), "Id", "CategoryName");
                 return View(model);
             }
         }

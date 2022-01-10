@@ -68,7 +68,9 @@ namespace API.Winter.Helpers
         public SubCategoryProfile()
         {
             CreateMap<SubCategory, SubCategoryOM>()
-                .ForMember(dest => dest.Category, opt => opt.MapFrom(src => src.Category.CategoryName));
+                  .ForMember(dest => dest.Category, opt => opt.MapFrom(src => src.Category.CategoryName));
+
+            CreateMap<SubCategory, SubCategoryOMLite>();
 
             CreateMap<SubCategoryIM, SubCategory>()
                 .ForMember(dest => dest.DateAdded, opt => opt.MapFrom(src => DateTime.Now));
@@ -81,10 +83,17 @@ namespace API.Winter.Helpers
     {
         public CategoryProfile()
         {
-            CreateMap<Category, CategoryOM>();
+            CreateMap<Category, CategoryOM>()
+                .ForMember(dest => dest.CategoryTypeId, opt => opt.MapFrom(src => src.CategoryTypeId.HasValue ? src.CategoryTypeId : 0));
+
+            CreateMap<Category, CategoryOMLite2>();
+
+            CreateMap<Category, CategoryOMLite>()
+                .ForMember(dest => dest.SubCategory, opt => opt.MapFrom(src => src.SubCategory));
 
             CreateMap<CategoryIM, Category>()
-                .ForMember(dest => dest.DateAdded, opt => opt.MapFrom(src => DateTime.Now));
+                .ForMember(dest => dest.DateAdded, opt => opt.MapFrom(src => DateTime.Now))
+                .ForMember(dest => dest.CategoryTypeId, opt => opt.MapFrom(src => src.CategoryTypeId));
 
         }
 
@@ -108,6 +117,9 @@ namespace API.Winter.Helpers
         {
             CreateMap<CategoryType, CategoryTypeOM>();
 
+            CreateMap<CategoryType, CategoryTypeOMLite>()
+                 .ForMember(dest => dest.Category, opt => opt.MapFrom(src => src.Category));
+
             CreateMap<CategoryTypeIM, CategoryType>();
 
         }
@@ -119,6 +131,7 @@ namespace API.Winter.Helpers
         public BrandProfile()
         {
             CreateMap<Brand, BrandOM>();
+            CreateMap<Brand, BrandOMLite>();
 
             CreateMap<BrandIM, Brand>()
                 .ForMember(dest => dest.DateAdded, opt => opt.MapFrom(src => DateTime.Now));

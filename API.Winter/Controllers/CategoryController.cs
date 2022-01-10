@@ -150,5 +150,37 @@ namespace API.Winter.Controllers
                 return StatusCode(500, ex);
             }
         }
+
+        [HttpGet]
+        [Route("full")]
+        public async Task<IActionResult> GetFullCategory()
+        {
+            try
+            {
+                var result = await Task.Run(() => _category.GetFullCategoryList());
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "error occurred");
+            }
+
+        }
+
+        [HttpGet]
+        [Route("lite")]
+        public async Task<IActionResult> GetCategoriesLite()
+        {
+            try
+            {
+                var result = await Task.Run(() => _category.GetCategoryLite2());
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "error occurred");
+            }
+
+        }
     }
 }

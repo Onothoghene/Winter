@@ -83,6 +83,16 @@
                                     <input asp-for="Id" type="hidden">
                                 </div>
                             </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="control-label" asp-for="CategoryTypeId">Category Type</label>
+                                    <select class="form-control" data-live-search="true"
+                                            asp-for="CategoryTypeId" asp-items="Model.CategoryTypes">
+                                        <option value="">Select Type</option>
+                                    </select>
+                                    <span asp-validation-for="CategoryTypeId" class="text-danger"></span>
+                                </div>
+                            </div>
                         </div>
                         <div class="row">
                             <div class="col-sm-6">

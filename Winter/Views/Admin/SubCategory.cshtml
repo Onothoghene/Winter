@@ -87,7 +87,10 @@
                             <div class="col-sm-6">
                                 <div class="form-group">
                                     <label class="control-label" asp-for="CategoryId">Category</label>
-                                    <input type="number" class="form-control " asp-for="CategoryId" placeholder="Category">
+                                    <select class="form-control" data-live-search="true"
+                                            asp-for="CategoryId" asp-items="Model.Categories">
+                                        <option value="">Select Type</option>
+                                    </select>
                                     <span asp-validation-for="CategoryId" class="text-danger"></span>
                                 </div>
                             </div>
