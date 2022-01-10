@@ -113,5 +113,18 @@ namespace API.Winter.Helpers
         }
 
     }
+    
+    public class BrandProfile : Profile
+    {
+        public BrandProfile()
+        {
+            CreateMap<Brand, BrandOM>();
+
+            CreateMap<BrandIM, Brand>()
+                .ForMember(dest => dest.DateAdded, opt => opt.MapFrom(src => DateTime.Now));
+
+        }
+
+    }
 
 }

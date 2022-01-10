@@ -4,6 +4,7 @@ using API.Winter.DTO.Output_Models;
 using API.Winter.Logic.Interfaces;
 using API.Winter.Models;
 using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -161,6 +162,28 @@ namespace API.Winter.Logic
             }
 
         }
+
+        //public IEnumerable<CategoryTypeOMLite> GetCategoryList()
+        //{
+        //    try
+        //    {
+        //        var brands = _context.Brand.ToList();
+
+        //        var response = new CategoryTypeOMLite
+        //        {
+        //            Brands = _mapper.Map<IEnumerable<BrandOMLite>>(brands),
+        //        };
+        //        var data = _context.CategoryType.Include(x => x.Category).ThenInclude(x => x.SubCategory).ToList();
+        //        response = _mapper.Map<IEnumerable<CategoryTypeOMLite>>(data);
+
+        //        return response;
+        //    }
+        //    catch (Exception)
+        //    {
+
+        //        throw;
+        //    }
+        //}
 
     }
 }
