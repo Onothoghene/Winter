@@ -1,6 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using System.IO;
+﻿using System;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace API.Winter.Models
 {
@@ -37,15 +37,8 @@ namespace API.Winter.Models
         {
             if (!optionsBuilder.IsConfigured)
             {
-                //#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                //                optionsBuilder.UseSqlServer("Data Source=.;Initial Catalog=Winter;Integrated Security=True");
-                var builder = new ConfigurationBuilder()
-                               .SetBasePath(Directory.GetCurrentDirectory())
-                               .AddJsonFile("appsettings.json");
-
-                IConfiguration Configuration = builder.Build();
-
-                optionsBuilder.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
+                optionsBuilder.UseSqlServer("Data Source=.;Initial Catalog=Winter;Integrated Security=True");
             }
         }
 
@@ -249,7 +242,13 @@ namespace API.Winter.Models
 
                 entity.HasOne(d => d.Category)
                     .WithMany(p => p.Product)
-                    .HasForeignKey(d => d.CategoryId);
+                    .HasForeignKey(d => d.CategoryId)
+                    .HasConstraintName("FK__Product__Categor__1C873BEC");
+
+                entity.HasOne(d => d.SubCategory)
+                    .WithMany(p => p.Product)
+                    .HasForeignKey(d => d.SubCategoryId)
+                    .HasConstraintName("FK__Product__SubCate__19AACF41");
             });
 
             modelBuilder.Entity<SubCategory>(entity =>

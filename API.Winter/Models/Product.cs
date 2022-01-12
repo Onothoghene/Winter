@@ -21,9 +21,11 @@ namespace API.Winter.Models
         public DateTime? DateAdded { get; set; }
         public DateTime? DateModified { get; set; }
         public int? BrandId { get; set; }
+        public int? SubCategoryId { get; set; }
 
         public virtual Brand Brand { get; set; }
         public virtual Category Category { get; set; }
+        public virtual SubCategory SubCategory { get; set; }
         public virtual ICollection<Cart> Cart { get; set; }
         public virtual ICollection<Files> Files { get; set; }
         public virtual ICollection<OrderRequest> OrderRequest { get; set; }

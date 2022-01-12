@@ -97,7 +97,7 @@ namespace Winter.Controllers
                     {
                         string stringJWT = await response.Content.ReadAsStringAsync();
                         var jwt = JsonConvert.DeserializeObject<bool>(stringJWT);
-                        return RedirectToAction("Login", "Account");
+                        return RedirectToAction("Index", "Home");
                     }
                     else
                     {

@@ -469,6 +469,115 @@ namespace Winter.Controllers
         }
 
         #endregion
+        
+        #region Product
+
+        [Route("product")]
+        public async Task<IActionResult> Product(int Id)
+        {
+            var model = new ProductInputViewModel()
+            {
+             //   Brand = await GetBrandList(),
+            };
+
+            if (Id == 0)
+                return View(model);
+            else
+            {
+                //model = await GetBrandById(Id);
+                //model.Brand = await GetBrandList();
+                return View(model);
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddOrEditProduct(BrandInputViewModel model)
+        {
+            try
+            {
+                HttpClient client = _httpClientHelper.Initial();
+                string stringData = JsonConvert.SerializeObject(model);
+                var contentData = new StringContent(stringData, Encoding.UTF8, "application/json");
+                //client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", HttpContext.Session.GetString("Token"));
+
+                if (model.Id == 0)
+                {
+                    HttpResponseMessage response = client.PostAsync("api/Brand", contentData).Result;
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        string stringJWT = response.Content.ReadAsStringAsync().Result;
+                        var jwt = JsonConvert.DeserializeObject<bool>(stringJWT);
+                        ViewBag.Message = jwt;
+                        TempData["Successful"] = "Successfully Added";
+                        return RedirectToAction("Brand", new { model });
+                    }
+                    else
+                    {
+                        string stringJWT = response.Content.ReadAsStringAsync().Result;
+                        var jwt = JsonConvert.DeserializeObject<bool>(stringJWT);
+                        ViewBag.Failed = "Couldn't Create";
+                        return RedirectToAction("Brand", new { model });
+                    }
+                }
+                else
+                {
+                    HttpResponseMessage response = client.PutAsync("api/Brand", contentData).Result;
+                    if (response.IsSuccessStatusCode)
+                    {
+                        var data = response.Content.ReadAsStringAsync().Result;
+                        var result = JsonConvert.DeserializeObject<bool>(data);
+                        TempData["Successful"] = "Updated Successfully";
+                        return RedirectToAction("Brand", new { model });
+                    }
+                    else
+                    {
+                        ViewBag.Failed = ViewBag.Failed = "Couldn't Update"; ;
+                        model = await GetBrandById(model.Id);
+                        return RedirectToAction("Brand", new { model });
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                ViewBag.Failed = "An Error Occurred";
+                return RedirectToAction("Brand", new { model });
+                throw;
+            }
+        }
+
+        [HttpPost]
+        public IActionResult ProductDelete(int Id)
+        {
+            try
+            {
+                HttpClient client = _httpClientHelper.Initial();
+                HttpResponseMessage response = client.DeleteAsync($"api/Brand/{Id}").Result;
+
+                if (response.IsSuccessStatusCode)
+                {
+                    string stringJWT = response.Content.ReadAsStringAsync().Result;
+                    var jwt = JsonConvert.DeserializeObject<string>(stringJWT);
+                    TempData["Successful"] = "Deleted Successfully";
+                    return RedirectToAction("Brand", "Admin");
+                }
+                else
+                {
+                    string stringJWT = response.Content.ReadAsStringAsync().Result;
+                    var jwt = JsonConvert.DeserializeObject<string>(stringJWT);
+                    ViewBag.Failed = "An Error Occurred, try again sometime";
+                    return RedirectToAction("Brand", "Admin");
+                }
+            }
+            catch (Exception)
+            {
+                ViewBag.Failed = "Try again sometime";
+                return RedirectToAction("Index", "Admin");
+                throw;
+            }
+        }
+
+        #endregion
 
         [HttpPost]
         public async Task<IActionResult> UserDelete(int Id)
@@ -477,13 +586,6 @@ namespace Winter.Controllers
             return View(response);
         }
 
-        //public IActionResult AddProduct()
-        //{
-        //    ProductInputViewModel productInput = new ProductInputViewModel();
-        //    _product.ConfigureInputViewModelForDropDown(productInput);
-
-        //    return View(productInput);
-        //}
 
         //[HttpPost]
         //[ValidateAntiForgeryToken]
@@ -542,68 +644,6 @@ namespace Winter.Controllers
 
         //}
 
-
-
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public IActionResult AddProduct(ProductInputViewModel model)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        _product.AddProduct(model);
-        //        return RedirectToAction("Index");
-        //    }
-        //    model.Categories = new SelectList(_context.Category.ToList(), "Id", "CategoryName");
-        //    return View(model);
-        //}
-
-        //public IActionResult Product()
-        //{
-        //    var categories = _product.GetProducts();
-
-        //    return View(categories);
-        //}
-
-        //public IActionResult Product_Details(int Id)
-        //{
-        //    //if (Id <= 0)
-        //    //{
-        //    //    return RedirectToAction("Index");
-        //    //}
-
-        //    //var productdetails = _product.GetProductById(Id);
-
-        //    //var generalView = new GeneralViewModel
-        //    //{
-        //    //    ProductViewModel = productdetails,
-        //    //};
-
-
-
-        //    //return View(generalView);
-
-        //    return View();
-        //}
-
-        //public IActionResult UpdateProduct(int Id)
-        //{
-        //    var productOutput = _product.GetProductById(Id);
-
-        //    ProductEditViewModel productEdit = new ProductEditViewModel
-        //    {
-        //        ProductId = productOutput.ProductId,
-        //        ProductName = productOutput.ProductName,
-        //        CategoryID = productOutput.CategoryID,
-        //        Description = productOutput.Description,
-        //        UnitPrice = productOutput.UnitPrice,
-        //        ProductFile = productOutput.ProductFile,
-        //        //DateModified = DateTime.Now,
-        //    };
-        //    _product.ConfigureEditViewModelForDropDown(productEdit);
-
-        //    return View(productEdit);
-        //}
-
         //[HttpPost]
         //[ValidateAntiForgeryToken]
         //public async Task<IActionResult> UpdateProduct(ProductEditViewModel model)
@@ -657,29 +697,6 @@ namespace Winter.Controllers
         //        throw;
         //    }
 
-        //}
-
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public IActionResult UpdateProduct(ProductEditViewModel productEdit)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //       // SaveImageToFolderAndPathToDb(member);
-        //        _product.UpdateProduct(productEdit);
-        //        return RedirectToAction("Index");
-        //    }
-        //    productEdit.Categories = new SelectList(_context.Category.ToList(), "Id", "CategoryName");
-
-        //    return View(productEdit);
-        //}
-
-        //[HttpDelete]
-        //public IActionResult DeleteProduct(int Id)
-        //{
-        //    _product.DeleteProduct(Id);
-        //    TempData["Message"] = "Deleted Successfully";
-        //    return RedirectToAction("Index");
         //}
 
         //public IActionResult Orders()
@@ -747,22 +764,22 @@ namespace Winter.Controllers
         //}
 
 
-        //public static string GetFileExtensionFromFileName(string fileName)
-        //{
-        //    string fileExtension = "";
-        //    try
-        //    {
-        //        if (!string.IsNullOrEmpty(fileName) && fileName.Contains('.'))
-        //        {
-        //            var splittedFileArray = fileName.Split('.');
-        //            fileExtension = splittedFileArray[splittedFileArray.Length - 1];
-        //        }
-        //    }
-        //    catch (Exception)
-        //    {
-        //    }
-        //    return fileExtension;
-        //}
+        public static string GetFileExtensionFromFileName(string fileName)
+        {
+            string fileExtension = "";
+            try
+            {
+                if (!string.IsNullOrEmpty(fileName) && fileName.Contains('.'))
+                {
+                    var splittedFileArray = fileName.Split('.');
+                    fileExtension = splittedFileArray[splittedFileArray.Length - 1];
+                }
+            }
+            catch (Exception)
+            {
+            }
+            return fileExtension;
+        }
 
         public ActionResult DownloadDocument(string Filename)
         {
@@ -847,6 +864,20 @@ namespace Winter.Controllers
         public async Task<IEnumerable<BrandOutputViewModel>> GetBrandList()
         {
             string endpoint = $"api/Brand";
+            var response = await _httpClientLogic.GetList<BrandOutputViewModel>(endpoint);
+            return response;
+        }
+        
+        public async Task<BrandInputViewModel> GetProductById(int Id)
+        {
+            string endpoint = $"api/Product/{Id}";
+            var response = await _httpClientLogic.GetById<BrandInputViewModel>(endpoint);
+            return response;
+        }
+
+        public async Task<IEnumerable<BrandOutputViewModel>> GetProductList()
+        {
+            string endpoint = $"api/Product";
             var response = await _httpClientLogic.GetList<BrandOutputViewModel>(endpoint);
             return response;
         }
