@@ -14,7 +14,8 @@ namespace API.Winter.Logic.Interfaces
         bool DeleteCategory(int Id);
         bool UpdateCategory(CategoryEM model);
         int CountCategory();
-        IEnumerable<FullCategoryOM> GetFullCategoryList();
+        FullCategoryOM GetFullCategoryList();
+        //IEnumerable<FullCategoryOM> GetFullCategoryList();
         IEnumerable<CategoryOMLite2> GetCategoryLite2();
     }
 }

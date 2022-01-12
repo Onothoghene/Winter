@@ -12,7 +12,7 @@ namespace API.Winter.DTO.Output_Models
     public class CategoryTypeOMLite
     {
         public int Id { get; set; }
-        public string CategoryName { get; set; }
+        public string Name { get; set; }
 
         public IEnumerable<CategoryOMLite> Category { get; set; }
     }

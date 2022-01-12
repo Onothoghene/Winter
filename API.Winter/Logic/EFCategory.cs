@@ -164,7 +164,8 @@ namespace API.Winter.Logic
 
         }
 
-        public IEnumerable<FullCategoryOM> GetFullCategoryList()
+        //public IEnumerable<FullCategoryOM> GetFullCategoryList()
+        public FullCategoryOM GetFullCategoryList()
         {
             try
             {
@@ -180,7 +181,8 @@ namespace API.Winter.Logic
                 };
                 fullCategories.Add(data);
                 response = fullCategories;
-                return response;
+                //return response;
+                return data;
             }
             catch (Exception)
             {

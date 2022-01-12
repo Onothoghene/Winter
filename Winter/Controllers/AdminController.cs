@@ -141,7 +141,7 @@ namespace Winter.Controllers
 
         #region Category
 
-        [Route("category")]
+        [Route("shop/category")]
         public async Task<IActionResult> Category(int Id)
         {
             var model = new CategoryInputViewModel()

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Winter.Helpers;
 using Winter.ViewModels.Output_Models;
@@ -7,28 +8,19 @@ namespace Winter.Controllers
 {
     public class ShopController : Controller
     {
-        public readonly IHttpClientLogic _httpClientLogic;
-        //readonly HttpClientHelper _helper = new HttpClientHelper();
+        public readonly HttpClientLogic _httpClientLogic;
+        HttpClientHelper _httpClientHelper = new HttpClientHelper();
 
-        public ShopController(IHttpClientLogic httpClientLogic)
+        public ShopController()
         {
-            _httpClientLogic = httpClientLogic;
+            _httpClientLogic = new HttpClientLogic();
         }
 
-        //public IActionResult Index()
-        //{
-        //    return View();
-        //}
-
-        public IActionResult Category()
+        [Route("category")]
+        public async Task<IActionResult> Category()
         {
-            //GeneralViewModel viewModel = new GeneralViewModel
-            //{
-            //    CategoryOutputViewModel = _category.GetCategory(),
-            //    ProductOutputViewModel = _product.GetProducts(),
-            //};
-            //return View(viewModel);
-            return View();
+            var viewModel = await GetCategoryList();
+            return View(viewModel);
         }
 
         [Route("cart")]
@@ -53,32 +45,12 @@ namespace Winter.Controllers
 
         #region Methods
 
-        //public async Task<ProductOutputViewModel> GetWishListCount(int UserId)
-        //{
-        //    string endpoint = $"api/Wish/{UserId}WishList/Count";
-        //    var product = await _httpClientLogic.GetById<ProductOutputViewModel>(endpoint);
-        //    return product;
-        //}
-        
         public async Task<int> GetWishListCount(int UserId)
         {
             string endpoint = $"api/Wish/{UserId}WishList/Count";
             int wishlistCount = await _httpClientLogic.GetById<int>(endpoint);
             return wishlistCount;
         }
-
-        //public long GetWishListCount(long UserId)
-        //{
-        //    long wishlistCount = 0;
-        //    HttpClient client = _helper.Initial();
-        //    HttpResponseMessage response = client.GetAsync($"api/Wish/{UserId}WishList/Count").Result;
-        //    if (response.IsSuccessStatusCode)
-        //    {
-        //        var stringData = response.Content.ReadAsStringAsync().Result;
-        //        wishlistCount = JsonConvert.DeserializeObject<long>(stringData);
-        //    }
-        //    return wishlistCount;
-        //}
 
         public async Task<int> GetCartCount(int UserId)
         {
@@ -87,18 +59,12 @@ namespace Winter.Controllers
             return CartCount;
         }
 
-        //public long GetCartCount(long UserId)
-        //{
-        //    long CartCount = 0;
-        //    HttpClient client = _helper.Initial();
-        //    HttpResponseMessage response = client.GetAsync($"api/Cart/{UserId}/CartCount").Result;
-        //    if (response.IsSuccessStatusCode)
-        //    {
-        //        var stringData = response.Content.ReadAsStringAsync().Result;
-        //        CartCount = JsonConvert.DeserializeObject<long>(stringData);
-        //    }
-        //    return CartCount;
-        //}
+        public async Task<FullCategoryOutputViewModel> GetCategoryList()
+        {
+            string endpoint = $"api/Category/full";
+            var response = await _httpClientLogic.GetById<FullCategoryOutputViewModel>(endpoint);
+            return response;
+        }
 
         #endregion
 
